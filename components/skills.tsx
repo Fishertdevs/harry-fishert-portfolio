@@ -255,8 +255,8 @@ const Skills = () => {
           <div className="h-1 w-16 bg-primary mx-auto rounded-full mt-4"></div>
         </motion.div>
 
-        {/* Carousel - side by side on desktop, stacked on mobile */}
-        <div className="max-w-4xl mx-auto">
+        {/* Carousel - balanced grid on desktop, stacked on mobile */}
+        <div className="max-w-2xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlide}
@@ -264,10 +264,10 @@ const Skills = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
-              className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-10 py-4"
+              className="grid grid-cols-1 md:grid-cols-2 items-center gap-8 py-4"
             >
-              {/* Text content - centered on both mobile and desktop */}
-              <div className="flex-1 text-center order-2 md:order-1">
+              {/* Text content - centered */}
+              <div className="text-center order-2 md:order-1">
                 {/* Title */}
                 <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
                   {services[currentSlide].title}{" "}
@@ -304,7 +304,7 @@ const Skills = () => {
               </div>
 
               {/* Circular progress - RIGHT on desktop, top on mobile */}
-              <div className="flex-shrink-0 order-1 md:order-2">
+              <div className="flex justify-center order-1 md:order-2">
                 <CircularProgress
                   percentage={services[currentSlide].percentage}
                   color={services[currentSlide].color}
