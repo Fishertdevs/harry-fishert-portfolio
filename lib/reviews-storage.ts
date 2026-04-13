@@ -21,14 +21,21 @@ export interface Review {
 // Sistema completamente limpio - sin reseñas de ejemplo
 const INITIAL_REVIEWS: Review[] = []
 
+// Helper to check if we're in browser
+const isBrowser = typeof window !== "undefined"
+
 class ReviewsStorage {
   private static instance: ReviewsStorage
   private reviews: Review[] = []
   private readonly STORAGE_KEY = "portfolio-reviews-permanent"
   private readonly API_ENDPOINT = "/api/reviews"
+  private initialized = false
 
   private constructor() {
-    this.loadReviews()
+    // Don't load reviews in constructor during SSR
+    if (isBrowser) {
+      this.loadReviews()
+    }
   }
 
   public static getInstance(): ReviewsStorage {
@@ -38,7 +45,18 @@ class ReviewsStorage {
     return ReviewsStorage.instance
   }
 
+  private ensureInitialized(): void {
+    if (!this.initialized && isBrowser) {
+      this.loadReviews()
+    }
+  }
+
   private loadReviews(): void {
+    if (!isBrowser) {
+      this.reviews = []
+      return
+    }
+    
     try {
       // Cargar desde localStorage
       const stored = localStorage.getItem(this.STORAGE_KEY)
@@ -49,6 +67,7 @@ class ReviewsStorage {
         this.reviews = []
         this.saveToLocalStorage()
       }
+      this.initialized = true
     } catch (error) {
       console.error("Error loading reviews:", error)
       this.reviews = []
@@ -56,6 +75,8 @@ class ReviewsStorage {
   }
 
   private saveToLocalStorage(): void {
+    if (!isBrowser) return
+    
     try {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.reviews))
     } catch (error) {
@@ -64,6 +85,7 @@ class ReviewsStorage {
   }
 
   public async getAllReviews(): Promise<Review[]> {
+    this.ensureInitialized()
     return [...this.reviews].sort((a, b) => {
       const dateA = new Date(`${a.date}T${a.time}`)
       const dateB = new Date(`${b.date}T${b.time}`)
@@ -72,6 +94,7 @@ class ReviewsStorage {
   }
 
   public async addReview(reviewData: Omit<Review, "id" | "date" | "time" | "helpful" | "verified">): Promise<Review> {
+    this.ensureInitialized()
     const now = new Date()
     const newReview: Review = {
       ...reviewData,
@@ -96,6 +119,7 @@ class ReviewsStorage {
   }
 
   public async markAsHelpful(reviewId: number): Promise<void> {
+    this.ensureInitialized()
     const review = this.reviews.find((r) => r.id === reviewId)
     if (review) {
       review.helpful += 1
@@ -131,6 +155,7 @@ class ReviewsStorage {
   }
 
   public getReviewStats() {
+    this.ensureInitialized()
     const totalReviews = this.reviews.length
     if (totalReviews === 0) {
       return {
