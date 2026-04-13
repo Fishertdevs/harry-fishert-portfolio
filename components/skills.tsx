@@ -37,6 +37,17 @@ const Skills = () => {
           color: "#0ea5e9"
         },
         {
+          title: "Arquitectura de",
+          highlight: "Software",
+          percentage: 85,
+          features: [
+            "Diseño de sistemas SaaS",
+            "Plataformas E-commerce",
+            "Websites y aplicaciones web"
+          ],
+          color: "#0ea5e9"
+        },
+        {
           title: "Automatización",
           highlight: "con IA",
           percentage: 80,
@@ -90,6 +101,17 @@ const Skills = () => {
             "React.js and Next.js",
             "Vue.js and Nuxt.js",
             "Modern and responsive interfaces"
+          ],
+          color: "#0ea5e9"
+        },
+        {
+          title: "Software",
+          highlight: "Architecture",
+          percentage: 85,
+          features: [
+            "SaaS system design",
+            "E-commerce platforms",
+            "Websites and web applications"
           ],
           color: "#0ea5e9"
         },
@@ -233,8 +255,8 @@ const Skills = () => {
           <div className="h-1 w-16 bg-primary mx-auto rounded-full mt-4"></div>
         </motion.div>
 
-        {/* Carousel - centered, reduced gap */}
-        <div className="max-w-4xl mx-auto">
+        {/* Carousel - side by side layout */}
+        <div className="max-w-3xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlide}
@@ -242,54 +264,59 @@ const Skills = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
-              className="flex flex-col items-center text-center py-4"
+              className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 py-4"
             >
-              {/* Circular progress - top */}
-              <div className="mb-6">
+              {/* Text content - LEFT */}
+              <div className="flex-1 text-center md:text-left order-2 md:order-1">
+                {/* Title */}
+                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                  {services[currentSlide].title}{" "}
+                  <span className="text-primary">{services[currentSlide].highlight}</span>
+                </h3>
+                
+                {/* Features */}
+                <ul className="space-y-2 mb-6">
+                  {services[currentSlide].features.map((feature, index) => (
+                    <motion.li 
+                      key={index}
+                      className="flex items-center justify-center md:justify-start gap-2 text-gray-600 dark:text-gray-400 text-sm md:text-base"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 + 0.2 }}
+                    >
+                      <Check className="w-4 h-4 text-primary flex-shrink-0" />
+                      <span>{feature}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+
+                {/* Button - links to WhatsApp */}
+                <div className="flex justify-center md:justify-start">
+                  <Button 
+                    asChild
+                    className="bg-primary hover:bg-primary/90 text-white rounded-lg px-6 py-2 flex items-center gap-2"
+                  >
+                    <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                      {language === "es" ? "Conoce más" : "Learn more"}
+                      <ArrowRight className="w-4 h-4" />
+                    </a>
+                  </Button>
+                </div>
+              </div>
+
+              {/* Circular progress - RIGHT */}
+              <div className="flex-shrink-0 order-1 md:order-2">
                 <CircularProgress 
                   percentage={services[currentSlide].percentage} 
                   color={services[currentSlide].color}
-                  size={140}
+                  size={160}
                 />
               </div>
-
-              {/* Title */}
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                {services[currentSlide].title}{" "}
-                <span className="text-primary">{services[currentSlide].highlight}</span>
-              </h3>
-              
-              {/* Features - centered */}
-              <ul className="space-y-2 mb-6">
-                {services[currentSlide].features.map((feature, index) => (
-                  <motion.li 
-                    key={index}
-                    className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400 text-sm md:text-base"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 + 0.2 }}
-                  >
-                    <Check className="w-4 h-4 text-primary flex-shrink-0" />
-                    <span>{feature}</span>
-                  </motion.li>
-                ))}
-              </ul>
-
-              {/* Button - links to WhatsApp */}
-              <Button 
-                asChild
-                className="bg-primary hover:bg-primary/90 text-white rounded-lg px-6 py-2 flex items-center gap-2"
-              >
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-                  {language === "es" ? "Conoce más" : "Learn more"}
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-              </Button>
             </motion.div>
           </AnimatePresence>
 
           {/* Progress bar indicator - centered, auto only */}
-          <div className="flex justify-center gap-1.5 mt-6">
+          <div className="flex justify-center gap-1.5 mt-8">
             {services.map((_, index) => (
               <div
                 key={index}
