@@ -1,11 +1,51 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Github, ExternalLink, ArrowRight, Users, Clock, TrendingUp } from "lucide-react"
+import { Github, ExternalLink, ArrowRight } from "lucide-react"
+
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/lib/language-context"
 import { usePortfolio } from "@/lib/portfolio-context"
 import { motion, AnimatePresence } from "framer-motion"
+
+// Reusable circular progress — same visual as Skills section
+const CircularProgress = ({
+  percentage,
+  label,
+  color = "#0ea5e9",
+  size = 110,
+}: {
+  percentage: number
+  label: string
+  color?: string
+  size?: number
+}) => {
+  const strokeWidth = 7
+  const radius = (size - strokeWidth) / 2
+  const circumference = radius * 2 * Math.PI
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="relative" style={{ width: size, height: size }}>
+        <svg width={size} height={size} className="transform -rotate-90">
+          <circle cx={size / 2} cy={size / 2} r={radius} stroke="#e5e7eb" strokeWidth={strokeWidth} fill="transparent" className="dark:stroke-gray-700" />
+          <motion.circle
+            cx={size / 2} cy={size / 2} r={radius}
+            stroke={color} strokeWidth={strokeWidth} fill="transparent" strokeLinecap="round"
+            initial={{ strokeDasharray: `0 ${circumference}` }}
+            animate={{ strokeDasharray: `${(percentage / 100) * circumference} ${circumference}` }}
+            transition={{ duration: 1.4, ease: "easeOut" }}
+          />
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <motion.span className="text-lg font-bold" style={{ color }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
+            {percentage}%
+          </motion.span>
+        </div>
+      </div>
+      <p className="text-xs text-gray-500 dark:text-gray-400 text-center leading-tight max-w-[90px]">{label}</p>
+    </div>
+  )
+}
 
 const Experience = () => {
   const { language } = useLanguage()
@@ -17,125 +57,125 @@ const Experience = () => {
         {
           title: "Sistema de Reservas",
           highlight: "MiKaza",
+          logo: "MK",
           description: "Plataforma web completa para gestión de reservas de alojamientos con panel administrativo avanzado, sistema de pagos integrado y notificaciones en tiempo real.",
           metrics: [
-            { icon: Users, label: "Usuarios activos", value: "500+" },
-            { icon: Clock, label: "Tiempo de desarrollo", value: "3 meses" },
-            { icon: TrendingUp, label: "Incremento reservas", value: "+40%" }
+            { label: "Satisfacción", value: 95 },
+            { label: "Rendimiento", value: 90 },
+            { label: "Crecimiento", value: 40 },
           ],
           technologies: ["React", "Node.js", "PostgreSQL", "Stripe"],
           scope: "Sistema completo de reservas con autenticación, panel admin, reportes y analytics.",
           github: "https://github.com/harryfishert",
           demo: "#",
-          color: "#0ea5e9"
         },
         {
           title: "Procesador",
           highlight: "NLP",
+          logo: "NLP",
           description: "Sistema avanzado de procesamiento de lenguaje natural para análisis de textos, detección de sentimientos y extracción de entidades con modelos de machine learning.",
           metrics: [
-            { icon: Users, label: "Textos procesados", value: "10K+" },
-            { icon: Clock, label: "Tiempo de respuesta", value: "<500ms" },
-            { icon: TrendingUp, label: "Precisión", value: "94%" }
+            { label: "Precisión", value: 94 },
+            { label: "Cobertura", value: 88 },
+            { label: "Velocidad", value: 97 },
           ],
           technologies: ["Python", "FastAPI", "TensorFlow", "spaCy"],
           scope: "API REST para análisis de texto con endpoints de clasificación, NER y sentiment analysis.",
           github: "https://github.com/harryfishert",
           demo: "#",
-          color: "#0ea5e9"
         },
         {
           title: "Gestor de",
           highlight: "Vuelos",
+          logo: "GV",
           description: "Aplicación web para búsqueda y gestión de vuelos con comparador de precios, sistema de pagos integrado y gestión de reservas multi-destino.",
           metrics: [
-            { icon: Users, label: "Búsquedas/día", value: "2K+" },
-            { icon: Clock, label: "Desarrollo", value: "4 meses" },
-            { icon: TrendingUp, label: "Conversión", value: "+25%" }
+            { label: "Conversión", value: 25 },
+            { label: "Disponibilidad", value: 99 },
+            { label: "Retención", value: 72 },
           ],
           technologies: ["Vue.js", "Django", "Redis", "Docker"],
           scope: "Integración con APIs de aerolíneas, comparador de precios y sistema de notificaciones.",
           github: "https://github.com/harryfishert",
           demo: "#",
-          color: "#0ea5e9"
         },
         {
           title: "ERP",
           highlight: "Arquitectura",
+          logo: "ERP",
           description: "Sistema ERP completo para empresa de arquitectura con módulos de inventario, gestión de proyectos, facturación electrónica y reportes financieros.",
           metrics: [
-            { icon: Users, label: "Proyectos gestionados", value: "150+" },
-            { icon: Clock, label: "Reducción tiempo", value: "-60%" },
-            { icon: TrendingUp, label: "ROI", value: "300%" }
+            { label: "Eficiencia", value: 60 },
+            { label: "Adopción", value: 85 },
+            { label: "ROI", value: 92 },
           ],
           technologies: ["Django", "PostgreSQL", "Celery", "AWS"],
           scope: "Sistema modular con control de acceso, auditoría y generación automática de reportes.",
           github: "https://github.com/harryfishert",
           demo: "#",
-          color: "#0ea5e9"
-        }
+        },
       ]
     : [
         {
           title: "Booking System",
           highlight: "MiKaza",
+          logo: "MK",
           description: "Complete web platform for accommodation booking management with advanced admin panel, integrated payment system, and real-time notifications.",
           metrics: [
-            { icon: Users, label: "Active users", value: "500+" },
-            { icon: Clock, label: "Development time", value: "3 months" },
-            { icon: TrendingUp, label: "Booking increase", value: "+40%" }
+            { label: "Satisfaction", value: 95 },
+            { label: "Performance", value: 90 },
+            { label: "Growth", value: 40 },
           ],
           technologies: ["React", "Node.js", "PostgreSQL", "Stripe"],
           scope: "Complete booking system with authentication, admin panel, reports and analytics.",
           github: "https://github.com/harryfishert",
           demo: "#",
-          color: "#0ea5e9"
         },
         {
           title: "NLP",
           highlight: "Processor",
+          logo: "NLP",
           description: "Advanced natural language processing system for text analysis, sentiment detection, and entity extraction with machine learning models.",
           metrics: [
-            { icon: Users, label: "Texts processed", value: "10K+" },
-            { icon: Clock, label: "Response time", value: "<500ms" },
-            { icon: TrendingUp, label: "Accuracy", value: "94%" }
+            { label: "Accuracy", value: 94 },
+            { label: "Coverage", value: 88 },
+            { label: "Speed", value: 97 },
           ],
           technologies: ["Python", "FastAPI", "TensorFlow", "spaCy"],
           scope: "REST API for text analysis with classification, NER and sentiment analysis endpoints.",
           github: "https://github.com/harryfishert",
           demo: "#",
-          color: "#0ea5e9"
         },
         {
           title: "Flight",
           highlight: "Manager",
+          logo: "GV",
           description: "Web application for flight search and management with price comparator, integrated payment system, and multi-destination booking management.",
           metrics: [
-            { icon: Users, label: "Searches/day", value: "2K+" },
-            { icon: Clock, label: "Development", value: "4 months" },
-            { icon: TrendingUp, label: "Conversion", value: "+25%" }
+            { label: "Conversion", value: 25 },
+            { label: "Uptime", value: 99 },
+            { label: "Retention", value: 72 },
           ],
           technologies: ["Vue.js", "Django", "Redis", "Docker"],
           scope: "Integration with airline APIs, price comparator, and notification system.",
           github: "https://github.com/harryfishert",
           demo: "#",
-          color: "#0ea5e9"
         },
         {
           title: "Architecture",
           highlight: "ERP",
+          logo: "ERP",
           description: "Complete ERP system for architecture company with inventory modules, project management, electronic invoicing, and financial reports.",
           metrics: [
-            { icon: Users, label: "Projects managed", value: "150+" },
-            { icon: Clock, label: "Time reduction", value: "-60%" },
-            { icon: TrendingUp, label: "ROI", value: "300%" }
+            { label: "Efficiency", value: 60 },
+            { label: "Adoption", value: 85 },
+            { label: "ROI", value: 92 },
           ],
           technologies: ["Django", "PostgreSQL", "Celery", "AWS"],
           scope: "Modular system with access control, auditing, and automatic report generation.",
           github: "https://github.com/harryfishert",
           demo: "#",
-          color: "#0ea5e9"
-        }
+        },
       ]
 
   // Auto-play carousel
@@ -202,6 +242,15 @@ const Experience = () => {
             >
               {/* Left side - Project info */}
               <div className="flex-1 text-center md:text-left order-2 md:order-1">
+                {/* Project logo badge */}
+                <div className="flex justify-center md:justify-start mb-4">
+                  <div className="w-14 h-14 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+                    <span className="text-primary font-bold text-sm tracking-wide">
+                      {projects[currentSlide].logo}
+                    </span>
+                  </div>
+                </div>
+
                 {/* Title */}
                 <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-3">
                   {projects[currentSlide].title}{" "}
@@ -259,33 +308,26 @@ const Experience = () => {
                 </div>
               </div>
 
-              {/* Right side - Metrics card */}
+              {/* Right side - Circular metrics */}
               <div className="flex-shrink-0 order-1 md:order-2 w-full md:w-auto">
                 <div className="bg-gradient-to-br from-primary/5 to-primary/10 dark:from-primary/10 dark:to-primary/20 rounded-2xl p-6 md:p-8 border border-primary/20">
-                  <h4 className="text-center text-sm font-semibold text-gray-700 dark:text-gray-300 mb-6 uppercase tracking-wider">
+                  <h4 className="text-center text-xs font-semibold text-gray-600 dark:text-gray-400 mb-6 uppercase tracking-wider">
                     {language === "es" ? "Métricas del proyecto" : "Project metrics"}
                   </h4>
-                  
-                  <div className="space-y-5">
+                  <div className="flex items-start justify-center gap-6">
                     {projects[currentSlide].metrics.map((metric, index) => (
                       <motion.div
-                        key={index}
-                        className="flex items-center gap-4"
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.15 + 0.2 }}
+                        key={`${currentSlide}-${index}`}
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.15 + 0.1 }}
                       >
-                        <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-                          <metric.icon className="w-5 h-5 text-primary" />
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
-                            {metric.label}
-                          </p>
-                          <p className="text-xl font-bold text-gray-900 dark:text-white">
-                            {metric.value}
-                          </p>
-                        </div>
+                        <CircularProgress
+                          percentage={metric.value}
+                          label={metric.label}
+                          color="#0ea5e9"
+                          size={110}
+                        />
                       </motion.div>
                     ))}
                   </div>

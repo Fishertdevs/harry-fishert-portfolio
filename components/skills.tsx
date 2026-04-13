@@ -264,10 +264,10 @@ const Skills = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
-              className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 py-4"
+              className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-10 py-4"
             >
-              {/* Text content - LEFT on desktop, centered on mobile */}
-              <div className="flex-1 text-center md:text-left order-2 md:order-1">
+              {/* Text content - centered on both mobile and desktop */}
+              <div className="flex-1 text-center order-2 md:order-1">
                 {/* Title */}
                 <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
                   {services[currentSlide].title}{" "}
@@ -289,8 +289,8 @@ const Skills = () => {
                   ))}
                 </ul>
 
-                {/* Button - centered on mobile, left on desktop */}
-                <div className="flex justify-center md:justify-start">
+                {/* Button - always centered */}
+                <div className="flex justify-center">
                   <Button
                     asChild
                     className="bg-primary hover:bg-primary/90 text-white rounded-lg px-6 py-2 flex items-center gap-2"
