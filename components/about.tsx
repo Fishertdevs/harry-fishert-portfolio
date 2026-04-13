@@ -72,13 +72,13 @@ const About = () => {
 
             {/* Text Content - RIGHT side with Carousel */}
             <motion.div
-              className="flex flex-col justify-center text-center md:text-left"
+              className="flex flex-col justify-center items-center text-center"
               initial={{ opacity: 0, x: 50 }}
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
               {/* Role badge */}
-              <div className="flex items-center gap-2 mb-4 justify-center md:justify-start">
+              <div className="flex items-center gap-2 mb-4 justify-center">
                 <User className="w-4 h-4 text-primary" />
                 <span className="text-sm text-primary tracking-wider uppercase font-medium">
                   {language === "es"
@@ -88,12 +88,12 @@ const About = () => {
               </div>
 
               {/* Name */}
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
                 Harry Fishert
               </h3>
 
               {/* Subtitle */}
-              <p className="text-primary font-medium mb-6">
+              <p className="text-primary font-medium mb-6 text-center">
                 {language === "es" ? "Estudiante de Ingeniería de Sistemas" : "Systems Engineering Student"}
               </p>
 
@@ -106,7 +106,7 @@ const About = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -16 }}
                     transition={{ duration: 0.5 }}
-                    className="text-gray-600 dark:text-gray-400 leading-relaxed text-sm md:text-base"
+                    className="text-gray-600 dark:text-gray-400 leading-relaxed text-sm md:text-base text-center"
                   >
                     {textSlides[currentSlide]}
                   </motion.p>
@@ -114,7 +114,7 @@ const About = () => {
               </div>
 
               {/* Progress bar indicator */}
-              <div className="flex items-center gap-1.5 mt-6 justify-center md:justify-start">
+              <div className="flex items-center gap-1.5 mt-6 justify-center">
                 {textSlides.map((_, index) => (
                   <div
                     key={index}
