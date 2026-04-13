@@ -11,6 +11,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import CVPreview from "@/components/cv-preview"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
+import ReviewsCarousel from "@/components/reviews-carousel"
 
 export default function Home() {
   const { t, language } = useLanguage()
@@ -250,6 +251,8 @@ export default function Home() {
           </motion.div>
         </section>
 
+        {/* Reviews Section */}
+        <ReviewsCarousel />
 
       </main>
       <Footer />

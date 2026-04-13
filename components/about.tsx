@@ -11,7 +11,6 @@ interface Slide {
   role: string
   name: string
   description: string
-  image: string
 }
 
 const About = () => {
@@ -27,13 +26,11 @@ const About = () => {
       role: language === "es" ? "DESARROLLADOR FULL STACK" : "FULL STACK DEVELOPER",
       name: portfolioData.name.split(" ").slice(0, 2).join(" "),
       description: portfolioData.aboutParagraph1,
-      image: "/images/avatar.png"
     },
     {
       role: language === "es" ? "ESTUDIANTE DE INGENIERIA" : "ENGINEERING STUDENT",
       name: portfolioData.name.split(" ").slice(0, 2).join(" "),
       description: portfolioData.aboutParagraph2,
-      image: "/images/avatar.png"
     },
     {
       role: language === "es" ? "LIDER DE PROYECTOS" : "PROJECT LEADER",
@@ -41,7 +38,6 @@ const About = () => {
       description: language === "es" 
         ? `Lider tecnico con ${portfolioData.experience} de experiencia en desarrollo. Especializado en ${portfolioData.specialization} con mas de ${portfolioData.projectsCompleted} completados.`
         : `Technical leader with ${portfolioData.experience} of development experience. Specialized in ${portfolioData.specialization} with over ${portfolioData.projectsCompleted} completed.`,
-      image: "/images/avatar.png"
     }
   ]
 
@@ -61,26 +57,26 @@ const About = () => {
     setTimeout(() => setIsAutoPlaying(true), 10000)
   }
 
-  const slideVariants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 100 : -100,
-      opacity: 0
-    }),
-    center: {
-      x: 0,
-      opacity: 1
+  const textVariants = {
+    enter: {
+      opacity: 0,
+      y: 20
     },
-    exit: (direction: number) => ({
-      x: direction < 0 ? 100 : -100,
-      opacity: 0
-    })
+    center: {
+      opacity: 1,
+      y: 0
+    },
+    exit: {
+      opacity: 0,
+      y: -20
+    }
   }
 
   return (
     <section 
       id="about" 
       ref={sectionRef} 
-      className="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 overflow-hidden"
+      className="py-20 bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 overflow-hidden"
     >
       <div className="container mx-auto px-4">
         <motion.div
@@ -89,75 +85,66 @@ const About = () => {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">{t("aboutTitle")}</h2>
-          <div className="h-1 w-20 bg-primary mx-auto"></div>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">{t("aboutTitle")}</h2>
+          <div className="h-1 w-20 bg-emerald-500 mx-auto"></div>
         </motion.div>
 
-        {/* Carousel Container */}
-        <div className="max-w-5xl mx-auto">
-          <div className="relative min-h-[400px] md:min-h-[350px]">
-            <AnimatePresence mode="wait" custom={currentSlide}>
-              <motion.div
-                key={currentSlide}
-                custom={currentSlide}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.5, ease: "easeInOut" }}
-                className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center"
-              >
-                {/* Text Content */}
-                <div className="order-2 md:order-1 text-center md:text-left">
+        {/* Carousel Container - Image LEFT (static), Text RIGHT (rotating) */}
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center min-h-[400px]">
+            
+            {/* Image - Static on LEFT */}
+            <motion.div
+              className="flex justify-center md:justify-start order-1"
+              initial={{ opacity: 0, x: -50 }}
+              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <div className="relative">
+                <div className="w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-700 shadow-2xl">
+                  <img 
+                    src="/images/avatar.png" 
+                    alt={portfolioData.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                {/* Decorative element behind image */}
+                <div className="absolute -z-10 top-4 left-4 w-64 h-64 md:w-80 md:h-80 rounded-2xl bg-emerald-500/20"></div>
+              </div>
+            </motion.div>
+
+            {/* Text Content - Rotating on RIGHT */}
+            <div className="order-2 relative min-h-[250px]">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentSlide}
+                  variants={textVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="text-center md:text-left"
+                >
                   <motion.span 
                     className="inline-block text-sm font-bold tracking-wider text-orange-500 mb-4"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
                   >
                     {slides[currentSlide].role}
                   </motion.span>
                   
                   <motion.h3 
-                    className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
+                    className="text-3xl md:text-4xl font-bold text-white mb-6"
                   >
                     {slides[currentSlide].name}
                   </motion.h3>
                   
                   <motion.p 
-                    className="text-gray-600 dark:text-gray-400 leading-relaxed text-base md:text-lg"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
+                    className="text-gray-300 leading-relaxed text-base md:text-lg"
                   >
                     {slides[currentSlide].description}
                   </motion.p>
-                </div>
-
-                {/* Image */}
-                <div className="order-1 md:order-2 flex justify-center md:justify-end">
-                  <motion.div
-                    className="relative"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2, duration: 0.5 }}
-                  >
-                    <div className="w-56 h-56 md:w-72 md:h-72 rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-xl">
-                      <img 
-                        src={slides[currentSlide].image} 
-                        alt={slides[currentSlide].name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    {/* Decorative elements */}
-                    <div className="absolute -z-10 -top-4 -right-4 w-56 h-56 md:w-72 md:h-72 rounded-2xl bg-primary/10"></div>
-                  </motion.div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
 
           {/* Navigation Dots */}
@@ -169,7 +156,7 @@ const About = () => {
                 className={`transition-all duration-300 rounded-full ${
                   currentSlide === index 
                     ? "w-8 h-3 bg-emerald-500" 
-                    : "w-3 h-3 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500"
+                    : "w-3 h-3 bg-gray-500 hover:bg-gray-400"
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />

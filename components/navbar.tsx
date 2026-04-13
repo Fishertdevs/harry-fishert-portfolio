@@ -46,11 +46,8 @@ const Navbar = () => {
     { name: t("about"), href: "/about" },
     { name: t("skills"), href: "/skills" },
     { name: t("experience"), href: "/experience" },
-    { name: t("projects"), href: "/projects" },
     { name: t("education"), href: "/education" },
-    { name: t("reviews"), href: "/reviews" },
     { name: t("contact"), href: "/contact" },
-    { name: language === "es" ? "Ajustes" : "Settings", href: "/settings" },
   ]
 
   const isActive = (href: string) => {
