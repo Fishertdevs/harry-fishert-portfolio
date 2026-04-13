@@ -213,9 +213,14 @@ export const translations: Translations = {
       "Desarrollo de una API REST utilizando Django Rest Framework para gestionar un sistema de inventario.",
 
     // Contact
-    contactTitle: "Contáctame",
+    contactTitle: "Estoy aqui para ayudarte",
     contactDescription:
-      "¿Tienes alguna pregunta o propuesta? No dudes en contactarme. Estaré encantado de hablar contigo.",
+      "Me encantaria escuchar tus ideas. Contactame y juntos disenaremos tu proyecto con soluciones a medida.",
+    responseTime: "Respuesta en menos de 24h",
+    availability: "Lun - Sab",
+    ctaTitle: "Listo para disenar tu idea?",
+    ctaDescription: "Agenda tu asesoria y descubre como puedo ayudarte",
+    ctaButton: "Cotizar",
     email: "Email",
     phone: "Teléfono",
     name: "Nombre",
@@ -607,9 +612,14 @@ export const translations: Translations = {
     projectDjangoDesc: "Development of a REST API using Django Rest Framework to manage an inventory system.",
 
     // Contact
-    contactTitle: "Contact Me",
+    contactTitle: "I'm here to help you",
     contactDescription:
-      "Do you have any questions or proposals? Don't hesitate to contact me. I'll be happy to talk to you.",
+      "I'd love to hear your ideas. Contact me and together we'll design your project with tailored solutions.",
+    responseTime: "Response within 24h",
+    availability: "Mon - Sat",
+    ctaTitle: "Ready to design your idea?",
+    ctaDescription: "Schedule your consultation and discover how I can help you",
+    ctaButton: "Get Quote",
     email: "Email",
     phone: "Phone",
     name: "Name",
