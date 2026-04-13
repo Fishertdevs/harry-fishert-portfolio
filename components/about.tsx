@@ -86,7 +86,7 @@ const About = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">{t("aboutTitle")}</h2>
-          <div className="h-1 w-20 bg-emerald-500 mx-auto"></div>
+          <div className="h-1 w-20 bg-primary mx-auto"></div>
         </motion.div>
 
         {/* Carousel Container - Image LEFT (static), Text RIGHT (rotating) */}
@@ -101,7 +101,7 @@ const About = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               <div className="relative">
-                <div className="w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-700 shadow-2xl">
+                <div className="w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden bg-gray-700 shadow-2xl">
                   <img 
                     src="/images/avatar.png" 
                     alt={portfolioData.name}
@@ -109,7 +109,7 @@ const About = () => {
                   />
                 </div>
                 {/* Decorative element behind image */}
-                <div className="absolute -z-10 top-4 left-4 w-64 h-64 md:w-80 md:h-80 rounded-2xl bg-emerald-500/20"></div>
+                <div className="absolute -z-10 top-4 left-4 w-64 h-64 md:w-80 md:h-80 rounded-2xl bg-primary/20"></div>
               </div>
             </motion.div>
 
@@ -155,7 +155,7 @@ const About = () => {
                 onClick={() => handleDotClick(index)}
                 className={`transition-all duration-300 rounded-full ${
                   currentSlide === index 
-                    ? "w-8 h-3 bg-emerald-500" 
+                    ? "w-8 h-3 bg-primary" 
                     : "w-3 h-3 bg-gray-500 hover:bg-gray-400"
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
