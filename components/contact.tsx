@@ -58,7 +58,7 @@ const Contact = () => {
 
         {/* Info badges */}
         <motion.div 
-          className="flex flex-wrap items-center justify-center gap-6 mb-12"
+          className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mb-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -67,6 +67,11 @@ const Contact = () => {
           <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
             <span className="text-sm md:text-base">{t("responseTime")}</span>
+          </div>
+          <div className="h-4 w-px bg-gray-300 dark:bg-gray-600 hidden sm:block"></div>
+          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+            <span className="w-2 h-2 bg-primary rounded-full"></span>
+            <span className="text-sm md:text-base">{t("freeConsultation")}</span>
           </div>
           <div className="h-4 w-px bg-gray-300 dark:bg-gray-600 hidden sm:block"></div>
           <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">

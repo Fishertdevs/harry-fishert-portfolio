@@ -213,14 +213,15 @@ export const translations: Translations = {
       "Desarrollo de una API REST utilizando Django Rest Framework para gestionar un sistema de inventario.",
 
     // Contact
-    contactTitle: "Estoy aquí para ayudarte",
+    contactTitle: "Trabajemos juntos",
     contactDescription:
-      "Me encantaría escuchar tus ideas. Contáctame y juntos diseñaremos tu proyecto con soluciones a medida.",
+      "Convierte tu idea en un proyecto real con soluciones escalables diseñadas a tu medida.",
     responseTime: "Respuesta en menos de 24h",
+    freeConsultation: "Asesoría inicial gratuita",
     availability: "Lun - Sab",
-    ctaTitle: "¿Listo para diseñar tu idea?",
-    ctaDescription: "Agenda tu asesoría y descubre como puedo ayudarte",
-    ctaButton: "Cotizar",
+    ctaTitle: "¿Listo para llevar tu idea al siguiente nivel?",
+    ctaDescription: "Agenda tu asesoría y descubre cómo puedo ayudarte a implementar soluciones escalables",
+    ctaButton: "Solicitar cotización",
     email: "Email",
     phone: "Teléfono",
     name: "Nombre",
@@ -611,15 +612,16 @@ export const translations: Translations = {
     projectDjango: "REST API with Django",
     projectDjangoDesc: "Development of a REST API using Django Rest Framework to manage an inventory system.",
 
-    // Contact
-    contactTitle: "I'm here to help you",
-    contactDescription:
-      "I'd love to hear your ideas. Contact me and together we'll design your project with tailored solutions.",
-    responseTime: "Response within 24h",
-    availability: "Mon - Sat",
-    ctaTitle: "Ready to design your idea?",
-    ctaDescription: "Schedule your consultation and discover how I can help you",
-    ctaButton: "Get Quote",
+// Contact
+  contactTitle: "Let's work together",
+  contactDescription:
+  "Turn your idea into a real project with scalable solutions designed for you.",
+  responseTime: "Response within 24h",
+  freeConsultation: "Free initial consultation",
+  availability: "Mon - Sat",
+  ctaTitle: "Ready to take your idea to the next level?",
+  ctaDescription: "Schedule your consultation and discover how I can help you implement scalable solutions",
+  ctaButton: "Request quote",
     email: "Email",
     phone: "Phone",
     name: "Name",
