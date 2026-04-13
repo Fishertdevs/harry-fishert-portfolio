@@ -8,12 +8,15 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useTheme } from "next-themes"
 import { useLanguage } from "@/lib/language-context"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const { theme, setTheme } = useTheme()
   const { language, setLanguage, t } = useLanguage()
+  const pathname = usePathname()
 
   const toggleMenu = () => setIsOpen(!isOpen)
 
@@ -38,39 +41,23 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Actualizar el array navItems para incluir la sección de ajustes
   const navItems = [
-    { name: t("home"), href: "#home" },
-    { name: t("about"), href: "#about" },
-    { name: t("skills"), href: "#skills" },
-    { name: t("experience"), href: "#experience" },
-    { name: t("projects"), href: "#projects" },
-    { name: t("education"), href: "#education" },
-    { name: t("reviews"), href: "#reviews" },
-    { name: t("contact"), href: "#contact" },
-    { name: "Ajustes", href: "#settings" },
+    { name: t("home"), href: "/" },
+    { name: t("about"), href: "/about" },
+    { name: t("skills"), href: "/skills" },
+    { name: t("experience"), href: "/experience" },
+    { name: t("projects"), href: "/projects" },
+    { name: t("education"), href: "/education" },
+    { name: t("reviews"), href: "/reviews" },
+    { name: t("contact"), href: "/contact" },
+    { name: language === "es" ? "Ajustes" : "Settings", href: "/settings" },
   ]
 
-  // Reemplazar la función de navegación en los enlaces
-  const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault()
-    const targetId = href.replace("#", "")
-    const element = document.getElementById(targetId)
-
-    if (element) {
-      // Cerrar el menú móvil si está abierto
-      if (isOpen) {
-        setIsOpen(false)
-      }
-
-      // Desplazarse suavemente a la sección
-      element.scrollIntoView({
-        behavior: "smooth",
-      })
-
-      // Actualizar la URL sin recargar la página
-      window.history.pushState(null, "", href)
+  const isActive = (href: string) => {
+    if (href === "/") {
+      return pathname === "/"
     }
+    return pathname.startsWith(href)
   }
 
   return (
@@ -82,22 +69,25 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0">
-            <a href="#" className="text-xl font-bold text-primary">
+            <Link href="/" className="text-xl font-bold text-primary">
               Harry Lasso
-            </a>
+            </Link>
           </div>
 
           <div className="hidden md:block">
             <div className="ml-10 flex items-center space-x-4">
               {navItems.map((item) => (
-                <a
+                <Link
                   key={item.href}
                   href={item.href}
-                  className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                  onClick={(e) => handleNavigation(e, item.href)}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    isActive(item.href)
+                      ? "text-primary bg-primary/10"
+                      : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white"
+                  }`}
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -129,7 +119,7 @@ const Navbar = () => {
                   onClick={() => toggleLanguage("es")}
                   className={language === "es" ? "bg-primary/10 text-primary" : ""}
                 >
-                  Español
+                  Espanol
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => toggleLanguage("en")}
@@ -160,14 +150,18 @@ const Navbar = () => {
         <div className="md:hidden bg-white dark:bg-gray-900 shadow-lg p-4 animate-fade-in">
           <div className="flex flex-col space-y-2 pb-3 pt-2">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.href}
                 href={item.href}
-                className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white px-3 py-2 rounded-md text-base font-medium"
-                onClick={(e) => handleNavigation(e, item.href)}
+                className={`px-3 py-2 rounded-md text-base font-medium ${
+                  isActive(item.href)
+                    ? "text-primary bg-primary/10"
+                    : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white"
+                }`}
+                onClick={() => setIsOpen(false)}
               >
                 {item.name}
-              </a>
+              </Link>
             ))}
             <div className="flex items-center space-x-2 pt-4 border-t border-gray-200 dark:border-gray-700">
               <Button
@@ -196,7 +190,7 @@ const Navbar = () => {
                     onClick={() => toggleLanguage("es")}
                     className={language === "es" ? "bg-primary/10 text-primary" : ""}
                   >
-                    Español
+                    Espanol
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => toggleLanguage("en")}
