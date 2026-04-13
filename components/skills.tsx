@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Check, ArrowRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/lib/language-context"
 import { usePortfolio } from "@/lib/portfolio-context"
@@ -243,14 +243,14 @@ const Skills = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            {language === "es" 
-              ? "Tecnología que impulsa tu negocio" 
-              : "Technology that drives your business"}
+            {language === "es"
+              ? "Habilidades tecnológicas orientadas a resultados"
+              : "Technology skills oriented to results"}
           </h2>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
             {language === "es"
-              ? "Soluciones integrales para transformar tus ideas en productos digitales de alto impacto"
-              : "Comprehensive solutions to transform your ideas into high-impact digital products"}
+              ? "Desarrollo soluciones digitales escalables y eficientes, orientadas a mejorar resultados y rendimiento."
+              : "I build scalable and efficient digital solutions, focused on improving results and performance."}
           </p>
           <div className="h-1 w-16 bg-primary mx-auto rounded-full mt-4"></div>
         </motion.div>
@@ -264,35 +264,41 @@ const Skills = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
-              className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 py-4"
+              className="flex flex-col items-center text-center gap-6 py-4"
             >
-              {/* Text content - LEFT */}
-              <div className="flex-1 text-center md:text-left order-2 md:order-1">
+              {/* Circular progress - TOP */}
+              <CircularProgress
+                percentage={services[currentSlide].percentage}
+                color={services[currentSlide].color}
+                size={160}
+              />
+
+              {/* Text content - BOTTOM, centered */}
+              <div className="w-full max-w-sm">
                 {/* Title */}
                 <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
                   {services[currentSlide].title}{" "}
                   <span className="text-primary">{services[currentSlide].highlight}</span>
                 </h3>
-                
-                {/* Features */}
+
+                {/* Features - no icons */}
                 <ul className="space-y-2 mb-6">
                   {services[currentSlide].features.map((feature, index) => (
-                    <motion.li 
+                    <motion.li
                       key={index}
-                      className="flex items-center justify-center md:justify-start gap-2 text-gray-600 dark:text-gray-400 text-sm md:text-base"
+                      className="text-gray-600 dark:text-gray-400 text-sm md:text-base"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 + 0.2 }}
                     >
-                      <Check className="w-4 h-4 text-primary flex-shrink-0" />
-                      <span>{feature}</span>
+                      {feature}
                     </motion.li>
                   ))}
                 </ul>
 
-                {/* Button - links to WhatsApp */}
-                <div className="flex justify-center md:justify-start">
-                  <Button 
+                {/* Button - centered */}
+                <div className="flex justify-center">
+                  <Button
                     asChild
                     className="bg-primary hover:bg-primary/90 text-white rounded-lg px-6 py-2 flex items-center gap-2"
                   >
@@ -302,15 +308,6 @@ const Skills = () => {
                     </a>
                   </Button>
                 </div>
-              </div>
-
-              {/* Circular progress - RIGHT */}
-              <div className="flex-shrink-0 order-1 md:order-2">
-                <CircularProgress 
-                  percentage={services[currentSlide].percentage} 
-                  color={services[currentSlide].color}
-                  size={160}
-                />
               </div>
             </motion.div>
           </AnimatePresence>
