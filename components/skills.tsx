@@ -1,115 +1,150 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Check, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
+import { Check, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/lib/language-context"
+import { usePortfolio } from "@/lib/portfolio-context"
 import { motion, AnimatePresence } from "framer-motion"
 
 const Skills = () => {
-  const { t } = useLanguage()
+  const { language } = useLanguage()
+  const { portfolioData } = usePortfolio()
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
 
-  const services = [
-    {
-      title: "Diseno de",
-      highlight: "Software",
-      percentage: 90,
-      features: [
-        "Arquitectura escalable y mantenible",
-        "Patrones de diseno modernos",
-        "Documentacion tecnica completa"
-      ],
-      color: "#0ea5e9"
-    },
-    {
-      title: "Desarrollo",
-      highlight: "Frontend",
-      percentage: 85,
-      features: [
-        "Interfaces responsivas y modernas",
-        "Experiencia de usuario optimizada",
-        "Tecnologias como React y Next.js"
-      ],
-      color: "#0ea5e9"
-    },
-    {
-      title: "Desarrollo",
-      highlight: "Backend",
-      percentage: 80,
-      features: [
-        "APIs REST y GraphQL",
-        "Bases de datos relacionales y NoSQL",
-        "Integracion de servicios externos"
-      ],
-      color: "#0ea5e9"
-    },
-    {
-      title: "Desarrollo",
-      highlight: "Full Stack",
-      percentage: 75,
-      features: [
-        "Soluciones end-to-end completas",
-        "Arquitecturas monoliticas y microservicios",
-        "DevOps y despliegue continuo"
-      ],
-      color: "#0ea5e9"
-    },
-    {
-      title: "Aplicaciones",
-      highlight: "Moviles",
-      percentage: 60,
-      features: [
-        "Desarrollo con React Native",
-        "Apps hibridas multiplataforma",
-        "Integracion con APIs nativas"
-      ],
-      color: "#0ea5e9"
-    },
-    {
-      title: "Automatizacion",
-      highlight: "y Scripts",
-      percentage: 70,
-      features: [
-        "Scripts en Python y JavaScript",
-        "Automatizacion de procesos",
-        "Analisis y procesamiento de datos"
-      ],
-      color: "#0ea5e9"
-    }
-  ]
+  const services = language === "es"
+    ? [
+        {
+          title: "Desarrollo",
+          highlight: "Backend",
+          percentage: 90,
+          features: [
+            "Python con Django y FastAPI",
+            "APIs REST y GraphQL escalables",
+            "Bases de datos SQL y NoSQL"
+          ],
+          color: "#0ea5e9"
+        },
+        {
+          title: "Desarrollo",
+          highlight: "Frontend",
+          percentage: 85,
+          features: [
+            "React.js y Next.js",
+            "Vue.js y Nuxt.js",
+            "Interfaces modernas y responsivas"
+          ],
+          color: "#0ea5e9"
+        },
+        {
+          title: "Automatización",
+          highlight: "con IA",
+          percentage: 80,
+          features: [
+            "Integración de modelos de lenguaje",
+            "Automatización de flujos de trabajo",
+            "Chatbots y asistentes virtuales"
+          ],
+          color: "#0ea5e9"
+        },
+        {
+          title: "Optimización",
+          highlight: "SEO",
+          percentage: 75,
+          features: [
+            "SEO técnico y on-page",
+            "Análisis de rendimiento web",
+            "Estrategias de posicionamiento"
+          ],
+          color: "#0ea5e9"
+        },
+        {
+          title: "DevOps",
+          highlight: "& Cloud",
+          percentage: 70,
+          features: [
+            "Docker y Kubernetes",
+            "CI/CD con GitHub Actions",
+            "AWS, GCP y despliegue en la nube"
+          ],
+          color: "#0ea5e9"
+        }
+      ]
+    : [
+        {
+          title: "Backend",
+          highlight: "Development",
+          percentage: 90,
+          features: [
+            "Python with Django and FastAPI",
+            "Scalable REST and GraphQL APIs",
+            "SQL and NoSQL databases"
+          ],
+          color: "#0ea5e9"
+        },
+        {
+          title: "Frontend",
+          highlight: "Development",
+          percentage: 85,
+          features: [
+            "React.js and Next.js",
+            "Vue.js and Nuxt.js",
+            "Modern and responsive interfaces"
+          ],
+          color: "#0ea5e9"
+        },
+        {
+          title: "AI",
+          highlight: "Automation",
+          percentage: 80,
+          features: [
+            "Language model integration",
+            "Workflow automation",
+            "Chatbots and virtual assistants"
+          ],
+          color: "#0ea5e9"
+        },
+        {
+          title: "SEO",
+          highlight: "Optimization",
+          percentage: 75,
+          features: [
+            "Technical and on-page SEO",
+            "Web performance analysis",
+            "Positioning strategies"
+          ],
+          color: "#0ea5e9"
+        },
+        {
+          title: "DevOps",
+          highlight: "& Cloud",
+          percentage: 70,
+          features: [
+            "Docker and Kubernetes",
+            "CI/CD with GitHub Actions",
+            "AWS, GCP and cloud deployment"
+          ],
+          color: "#0ea5e9"
+        }
+      ]
 
+  // Auto-play carousel
   useEffect(() => {
-    if (!isAutoPlaying) return
-
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % services.length)
     }, 5000)
-
     return () => clearInterval(interval)
-  }, [isAutoPlaying, services.length])
+  }, [services.length])
 
-  const handleDotClick = (index: number) => {
-    setCurrentSlide(index)
-    setIsAutoPlaying(false)
-    setTimeout(() => setIsAutoPlaying(true), 10000)
-  }
-
-  const handlePrev = () => {
-    setCurrentSlide((prev) => (prev - 1 + services.length) % services.length)
-    setIsAutoPlaying(false)
-    setTimeout(() => setIsAutoPlaying(true), 10000)
-  }
-
-  const handleNext = () => {
-    setCurrentSlide((prev) => (prev + 1) % services.length)
-    setIsAutoPlaying(false)
-    setTimeout(() => setIsAutoPlaying(true), 10000)
-  }
+  // WhatsApp link with professional message
+  const whatsappMessage = language === "es"
+    ? "Hola Harry, me interesa conocer más sobre tus servicios de desarrollo. ¿Podríamos agendar una llamada para discutir mi proyecto?"
+    : "Hi Harry, I'm interested in learning more about your development services. Could we schedule a call to discuss my project?"
+  
+  const whatsappLink = `https://api.whatsapp.com/send?phone=573112512939&text=${encodeURIComponent(whatsappMessage)}`
 
   // Circular progress component
-  const CircularProgress = ({ percentage, color, size = 180 }: { percentage: number, color: string, size?: number }) => {
+  const CircularProgress = ({ percentage, color, size = 160 }: { percentage: number, color: string, size?: number }) => {
     const strokeWidth = 8
     const radius = (size - strokeWidth) / 2
     const circumference = radius * 2 * Math.PI
@@ -117,7 +152,6 @@ const Skills = () => {
     return (
       <div className="relative" style={{ width: size, height: size }}>
         <svg width={size} height={size} className="transform -rotate-90">
-          {/* Background circle */}
           <circle
             cx={size / 2}
             cy={size / 2}
@@ -127,7 +161,6 @@ const Skills = () => {
             fill="transparent"
             className="dark:stroke-gray-700"
           />
-          {/* Progress circle */}
           <motion.circle
             cx={size / 2}
             cy={size / 2}
@@ -143,7 +176,7 @@ const Skills = () => {
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
           <motion.span 
-            className="text-4xl font-bold"
+            className="text-3xl md:text-4xl font-bold"
             style={{ color }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -157,7 +190,7 @@ const Skills = () => {
   }
 
   return (
-    <section id="skills" className="relative py-20 bg-white dark:bg-gray-900 overflow-hidden">
+    <section id="skills" className="relative py-16 md:py-20 bg-white dark:bg-gray-900 overflow-hidden">
       {/* Tech background pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -166,15 +199,12 @@ const Skills = () => {
                            radial-gradient(circle at 50% 10%, rgba(59, 130, 246, 0.2) 0%, transparent 40%),
                            radial-gradient(circle at 50% 90%, rgba(59, 130, 246, 0.2) 0%, transparent 40%)`
         }} />
-        {/* Network nodes */}
         <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="skills-dots" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
               <circle cx="50" cy="50" r="2" fill="rgba(59, 130, 246, 0.3)" />
               <circle cx="15" cy="15" r="1.5" fill="rgba(59, 130, 246, 0.2)" />
               <circle cx="85" cy="85" r="1.5" fill="rgba(59, 130, 246, 0.2)" />
-              <circle cx="85" cy="15" r="1" fill="rgba(59, 130, 246, 0.15)" />
-              <circle cx="15" cy="85" r="1" fill="rgba(59, 130, 246, 0.15)" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#skills-dots)" />
@@ -182,107 +212,92 @@ const Skills = () => {
       </div>
 
       <div className="relative z-10 container mx-auto px-4">
-        {/* Header */}
+        {/* Header - no label, captivating title */}
         <motion.div 
-          className="text-center mb-16"
+          className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="text-primary font-semibold tracking-wider uppercase text-sm">
-            NUESTROS SERVICIOS
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mt-3 mb-4">
-            {t("skillsTitle")}
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            {language === "es" 
+              ? "Tecnología que impulsa tu negocio" 
+              : "Technology that drives your business"}
           </h2>
-          <div className="h-1 w-16 bg-primary mx-auto rounded-full"></div>
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
+            {language === "es"
+              ? "Soluciones integrales para transformar tus ideas en productos digitales de alto impacto"
+              : "Comprehensive solutions to transform your ideas into high-impact digital products"}
+          </p>
+          <div className="h-1 w-16 bg-primary mx-auto rounded-full mt-4"></div>
         </motion.div>
 
-        {/* Carousel */}
-        <div className="max-w-5xl mx-auto">
-          <div className="relative">
-            {/* Navigation arrows */}
-            <button 
-              onClick={handlePrev}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 z-10 w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-              aria-label="Previous slide"
+        {/* Carousel - centered, reduced gap */}
+        <div className="max-w-4xl mx-auto">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentSlide}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+              className="flex flex-col items-center text-center py-4"
             >
-              <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-            </button>
-            <button 
-              onClick={handleNext}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 z-10 w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-              aria-label="Next slide"
-            >
-              <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-            </button>
+              {/* Circular progress - top */}
+              <div className="mb-6">
+                <CircularProgress 
+                  percentage={services[currentSlide].percentage} 
+                  color={services[currentSlide].color}
+                  size={140}
+                />
+              </div>
 
-            {/* Slide content */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentSlide}
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.4 }}
-                className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center py-8"
-              >
-                {/* Left side - Text content */}
-                <div className="text-center md:text-left order-2 md:order-1">
-                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                    {services[currentSlide].title}
-                    <br />
-                    <span className="text-primary">{services[currentSlide].highlight}</span>
-                  </h3>
-                  
-                  <ul className="space-y-3 mt-6 mb-8">
-                    {services[currentSlide].features.map((feature, index) => (
-                      <motion.li 
-                        key={index}
-                        className="flex items-center gap-3 text-gray-600 dark:text-gray-400"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 + 0.3 }}
-                      >
-                        <Check className="w-5 h-5 text-gray-500 dark:text-gray-400 flex-shrink-0" />
-                        <span>{feature}</span>
-                      </motion.li>
-                    ))}
-                  </ul>
-
-                  <Button 
-                    className="bg-primary hover:bg-primary/90 text-white rounded-lg px-6 py-2 flex items-center gap-2 mx-auto md:mx-0"
+              {/* Title */}
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                {services[currentSlide].title}{" "}
+                <span className="text-primary">{services[currentSlide].highlight}</span>
+              </h3>
+              
+              {/* Features - centered */}
+              <ul className="space-y-2 mb-6">
+                {services[currentSlide].features.map((feature, index) => (
+                  <motion.li 
+                    key={index}
+                    className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400 text-sm md:text-base"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 + 0.2 }}
                   >
-                    Conoce mas
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </div>
+                    <Check className="w-4 h-4 text-primary flex-shrink-0" />
+                    <span>{feature}</span>
+                  </motion.li>
+                ))}
+              </ul>
 
-                {/* Right side - Circular progress */}
-                <div className="flex justify-center order-1 md:order-2">
-                  <CircularProgress 
-                    percentage={services[currentSlide].percentage} 
-                    color={services[currentSlide].color}
-                    size={200}
-                  />
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
+              {/* Button - links to WhatsApp */}
+              <Button 
+                asChild
+                className="bg-primary hover:bg-primary/90 text-white rounded-lg px-6 py-2 flex items-center gap-2"
+              >
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                  {language === "es" ? "Conoce más" : "Learn more"}
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+              </Button>
+            </motion.div>
+          </AnimatePresence>
 
-          {/* Pagination dots */}
-          <div className="flex justify-center gap-2 mt-8">
+          {/* Progress bar indicator - centered, auto only */}
+          <div className="flex justify-center gap-1.5 mt-6">
             {services.map((_, index) => (
-              <button
+              <div
                 key={index}
-                onClick={() => handleDotClick(index)}
-                className={`transition-all duration-300 rounded-full ${
-                  currentSlide === index 
-                    ? "w-8 h-3 bg-primary" 
-                    : "w-3 h-3 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400"
+                className={`h-1.5 rounded-full transition-all duration-500 ${
+                  index === currentSlide
+                    ? "w-8 bg-primary"
+                    : "w-2 bg-gray-300 dark:bg-gray-600"
                 }`}
-                aria-label={`Go to slide ${index + 1}`}
               />
             ))}
           </div>
