@@ -61,20 +61,27 @@ const About = () => {
             >
               {/* Role badge */}
               <div className="flex items-center gap-2 mb-4 justify-center md:justify-start">
-                <User className="w-4 h-4 text-gray-500" />
-                <span className="text-sm text-gray-500 dark:text-gray-400 tracking-wider uppercase">
-                  {language === "es" ? "MIEMBRO DEL EQUIPO" : "TEAM MEMBER"}
+                <User className="w-4 h-4 text-primary" />
+                <span className="text-sm text-primary tracking-wider uppercase font-medium">
+                  {language === "es" ? "DESARROLLADOR FULL STACK" : "FULL STACK DEVELOPER"}
                 </span>
               </div>
               
               {/* Name */}
               <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                {portfolioData.name.split(" ").slice(0, 2).join(" ")}
+                Harry Fishert
               </h3>
+              
+              {/* Subtitle */}
+              <p className="text-gray-600 dark:text-gray-400 mb-2 text-sm md:text-base">
+                {language === "es" 
+                  ? "Especializado en soluciones web y sistemas escalables, con enfoque en desarrollo de aplicaciones impulsadas por inteligencia artificial"
+                  : "Specialized in web solutions and scalable systems, focused on AI-powered application development"}
+              </p>
               
               {/* Title */}
               <p className="text-primary font-medium mb-6">
-                {portfolioData.title}
+                {language === "es" ? "Estudiante de Ingeniería de Sistemas" : "Systems Engineering Student"}
               </p>
               
               {/* Description */}

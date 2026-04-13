@@ -67,9 +67,9 @@ const defaultPortfolioData: PortfolioData = {
 
   // Sobre mí
   aboutParagraph1:
-    "Desarrollador Full Stack con sólida formación en Ingeniería de Sistemas, especializado en la creación e implementación de soluciones tecnológicas end-to-end. Combino habilidades técnicas en desarrollo frontend y backend con una metodología orientada a resultados.",
+    "Desarrollador Full Stack con formación en Ingeniería de Sistemas, especializado en el desarrollo de soluciones tecnológicas end-to-end. Experiencia en la creación de aplicaciones web modernas, sistemas SaaS y plataformas escalables orientadas a resultados. Enfocado en construir sistemas que optimizan procesos, mejoran la eficiencia operativa y aportan valor real a los negocios, combinando desarrollo frontend y backend para transformar ideas en productos digitales funcionales y eficientes.",
   aboutParagraph2:
-    "Me distingo por mi capacidad para adaptarme rápidamente a nuevas tecnologías y frameworks, así como por facilitar la colaboración efectiva en equipos multidisciplinarios. Con un nivel intermedio de inglés, participo activamente en proyectos diversos y mantengo un compromiso constante con el perfeccionamiento de mis habilidades técnicas.",
+    "Me caracterizo por la rápida adaptación a nuevas tecnologías, el pensamiento analítico y la capacidad de resolver problemas mediante soluciones prácticas, trabajando de manera colaborativa y con un enfoque constante en la mejora continua.",
 }
 
 const PortfolioContext = createContext<PortfolioContextType | undefined>(undefined)

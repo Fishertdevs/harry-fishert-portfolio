@@ -8,7 +8,7 @@ export const translations: Translations = {
   es: {
     // Navbar
     home: "Inicio",
-    about: "Sobre mí",
+    about: "Perfil Profesional",
     skills: "Habilidades",
     projects: "Proyectos",
     education: "Educación",
@@ -26,7 +26,7 @@ export const translations: Translations = {
     downloadCV: "Descargar CV",
 
     // About
-    aboutTitle: "Sobre Mí",
+    aboutTitle: "Perfil Profesional",
     aboutHeading: "¡Hola! Soy Harry",
     aboutParagraph1:
       "Desarrollador Full Stack con sólida formación en Ingeniería de Sistemas, especializado en la creación e implementación de soluciones tecnológicas end-to-end. Combino habilidades técnicas en desarrollo frontend y backend con una metodología orientada a resultados.",
@@ -213,13 +213,13 @@ export const translations: Translations = {
       "Desarrollo de una API REST utilizando Django Rest Framework para gestionar un sistema de inventario.",
 
     // Contact
-    contactTitle: "Estoy aqui para ayudarte",
+    contactTitle: "Estoy aquí para ayudarte",
     contactDescription:
-      "Me encantaria escuchar tus ideas. Contactame y juntos disenaremos tu proyecto con soluciones a medida.",
+      "Me encantaría escuchar tus ideas. Contáctame y juntos diseñaremos tu proyecto con soluciones a medida.",
     responseTime: "Respuesta en menos de 24h",
     availability: "Lun - Sab",
-    ctaTitle: "Listo para disenar tu idea?",
-    ctaDescription: "Agenda tu asesoria y descubre como puedo ayudarte",
+    ctaTitle: "¿Listo para diseñar tu idea?",
+    ctaDescription: "Agenda tu asesoría y descubre como puedo ayudarte",
     ctaButton: "Cotizar",
     email: "Email",
     phone: "Teléfono",
@@ -409,7 +409,7 @@ export const translations: Translations = {
   en: {
     // Navbar
     home: "Home",
-    about: "About",
+    about: "Professional Profile",
     skills: "Skills",
     projects: "Projects",
     education: "Education",
@@ -427,7 +427,7 @@ export const translations: Translations = {
     downloadCV: "Download CV",
 
     // About
-    aboutTitle: "About Me",
+    aboutTitle: "Professional Profile",
     aboutHeading: "Hello! I'm Harry",
     aboutParagraph1:
       "Full Stack Developer with a solid background in Systems Engineering, specialized in creating and implementing end-to-end technological solutions. I combine technical skills in frontend and backend development with a results-oriented methodology.",
