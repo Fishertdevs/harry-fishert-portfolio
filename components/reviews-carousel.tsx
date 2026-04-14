@@ -125,7 +125,7 @@ const ReviewsCarousel = () => {
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
             <p className="mt-4 text-gray-600 dark:text-gray-400">
-              {language === "es" ? "Cargando resenas..." : "Loading reviews..."}
+              {language === "es" ? "Cargando reseñas..." : "Loading reviews..."}
             </p>
           </div>
         </div>
@@ -148,7 +148,7 @@ const ReviewsCarousel = () => {
           viewport={{ once: true }}
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">
-            {language === "es" ? "Resenas" : "Reviews"}
+            {language === "es" ? "Reseñas" : "Reviews"}
           </h2>
           <div className="h-1 w-20 bg-primary mx-auto"></div>
         </motion.div>
@@ -156,7 +156,7 @@ const ReviewsCarousel = () => {
         {reviews.length === 0 ? (
           <div className="text-center">
             <p className="text-gray-600 dark:text-gray-400 mb-8">
-              {language === "es" ? "Aun no hay resenas disponibles. Se el primero en dejar una!" : "No reviews available yet. Be the first to leave one!"}
+              {language === "es" ? "Aún no hay reseñas disponibles. ¡Sé el primero en dejar una!" : "No reviews available yet. Be the first to leave one!"}
             </p>
           </div>
         ) : (
@@ -253,7 +253,7 @@ const ReviewsCarousel = () => {
             <DialogTrigger asChild>
               <Button className="bg-primary hover:bg-primary/90 text-white gap-2">
                 <Plus className="h-4 w-4" />
-                {language === "es" ? "Dejar una resena" : "Leave a review"}
+                {language === "es" ? "Dejar una reseña" : "Leave a review"}
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
@@ -275,10 +275,10 @@ const ReviewsCarousel = () => {
                     </svg>
                   </div>
                   <p className="text-lg font-medium text-gray-900 dark:text-white">
-                    {language === "es" ? "Gracias por tu resena!" : "Thanks for your review!"}
+                    {language === "es" ? "¡Gracias por tu reseña!" : "Thanks for your review!"}
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                    {language === "es" ? "Tu resena sera revisada y publicada pronto." : "Your review will be reviewed and published soon."}
+                    {language === "es" ? "Tu reseña será revisada y publicada pronto." : "Your review will be reviewed and published soon."}
                   </p>
                 </motion.div>
               ) : (
@@ -286,7 +286,7 @@ const ReviewsCarousel = () => {
                   {/* Rating Stars */}
                   <div className="text-center">
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                      {language === "es" ? "Calificacion" : "Rating"}
+                      {language === "es" ? "Calificación" : "Rating"}
                     </p>
                     <div className="flex justify-center gap-1">
                       {[1, 2, 3, 4, 5].map((star) => (
@@ -342,7 +342,7 @@ const ReviewsCarousel = () => {
                   </div>
 
                   <Textarea
-                    placeholder={language === "es" ? "Escribe tu resena aqui... *" : "Write your review here... *"}
+                    placeholder={language === "es" ? "Escribe tu reseña aquí... *" : "Write your review here... *"}
                     value={formData.review}
                     onChange={(e) => setFormData(prev => ({ ...prev, review: e.target.value }))}
                     required
@@ -360,7 +360,7 @@ const ReviewsCarousel = () => {
                     ) : (
                       <>
                         <Send className="h-4 w-4" />
-                        {language === "es" ? "Enviar resena" : "Submit review"}
+                        {language === "es" ? "Enviar reseña" : "Submit review"}
                       </>
                     )}
                   </Button>

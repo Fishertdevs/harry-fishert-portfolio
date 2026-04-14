@@ -8,11 +8,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
-import { Star, Quote, Calendar, ThumbsUp, MessageSquare, Award, Clock, MapPin, Building } from "lucide-react"
+import { Star, Quote, Calendar, ThumbsUp, MessageSquare, Award, Clock, MapPin, Building, Send, Sparkles, User, Mail, Briefcase, Building2, FileText, X } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 import { motion, AnimatePresence } from "framer-motion"
 import { useToast } from "@/hooks/use-toast"
 import { reviewsStorage, type Review } from "@/lib/reviews-storage"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
 // Función para formatear fecha y hora de manera profesional
 const formatDateTime = (date: string, time: string) => {
@@ -59,8 +60,8 @@ const generateAvatar = (name: string) => {
     "bg-purple-500",
     "bg-pink-500",
     "bg-indigo-500",
-    "bg-yellow-500",
-    "bg-red-500",
+    "bg-amber-500",
+    "bg-rose-500",
     "bg-teal-500",
   ]
 
@@ -69,13 +70,15 @@ const generateAvatar = (name: string) => {
 }
 
 const Reviews = () => {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const { toast } = useToast()
   const [selectedRating, setSelectedRating] = useState(0)
   const [hoverRating, setHoverRating] = useState(0)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [reviews, setReviews] = useState<Review[]>([])
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [currentStep, setCurrentStep] = useState(1)
   const [reviewStats, setReviewStats] = useState({
     totalReviews: 0,
     averageRating: 0,
@@ -89,11 +92,9 @@ const Reviews = () => {
   })
   const [formData, setFormData] = useState({
     name: "",
+    email: "",
     company: "",
     position: "",
-    location: "",
-    projectType: "",
-    collaboration: "",
     review: "",
     rating: 0,
   })
@@ -137,20 +138,19 @@ const Reviews = () => {
     try {
       await reviewsStorage.markAsHelpful(reviewId)
 
-      // Actualizar el estado local
       setReviews((prevReviews) =>
         prevReviews.map((review) => (review.id === reviewId ? { ...review, helpful: review.helpful + 1 } : review)),
       )
 
       toast({
-        title: "¡Gracias por tu feedback!",
-        description: "Has marcado esta reseña como útil.",
+        title: language === "es" ? "¡Gracias por tu feedback!" : "Thanks for your feedback!",
+        description: language === "es" ? "Has marcado esta reseña como útil." : "You marked this review as helpful.",
         duration: 3000,
       })
     } catch (error) {
       toast({
         title: "Error",
-        description: "No se pudo marcar la reseña como útil",
+        description: language === "es" ? "No se pudo marcar la reseña como útil" : "Could not mark review as helpful",
         variant: "destructive",
       })
     }
@@ -162,16 +162,20 @@ const Reviews = () => {
     if (!formData.name || !formData.review || !selectedRating) {
       toast({
         title: "Error",
-        description: "Por favor completa todos los campos requeridos y selecciona una calificación.",
+        description: language === "es" 
+          ? "Por favor completa todos los campos requeridos y selecciona una calificación."
+          : "Please complete all required fields and select a rating.",
         variant: "destructive",
       })
       return
     }
 
-    if (formData.review.length < 50) {
+    if (formData.review.length < 20) {
       toast({
         title: "Error",
-        description: "La reseña debe tener al menos 50 caracteres.",
+        description: language === "es"
+          ? "La reseña debe tener al menos 20 caracteres."
+          : "The review must be at least 20 characters.",
         variant: "destructive",
       })
       return
@@ -180,44 +184,46 @@ const Reviews = () => {
     setIsSubmitting(true)
 
     try {
-      // Guardar la reseña usando el sistema de almacenamiento permanente
-      const newReview = await reviewsStorage.addReview({
+      await reviewsStorage.addReview({
         name: formData.name,
-        company: formData.company || "Empresa independiente",
-        position: formData.position || "Cliente",
-        location: formData.location,
-        projectType: formData.projectType,
-        collaboration: formData.collaboration,
+        company: formData.company || (language === "es" ? "Empresa independiente" : "Independent Company"),
+        position: formData.position || (language === "es" ? "Cliente" : "Client"),
+        location: "",
+        projectType: "",
+        collaboration: "",
         rating: selectedRating,
         review: formData.review,
       })
 
-      // Recargar todas las reseñas y estadísticas
       await loadReviews()
 
       toast({
-        title: "¡Reseña enviada exitosamente!",
-        description: "Gracias por tu feedback profesional. Tu reseña ha sido guardada permanentemente.",
+        title: language === "es" ? "¡Reseña enviada!" : "Review sent!",
+        description: language === "es" 
+          ? "Gracias por compartir tu experiencia."
+          : "Thank you for sharing your experience.",
         duration: 5000,
       })
 
-      // Resetear formulario
+      // Reset form
       setFormData({
         name: "",
+        email: "",
         company: "",
         position: "",
-        location: "",
-        projectType: "",
-        collaboration: "",
         review: "",
         rating: 0,
       })
       setSelectedRating(0)
+      setCurrentStep(1)
+      setIsDialogOpen(false)
     } catch (error) {
       console.error("Error submitting review:", error)
       toast({
         title: "Error",
-        description: "Hubo un problema al guardar la reseña. Por favor intenta de nuevo.",
+        description: language === "es"
+          ? "Hubo un problema al guardar la reseña. Por favor intenta de nuevo."
+          : "There was a problem saving the review. Please try again.",
         variant: "destructive",
         duration: 5000,
       })
@@ -226,63 +232,329 @@ const Reviews = () => {
     }
   }
 
-  const StarRating = ({ rating, interactive = false, size = "h-5 w-5" }: any) => (
-    <div className="flex items-center space-x-1">
+  // Interactive Star Rating Component
+  const InteractiveStarRating = () => {
+    const ratingTexts = language === "es" 
+      ? ["", "Malo", "Regular", "Bueno", "Muy bueno", "Excelente"]
+      : ["", "Poor", "Fair", "Good", "Very Good", "Excellent"]
+
+    return (
+      <div className="flex flex-col items-center space-y-4">
+        <div className="flex items-center gap-2">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <motion.button
+              key={star}
+              type="button"
+              className="relative group"
+              onClick={() => handleRatingClick(star)}
+              onMouseEnter={() => setHoverRating(star)}
+              onMouseLeave={() => setHoverRating(0)}
+              whileHover={{ scale: 1.15 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Star
+                className={`h-10 w-10 transition-all duration-200 ${
+                  star <= (hoverRating || selectedRating)
+                    ? "text-amber-400 fill-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]"
+                    : "text-gray-300 dark:text-gray-600"
+                }`}
+              />
+              {star <= (hoverRating || selectedRating) && (
+                <motion.div
+                  className="absolute inset-0 bg-amber-400/20 rounded-full blur-md"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1.5 }}
+                  transition={{ duration: 0.2 }}
+                />
+              )}
+            </motion.button>
+          ))}
+        </div>
+        <AnimatePresence mode="wait">
+          {(hoverRating > 0 || selectedRating > 0) && (
+            <motion.div
+              key={hoverRating || selectedRating}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              className="text-lg font-medium"
+              style={{ color: "#f59e0b" }}
+            >
+              {ratingTexts[hoverRating || selectedRating]}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    )
+  }
+
+  // Simple Star Rating for display
+  const StarRating = ({ rating, size = "h-4 w-4" }: { rating: number, size?: string }) => (
+    <div className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map((star) => (
-        <motion.button
+        <Star
           key={star}
-          type="button"
-          className={`${interactive ? "cursor-pointer" : "cursor-default"} transition-colors`}
-          onClick={() => interactive && handleRatingClick(star)}
-          onMouseEnter={() => interactive && setHoverRating(star)}
-          onMouseLeave={() => interactive && setHoverRating(0)}
-          whileHover={interactive ? { scale: 1.1 } : {}}
-          whileTap={interactive ? { scale: 0.9 } : {}}
-          disabled={!interactive}
-        >
-          <Star
-            className={`${size} ${
-              star <= (interactive ? hoverRating || selectedRating : rating)
-                ? "text-yellow-400 fill-yellow-400"
-                : "text-gray-300 dark:text-gray-600"
-            } transition-colors`}
-          />
-        </motion.button>
+          className={`${size} ${
+            star <= rating
+              ? "text-amber-400 fill-amber-400"
+              : "text-gray-300 dark:text-gray-600"
+          }`}
+        />
       ))}
     </div>
   )
 
-  const RatingDistribution = () => (
-    <div className="space-y-2">
-      {[5, 4, 3, 2, 1].map((rating) => (
-        <div key={rating} className="flex items-center space-x-2">
-          <span className="text-sm font-medium w-3">{rating}</span>
-          <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
-          <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-            <motion.div
-              className="h-full bg-yellow-400 rounded-full"
-              initial={{ width: 0 }}
-              animate={{
-                width: `${(reviewStats.ratingDistribution[rating as keyof typeof reviewStats.ratingDistribution] / (reviewStats.totalReviews || 1)) * 100}%`,
-              }}
-              transition={{ duration: 1, delay: 0.2 }}
-            />
-          </div>
-          <span className="text-sm text-gray-600 dark:text-gray-400 w-8">
-            {reviewStats.ratingDistribution[rating as keyof typeof reviewStats.ratingDistribution]}
-          </span>
+  // Step indicator for the form
+  const StepIndicator = () => (
+    <div className="flex items-center justify-center gap-2 mb-6">
+      {[1, 2, 3].map((step) => (
+        <div key={step} className="flex items-center">
+          <motion.div
+            className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all ${
+              currentStep >= step
+                ? "bg-primary text-white"
+                : "bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
+            }`}
+            animate={{ scale: currentStep === step ? 1.1 : 1 }}
+          >
+            {step}
+          </motion.div>
+          {step < 3 && (
+            <div className={`w-12 h-1 mx-1 rounded ${
+              currentStep > step ? "bg-primary" : "bg-gray-200 dark:bg-gray-700"
+            }`} />
+          )}
         </div>
       ))}
     </div>
   )
 
+  // Form steps
+  const renderFormStep = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            className="space-y-6"
+          >
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+                <Star className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                {language === "es" ? "¿Cómo calificarías tu experiencia?" : "How would you rate your experience?"}
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                {language === "es" ? "Selecciona una calificación" : "Select a rating"}
+              </p>
+            </div>
+            <InteractiveStarRating />
+            <div className="flex justify-end pt-4">
+              <Button 
+                type="button"
+                onClick={() => setCurrentStep(2)}
+                disabled={selectedRating === 0}
+                className="bg-primary hover:bg-primary/90"
+              >
+                {language === "es" ? "Continuar" : "Continue"}
+              </Button>
+            </div>
+          </motion.div>
+        )
+      case 2:
+        return (
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            className="space-y-4"
+          >
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/30 mb-4">
+                <User className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                {language === "es" ? "Cuéntanos sobre ti" : "Tell us about yourself"}
+              </h3>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <Input
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder={language === "es" ? "Tu nombre *" : "Your name *"}
+                  className="pl-10 h-12 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary/20"
+                  required
+                />
+              </div>
+              
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <Input
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder={language === "es" ? "Tu email *" : "Your email *"}
+                  className="pl-10 h-12 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary/20"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="relative">
+                  <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                  <Input
+                    name="position"
+                    value={formData.position}
+                    onChange={handleInputChange}
+                    placeholder={language === "es" ? "Tu cargo" : "Your position"}
+                    className="pl-10 h-12 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary/20"
+                  />
+                </div>
+                <div className="relative">
+                  <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                  <Input
+                    name="company"
+                    value={formData.company}
+                    onChange={handleInputChange}
+                    placeholder={language === "es" ? "Tu empresa" : "Your company"}
+                    className="pl-10 h-12 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary/20"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-between pt-4">
+              <Button 
+                type="button"
+                variant="outline"
+                onClick={() => setCurrentStep(1)}
+              >
+                {language === "es" ? "Atrás" : "Back"}
+              </Button>
+              <Button 
+                type="button"
+                onClick={() => setCurrentStep(3)}
+                disabled={!formData.name || !formData.email}
+                className="bg-primary hover:bg-primary/90"
+              >
+                {language === "es" ? "Continuar" : "Continue"}
+              </Button>
+            </div>
+          </motion.div>
+        )
+      case 3:
+        return (
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            className="space-y-4"
+          >
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 mb-4">
+                <FileText className="h-8 w-8 text-green-600 dark:text-green-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                {language === "es" ? "Escribe tu reseña" : "Write your review"}
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                {language === "es" ? "Comparte tu experiencia trabajando conmigo" : "Share your experience working with me"}
+              </p>
+            </div>
+
+            <div className="relative">
+              <Textarea
+                name="review"
+                value={formData.review}
+                onChange={handleInputChange}
+                placeholder={language === "es" 
+                  ? "Describe tu experiencia... ¿Qué te gustó? ¿Qué podría mejorar?"
+                  : "Describe your experience... What did you like? What could be improved?"
+                }
+                rows={5}
+                className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary/20 resize-none"
+                required
+              />
+              <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-2">
+                <span>{language === "es" ? "Mínimo 20 caracteres" : "Minimum 20 characters"}</span>
+                <span className={formData.review.length < 20 ? "text-red-500" : "text-green-500"}>
+                  {formData.review.length}/20
+                </span>
+              </div>
+            </div>
+
+            {/* Summary */}
+            <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  {language === "es" ? "Calificación:" : "Rating:"}
+                </span>
+                <StarRating rating={selectedRating} size="h-4 w-4" />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  {language === "es" ? "Nombre:" : "Name:"}
+                </span>
+                <span className="text-sm font-medium text-gray-900 dark:text-white">{formData.name}</span>
+              </div>
+            </div>
+
+            <div className="flex justify-between pt-4">
+              <Button 
+                type="button"
+                variant="outline"
+                onClick={() => setCurrentStep(2)}
+              >
+                {language === "es" ? "Atrás" : "Back"}
+              </Button>
+              <Button 
+                type="submit"
+                disabled={isSubmitting || formData.review.length < 20}
+                className="bg-primary hover:bg-primary/90 min-w-[140px]"
+              >
+                {isSubmitting ? (
+                  <span className="flex items-center">
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    {language === "es" ? "Enviando..." : "Sending..."}
+                  </span>
+                ) : (
+                  <span className="flex items-center">
+                    <Send className="h-4 w-4 mr-2" />
+                    {language === "es" ? "Enviar reseña" : "Submit review"}
+                  </span>
+                )}
+              </Button>
+            </div>
+          </motion.div>
+        )
+    }
+  }
+
   if (isLoading) {
     return (
-      <section id="reviews" className="py-20 bg-white dark:bg-gray-900">
+      <section id="reviews" className="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-            <p className="mt-4 text-gray-600 dark:text-gray-400">Cargando reseñas...</p>
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-4">
+              <svg className="animate-spin h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            </div>
+            <p className="text-gray-600 dark:text-gray-400">
+              {language === "es" ? "Cargando reseñas..." : "Loading reviews..."}
+            </p>
           </div>
         </div>
       </section>
@@ -290,271 +562,165 @@ const Reviews = () => {
   }
 
   return (
-    <section id="reviews" className="py-20 bg-white dark:bg-gray-900">
+    <section id="reviews" className="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16 animate-on-scroll">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">{t("reviewsTitle")}</h2>
-          <div className="h-1 w-20 bg-primary mx-auto"></div>
-          <p className="text-gray-700 dark:text-gray-300 mt-6 max-w-2xl mx-auto">{t("reviewsDescription")}</p>
-
-          {/* Indicador de persistencia */}
-          <div className="mt-4 inline-flex items-center px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300 text-sm">
-            <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-            Las reseñas se guardan permanentemente
-          </div>
-        </div>
-
-        {/* Estadísticas de reseñas */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="h-full"
-          >
-            <Card className="text-center bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border-yellow-200 dark:border-yellow-800 h-full">
-              <CardContent className="p-6 flex flex-col items-center justify-center h-full">
-                <div className="flex justify-center mb-4">
-                  <Award className="h-12 w-12 text-yellow-500" />
-                </div>
-                <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400 mb-2">
-                  {reviewStats.totalReviews > 0 ? reviewStats.averageRating.toFixed(1) : "0.0"}
-                </div>
-                <StarRating rating={Math.round(reviewStats.averageRating)} />
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{t("averageRating")}</p>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="h-full"
-          >
-            <Card className="text-center bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-200 dark:border-blue-800 h-full">
-              <CardContent className="p-6 flex flex-col items-center justify-center h-full">
-                <div className="flex justify-center mb-4">
-                  <MessageSquare className="h-12 w-12 text-blue-500" />
-                </div>
-                <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
-                  {reviewStats.totalReviews}
-                </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">{t("totalReviews")}</p>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="h-full"
-          >
-            <Card className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-green-200 dark:border-green-800 h-full">
-              <CardContent className="p-6 h-full">
-                <h4 className="font-semibold mb-4 text-center text-gray-800 dark:text-white">
-                  {t("ratingDistribution")}
-                </h4>
-                <RatingDistribution />
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-
-        {/* Formulario para nueva reseña profesional */}
-        <motion.div
+        {/* Header */}
+        <motion.div 
+          className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="max-w-4xl mx-auto mb-16"
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
         >
-          <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 shadow-lg border-2 border-blue-100 dark:border-gray-600">
-            <CardHeader className="text-center border-b border-blue-100 dark:border-gray-600">
-              <CardTitle className="text-2xl text-gray-800 dark:text-white flex items-center justify-center gap-2">
-                <Star className="h-6 w-6 text-yellow-500" />
-                {t("leaveReview")}
-              </CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Comparte tu experiencia profesional trabajando conmigo
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-8">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Información personal y profesional */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Nombre completo *
-                    </label>
-                    <Input
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      placeholder="Tu nombre completo"
-                      required
-                      className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Empresa/Organización
-                    </label>
-                    <Input
-                      name="company"
-                      value={formData.company}
-                      onChange={handleInputChange}
-                      placeholder="Nombre de tu empresa"
-                      className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Cargo/Posición</label>
-                    <Input
-                      name="position"
-                      value={formData.position}
-                      onChange={handleInputChange}
-                      placeholder="Tu cargo o posición"
-                      className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Ubicación</label>
-                    <Input
-                      name="location"
-                      value={formData.location}
-                      onChange={handleInputChange}
-                      placeholder="Ciudad, País"
-                      className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Tipo de proyecto
-                    </label>
-                    <Input
-                      name="projectType"
-                      value={formData.projectType}
-                      onChange={handleInputChange}
-                      placeholder="Ej: Desarrollo web, Consultoría, etc."
-                      className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Duración de colaboración
-                    </label>
-                    <Input
-                      name="collaboration"
-                      value={formData.collaboration}
-                      onChange={handleInputChange}
-                      placeholder="Ej: 3 meses, 1 año, etc."
-                      className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
-                    />
-                  </div>
-                </div>
-
-                {/* Calificación */}
-                <div className="space-y-4">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Calificación general *
-                  </label>
-                  <div className="flex items-center space-x-4">
-                    <StarRating rating={selectedRating} interactive={true} size="h-8 w-8" />
-                    <span className="text-sm text-gray-600 dark:text-gray-400 ml-2">
-                      {selectedRating > 0 &&
-                        (selectedRating === 5
-                          ? "Excelente - Superó mis expectativas"
-                          : selectedRating === 4
-                            ? "Muy bueno - Cumplió mis expectativas"
-                            : selectedRating === 3
-                              ? "Bueno - Trabajo satisfactorio"
-                              : selectedRating === 2
-                                ? "Regular - Necesita mejoras"
-                                : "Insatisfactorio - No recomendado")}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Reseña detallada */}
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Reseña profesional *
-                  </label>
-                  <Textarea
-                    name="review"
-                    value={formData.review}
-                    onChange={handleInputChange}
-                    placeholder="Describe tu experiencia trabajando conmigo. Incluye detalles sobre la calidad del trabajo, comunicación, cumplimiento de plazos, y cualquier aspecto relevante..."
-                    rows={6}
-                    required
-                    className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 resize-none"
-                  />
-                  <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
-                    <span>Mínimo 50 caracteres. Sé específico y constructivo en tu feedback.</span>
-                    <span className={formData.review.length < 50 ? "text-red-500" : "text-green-500"}>
-                      {formData.review.length}/50
-                    </span>
-                  </div>
-                </div>
-
-                <Button
-                  type="submit"
-                  className="w-full bg-primary hover:bg-primary/90 transition-all duration-300 py-3 text-lg font-medium"
-                  disabled={isSubmitting || formData.review.length < 50 || !selectedRating}
-                >
-                  {isSubmitting ? (
-                    <span className="flex items-center justify-center">
-                      <svg
-                        className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                      </svg>
-                      Guardando reseña permanentemente...
-                    </span>
-                  ) : (
-                    <span className="flex items-center justify-center">
-                      <Star className="h-5 w-5 mr-2" />
-                      Publicar reseña profesional
-                    </span>
-                  )}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            {language === "es" ? "Reseñas" : "Reviews"}
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
+            {t("reviewsDescription")}
+          </p>
+          <div className="h-1 w-16 bg-primary mx-auto rounded-full mt-4"></div>
         </motion.div>
 
-        {/* Reseñas existentes con diseño profesional */}
+        {/* Stats Cards - only show if there are reviews */}
         {reviews.length > 0 && (
-          <>
-            <div className="flex justify-between items-center mb-8">
-              <h3 className="text-2xl font-bold text-gray-800 dark:text-white">Testimonios profesionales</h3>
-              <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-                {reviews.length} reseña{reviews.length !== 1 ? "s" : ""} real{reviews.length !== 1 ? "es" : ""}
-              </Badge>
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            {/* Average Rating */}
+            <Card className="text-center bg-white dark:bg-gray-800 border-0 shadow-lg">
+              <CardContent className="pt-6">
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-amber-100 dark:bg-amber-900/30 mb-4">
+                  <Award className="h-7 w-7 text-amber-600 dark:text-amber-400" />
+                </div>
+                <div className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                  {reviewStats.averageRating.toFixed(1)}
+                </div>
+                <StarRating rating={Math.round(reviewStats.averageRating)} />
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                  {language === "es" ? "Calificación promedio" : "Average rating"}
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Total Reviews */}
+            <Card className="text-center bg-white dark:bg-gray-800 border-0 shadow-lg">
+              <CardContent className="pt-6">
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-blue-100 dark:bg-blue-900/30 mb-4">
+                  <MessageSquare className="h-7 w-7 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                  {reviewStats.totalReviews}
+                </div>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {language === "es" ? "Reseñas totales" : "Total reviews"}
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Rating Distribution */}
+            <Card className="bg-white dark:bg-gray-800 border-0 shadow-lg">
+              <CardContent className="pt-6">
+                <h4 className="font-medium mb-4 text-center text-gray-900 dark:text-white text-sm">
+                  {language === "es" ? "Distribución" : "Distribution"}
+                </h4>
+                <div className="space-y-2">
+                  {[5, 4, 3, 2, 1].map((rating) => (
+                    <div key={rating} className="flex items-center gap-2">
+                      <span className="text-xs w-3">{rating}</span>
+                      <Star className="h-3 w-3 text-amber-400 fill-amber-400" />
+                      <div className="flex-1 h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <motion.div
+                          className="h-full bg-amber-400 rounded-full"
+                          initial={{ width: 0 }}
+                          animate={{
+                            width: `${(reviewStats.ratingDistribution[rating as keyof typeof reviewStats.ratingDistribution] / (reviewStats.totalReviews || 1)) * 100}%`,
+                          }}
+                          transition={{ duration: 1, delay: 0.2 }}
+                        />
+                      </div>
+                      <span className="text-xs text-gray-500 w-4">
+                        {reviewStats.ratingDistribution[rating as keyof typeof reviewStats.ratingDistribution]}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+
+        {/* Empty state or CTA */}
+        {reviews.length === 0 ? (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center py-12 max-w-md mx-auto"
+          >
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-100 dark:bg-gray-800 mb-6">
+              <MessageSquare className="h-10 w-10 text-gray-400" />
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              {language === "es" ? "Aún no hay reseñas disponibles." : "No reviews available yet."}
+            </h3>
+            <p className="text-gray-500 dark:text-gray-400 mb-6">
+              {language === "es" ? "Se el primero en dejar una!" : "Be the first to leave one!"}
+            </p>
+            
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-primary hover:bg-primary/90 px-8 py-3 text-base">
+                  <Sparkles className="h-5 w-5 mr-2" />
+                  {language === "es" ? "+ Dejar una reseña" : "+ Leave a review"}
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md bg-white dark:bg-gray-900 border-0 shadow-2xl">
+                <DialogHeader>
+                  <DialogTitle className="text-center text-xl font-semibold text-primary">
+                    {language === "es" ? "Comparte tu experiencia" : "Share your experience"}
+                  </DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleSubmit} className="mt-4">
+                  <StepIndicator />
+                  <AnimatePresence mode="wait">
+                    {renderFormStep()}
+                  </AnimatePresence>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </motion.div>
+        ) : (
+          <>
+            {/* Add review button */}
+            <div className="flex justify-center mb-8">
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button className="bg-primary hover:bg-primary/90 px-6 py-2.5">
+                    <Sparkles className="h-4 w-4 mr-2" />
+                    {language === "es" ? "Dejar una reseña" : "Leave a review"}
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-md bg-white dark:bg-gray-900 border-0 shadow-2xl">
+                  <DialogHeader>
+                    <DialogTitle className="text-center text-xl font-semibold text-primary">
+                      {language === "es" ? "Comparte tu experiencia" : "Share your experience"}
+                    </DialogTitle>
+                  </DialogHeader>
+                  <form onSubmit={handleSubmit} className="mt-4">
+                    <StepIndicator />
+                    <AnimatePresence mode="wait">
+                      {renderFormStep()}
+                    </AnimatePresence>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            {/* Reviews grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
               <AnimatePresence>
                 {reviews.map((review, index) => {
                   const avatar = generateAvatar(review.name)
@@ -569,104 +735,58 @@ const Reviews = () => {
                       transition={{ delay: index * 0.1 }}
                       layout
                     >
-                      <Card className="h-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700">
-                        <CardHeader className="pb-4">
-                          <div className="flex items-start justify-between">
-                            <div className="flex items-start space-x-4">
-                              {/* Avatar profesional */}
-                              <div
-                                className={`${avatar.color} w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md`}
-                              >
-                                {avatar.initials}
-                              </div>
-                              <div className="flex-1">
-                                <div className="flex items-center space-x-2 mb-1">
-                                  <CardTitle className="text-lg text-gray-800 dark:text-white">{review.name}</CardTitle>
-                                  {review.verified && (
-                                    <Badge
-                                      variant="secondary"
-                                      className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 text-xs"
-                                    >
-                                      ✓ Verificado
-                                    </Badge>
-                                  )}
-                                </div>
-                                <div className="space-y-1">
-                                  <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                                    <Building className="h-3 w-3 mr-1" />
-                                    <span className="font-medium">{review.position}</span>
-                                    {review.company && (
-                                      <>
-                                        <span className="mx-1">en</span>
-                                        <span className="font-medium">{review.company}</span>
-                                      </>
-                                    )}
-                                  </div>
-                                  {review.location && (
-                                    <div className="flex items-center text-xs text-gray-500 dark:text-gray-500">
-                                      <MapPin className="h-3 w-3 mr-1" />
-                                      {review.location}
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
+                      <Card className="h-full bg-white dark:bg-gray-800 border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <CardHeader className="pb-3">
+                          <div className="flex items-start gap-4">
+                            {/* Avatar */}
+                            <div
+                              className={`${avatar.color} w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0`}
+                            >
+                              {avatar.initials}
                             </div>
-                            <Quote className="h-6 w-6 text-gray-300 dark:text-gray-600 flex-shrink-0" />
-                          </div>
-
-                          {/* Información del proyecto */}
-                          {(review.projectType || review.collaboration) && (
-                            <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
-                              <div className="flex flex-wrap gap-2 text-xs">
-                                {review.projectType && (
-                                  <Badge variant="outline" className="text-blue-600 border-blue-200">
-                                    {review.projectType}
-                                  </Badge>
-                                )}
-                                {review.collaboration && (
-                                  <Badge variant="outline" className="text-purple-600 border-purple-200">
-                                    {review.collaboration}
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-1">
+                                <CardTitle className="text-base text-gray-900 dark:text-white truncate">
+                                  {review.name}
+                                </CardTitle>
+                                {review.verified && (
+                                  <Badge variant="secondary" className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs">
+                                    {language === "es" ? "Verificado" : "Verified"}
                                   </Badge>
                                 )}
                               </div>
-                            </div>
-                          )}
-
-                          {/* Calificación y fecha */}
-                          <div className="flex items-center justify-between mt-3">
-                            <StarRating rating={review.rating} />
-                            <div className="text-right">
-                              <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center">
-                                <Calendar className="h-3 w-3 mr-1" />
-                                {dateTime.date}
-                              </div>
-                              <div className="text-xs text-gray-400 dark:text-gray-500 flex items-center">
-                                <Clock className="h-3 w-3 mr-1" />
-                                {dateTime.time} • {dateTime.relative}
+                              {(review.position || review.company) && (
+                                <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
+                                  {review.position}{review.position && review.company && " en "}{review.company}
+                                </p>
+                              )}
+                              <div className="flex items-center gap-3 mt-2">
+                                <StarRating rating={review.rating} size="h-4 w-4" />
+                                <span className="text-xs text-gray-400">
+                                  {dateTime.relative}
+                                </span>
                               </div>
                             </div>
                           </div>
                         </CardHeader>
-
                         <CardContent className="pt-0">
-                          <blockquote className="text-gray-700 dark:text-gray-300 leading-relaxed italic border-l-4 border-primary pl-4 mb-4">
-                            "{review.review}"
-                          </blockquote>
-
-                          <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
+                          <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed mb-4">
+                            {review.review}
+                          </p>
+                          <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="text-gray-500 hover:text-primary transition-colors"
+                              className="text-gray-500 hover:text-primary h-8 px-2"
                               onClick={() => handleHelpfulClick(review.id)}
                             >
-                              <ThumbsUp className="h-4 w-4 mr-2" />
-                              Útil ({review.helpful})
+                              <ThumbsUp className="h-4 w-4 mr-1" />
+                              <span className="text-xs">{language === "es" ? "Útil" : "Helpful"} ({review.helpful})</span>
                             </Button>
-                            <div className="text-xs text-gray-400 dark:text-gray-500 flex items-center">
-                              <div className="w-2 h-2 bg-green-500 rounded-full mr-1"></div>
-                              Reseña real verificada
-                            </div>
+                            <span className="text-xs text-gray-400 flex items-center gap-1">
+                              <Calendar className="h-3 w-3" />
+                              {dateTime.date}
+                            </span>
                           </div>
                         </CardContent>
                       </Card>
@@ -676,32 +796,6 @@ const Reviews = () => {
               </AnimatePresence>
             </div>
           </>
-        )}
-
-        {/* Mensaje cuando no hay reseñas */}
-        {reviews.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="text-center py-16"
-          >
-            <div className="max-w-md mx-auto">
-              <MessageSquare className="h-16 w-16 mx-auto text-gray-300 dark:text-gray-600 mb-6" />
-              <h3 className="text-xl font-medium text-gray-700 dark:text-gray-300 mb-3">
-                Aún no hay testimonios profesionales
-              </h3>
-              <p className="text-gray-500 dark:text-gray-400 mb-6">
-                Sé el primero en compartir tu experiencia profesional trabajando conmigo.
-              </p>
-              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-                <p className="text-sm text-blue-700 dark:text-blue-300">
-                  💡 Las reseñas profesionales se guardan permanentemente y ayudan a otros clientes a conocer la calidad
-                  de mi trabajo y experiencia real.
-                </p>
-              </div>
-            </div>
-          </motion.div>
         )}
       </div>
     </section>
