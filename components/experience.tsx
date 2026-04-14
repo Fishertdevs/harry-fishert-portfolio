@@ -187,7 +187,7 @@ const Experience = () => {
   }, [projects.length])
 
   return (
-    <section id="experience" className="relative py-16 md:py-20 bg-white dark:bg-gray-900 overflow-hidden">
+    <section id="experience" className="relative flex flex-col justify-center min-h-[calc(100vh-4rem)] py-10 bg-white dark:bg-gray-900 overflow-hidden">
       {/* Tech background pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
