@@ -90,8 +90,8 @@ const Contact = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
         >
           <div className="relative rounded-2xl overflow-hidden bg-gradient-to-r from-primary to-blue-400 p-8 md:p-10 shadow-xl">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <div className="text-white text-center md:text-left">
+            <div className="flex flex-col items-center justify-center gap-6 text-center">
+              <div className="text-white">
                 <h3 className="text-xl md:text-2xl lg:text-3xl font-bold">
                   {t("ctaTitle")}
                 </h3>

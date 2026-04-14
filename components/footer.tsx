@@ -32,6 +32,8 @@ const Footer = () => {
 
   return (
     <footer className="relative bg-white dark:bg-gray-900 overflow-hidden">
+      {/* Blue separator line */}
+      <div className="w-full h-[2px] bg-primary" />
       {/* Tech background pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
