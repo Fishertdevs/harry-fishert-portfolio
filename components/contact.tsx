@@ -48,9 +48,10 @@ const Contact = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
             {t("contactTitle")}
           </h2>
+          <div className="h-1 w-16 bg-primary mx-auto rounded-full mt-4"></div>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-base md:text-lg">
             {t("contactDescription")}
           </p>

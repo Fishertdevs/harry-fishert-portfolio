@@ -23,7 +23,8 @@ const Skills = () => {
             "APIs REST y GraphQL escalables",
             "Bases de datos SQL y NoSQL"
           ],
-          color: "#0ea5e9"
+          color: "#0ea5e9",
+          context: "Dominio técnico en arquitecturas servidor"
         },
         {
           title: "Desarrollo",
@@ -34,7 +35,8 @@ const Skills = () => {
             "Vue.js y Nuxt.js",
             "Interfaces modernas y responsivas"
           ],
-          color: "#0ea5e9"
+          color: "#10b981",
+          context: "Alto nivel en interfaces de usuario modernas"
         },
         {
           title: "Arquitectura de",
@@ -45,7 +47,8 @@ const Skills = () => {
             "Plataformas E-commerce",
             "Websites y aplicaciones web"
           ],
-          color: "#0ea5e9"
+          color: "#8b5cf6",
+          context: "Sólida capacidad en diseño de sistemas escalables"
         },
         {
           title: "Automatización",
@@ -56,7 +59,8 @@ const Skills = () => {
             "Automatización de flujos de trabajo",
             "Chatbots y asistentes virtuales"
           ],
-          color: "#0ea5e9"
+          color: "#f59e0b",
+          context: "Integración avanzada de modelos de lenguaje"
         },
         {
           title: "Optimización",
@@ -67,7 +71,8 @@ const Skills = () => {
             "Análisis de rendimiento web",
             "Estrategias de posicionamiento"
           ],
-          color: "#0ea5e9"
+          color: "#ef4444",
+          context: "Estrategias efectivas de posicionamiento web"
         },
         {
           title: "DevOps",
@@ -78,7 +83,8 @@ const Skills = () => {
             "CI/CD con GitHub Actions",
             "AWS, GCP y despliegue en la nube"
           ],
-          color: "#0ea5e9"
+          color: "#06b6d4",
+          context: "Competencia en infraestructura y despliegue cloud"
         }
       ]
     : [
@@ -91,7 +97,8 @@ const Skills = () => {
             "Scalable REST and GraphQL APIs",
             "SQL and NoSQL databases"
           ],
-          color: "#0ea5e9"
+          color: "#0ea5e9",
+          context: "Technical mastery in server-side architectures"
         },
         {
           title: "Frontend",
@@ -102,7 +109,8 @@ const Skills = () => {
             "Vue.js and Nuxt.js",
             "Modern and responsive interfaces"
           ],
-          color: "#0ea5e9"
+          color: "#10b981",
+          context: "High proficiency in modern user interfaces"
         },
         {
           title: "Software",
@@ -113,7 +121,8 @@ const Skills = () => {
             "E-commerce platforms",
             "Websites and web applications"
           ],
-          color: "#0ea5e9"
+          color: "#8b5cf6",
+          context: "Strong capability in scalable system design"
         },
         {
           title: "AI",
@@ -124,7 +133,8 @@ const Skills = () => {
             "Workflow automation",
             "Chatbots and virtual assistants"
           ],
-          color: "#0ea5e9"
+          color: "#f59e0b",
+          context: "Advanced integration of language models"
         },
         {
           title: "SEO",
@@ -135,7 +145,8 @@ const Skills = () => {
             "Web performance analysis",
             "Positioning strategies"
           ],
-          color: "#0ea5e9"
+          color: "#ef4444",
+          context: "Effective web positioning strategies"
         },
         {
           title: "DevOps",
@@ -146,7 +157,8 @@ const Skills = () => {
             "CI/CD with GitHub Actions",
             "AWS, GCP and cloud deployment"
           ],
-          color: "#0ea5e9"
+          color: "#06b6d4",
+          context: "Competence in infrastructure and cloud deployment"
         }
       ]
 
@@ -271,7 +283,7 @@ const Skills = () => {
                 {/* Title */}
                 <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
                   {services[currentSlide].title}{" "}
-                  <span className="text-primary">{services[currentSlide].highlight}</span>
+                  <span style={{ color: services[currentSlide].color }}>{services[currentSlide].highlight}</span>
                 </h3>
 
                 {/* Features - no icons */}
@@ -304,12 +316,18 @@ const Skills = () => {
               </div>
 
               {/* Circular progress - RIGHT on desktop, top on mobile */}
-              <div className="flex justify-center order-1 md:order-2">
+              <div className="flex flex-col items-center gap-3 order-1 md:order-2">
                 <CircularProgress
                   percentage={services[currentSlide].percentage}
                   color={services[currentSlide].color}
                   size={160}
                 />
+                <p
+                  className="text-xs md:text-sm font-medium text-center max-w-[160px] leading-relaxed"
+                  style={{ color: services[currentSlide].color }}
+                >
+                  {services[currentSlide].context}
+                </p>
               </div>
             </motion.div>
           </AnimatePresence>
