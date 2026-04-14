@@ -1,83 +1,75 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { GraduationCap, Award, BookOpen, Calendar, Clock, ArrowRight, Code, Database, Globe, Layers } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
-import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence } from "framer-motion"
 
 const Education = () => {
-  const { t, language } = useLanguage()
+  const { language } = useLanguage()
   const [currentSlide, setCurrentSlide] = useState(0)
 
-  // Datos del carrusel de educación - similar a skills
+  // Datos del carrusel de educación con la nueva estructura
   const educationSlides = language === "es"
     ? [
         {
           title: "Ingeniería de",
           highlight: "Sistemas",
           percentage: 80,
-          icon: <GraduationCap className="h-8 w-8" />,
           features: [
-            "Universidad Central - Bogotá D.C.",
-            "8° Semestre en curso",
+            "Universidad Central – Bogotá D.C. 2022-actual",
+            "8° semestre en curso",
             "Enfoque en desarrollo de software"
           ],
           color: "#3b82f6",
-          period: "2022 - Actual"
+          progressContext: "Progreso del programa"
         },
         {
           title: "Bachiller",
           highlight: "Académico",
           percentage: 100,
-          icon: <Award className="h-8 w-8" />,
           features: [
-            "I.E. La Merced - Mosquera",
-            "Énfasis en ciencias y matemáticas",
-            "Formación académica completa"
+            "I.E. La Merced – Mosquera",
+            "Formación con énfasis en pensamiento lógico y matemático.",
+            "Base sólida para el desarrollo en áreas tecnológicas."
           ],
           color: "#10b981",
-          period: "2021"
-        },
-        {
-          title: "Habilidades",
-          highlight: "Blandas",
-          percentage: 85,
-          icon: <Layers className="h-8 w-8" />,
-          features: [
-            "Universidad Central (2022)",
-            "Comunicación efectiva",
-            "Trabajo en equipo"
-          ],
-          color: "#8b5cf6",
-          period: "2022"
-        },
-        {
-          title: "Seguridad de la",
-          highlight: "Información",
-          percentage: 75,
-          icon: <Database className="h-8 w-8" />,
-          features: [
-            "Itzys Colombia (2023)",
-            "Fundamentos de ciberseguridad",
-            "Análisis de riesgos"
-          ],
-          color: "#f59e0b",
-          period: "2023"
+          progressContext: "Programa finalizado"
         },
         {
           title: "Desarrollo de",
           highlight: "Software",
           percentage: 90,
-          icon: <Code className="h-8 w-8" />,
           features: [
             "SENA (2023)",
-            "Metodologías ágiles",
-            "Diseño de aplicaciones"
+            "Formación en metodologías ágiles y desarrollo de aplicaciones.",
+            "Enfoque en construcción de soluciones funcionales."
           ],
           color: "#ef4444",
-          period: "2023"
+          progressContext: "Dominio de competencias clave"
+        },
+        {
+          title: "Habilidades",
+          highlight: "Profesionales",
+          percentage: 85,
+          features: [
+            "Universidad Central (2022)",
+            "Desarrollo de comunicación efectiva y trabajo en equipo.",
+            "Fortalecimiento de habilidades colaborativas en entornos técnicos."
+          ],
+          color: "#8b5cf6",
+          progressContext: "Nivel de aplicación en entornos reales"
+        },
+        {
+          title: "Seguridad de la",
+          highlight: "Información",
+          percentage: 75,
+          features: [
+            "Itzys Colombia (2023)",
+            "Fundamentos de ciberseguridad y análisis de riesgos.",
+            "Enfoque en protección de sistemas y datos."
+          ],
+          color: "#f59e0b",
+          progressContext: "Conocimientos en desarrollo"
         }
       ]
     : [
@@ -85,66 +77,61 @@ const Education = () => {
           title: "Systems",
           highlight: "Engineering",
           percentage: 80,
-          icon: <GraduationCap className="h-8 w-8" />,
           features: [
-            "Universidad Central - Bogotá D.C.",
-            "8th Semester in progress",
+            "Universidad Central – Bogotá D.C. 2022-present",
+            "8th semester in progress",
             "Focus on software development"
           ],
           color: "#3b82f6",
-          period: "2022 - Present"
+          progressContext: "Program progress"
         },
         {
           title: "Academic",
           highlight: "High School",
           percentage: 100,
-          icon: <Award className="h-8 w-8" />,
           features: [
-            "I.E. La Merced - Mosquera",
-            "Emphasis on science and mathematics",
-            "Complete academic training"
+            "I.E. La Merced – Mosquera",
+            "Training with emphasis on logical and mathematical thinking.",
+            "Solid foundation for development in technological areas."
           ],
           color: "#10b981",
-          period: "2021"
-        },
-        {
-          title: "Soft",
-          highlight: "Skills",
-          percentage: 85,
-          icon: <Layers className="h-8 w-8" />,
-          features: [
-            "Universidad Central (2022)",
-            "Effective communication",
-            "Teamwork"
-          ],
-          color: "#8b5cf6",
-          period: "2022"
-        },
-        {
-          title: "Information",
-          highlight: "Security",
-          percentage: 75,
-          icon: <Database className="h-8 w-8" />,
-          features: [
-            "Itzys Colombia (2023)",
-            "Cybersecurity fundamentals",
-            "Risk analysis"
-          ],
-          color: "#f59e0b",
-          period: "2023"
+          progressContext: "Program completed"
         },
         {
           title: "Software",
           highlight: "Development",
           percentage: 90,
-          icon: <Code className="h-8 w-8" />,
           features: [
             "SENA (2023)",
-            "Agile methodologies",
-            "Application design"
+            "Training in agile methodologies and application development.",
+            "Focus on building functional solutions."
           ],
           color: "#ef4444",
-          period: "2023"
+          progressContext: "Key competencies mastery"
+        },
+        {
+          title: "Professional",
+          highlight: "Skills",
+          percentage: 85,
+          features: [
+            "Universidad Central (2022)",
+            "Development of effective communication and teamwork.",
+            "Strengthening collaborative skills in technical environments."
+          ],
+          color: "#8b5cf6",
+          progressContext: "Level of application in real environments"
+        },
+        {
+          title: "Information",
+          highlight: "Security",
+          percentage: 75,
+          features: [
+            "Itzys Colombia (2023)",
+            "Cybersecurity fundamentals and risk analysis.",
+            "Focus on system and data protection."
+          ],
+          color: "#f59e0b",
+          progressContext: "Knowledge in development"
         }
       ]
 
@@ -156,59 +143,68 @@ const Education = () => {
     return () => clearInterval(interval)
   }, [educationSlides.length])
 
-  // Circular progress component
-  const CircularProgress = ({ percentage, color, size = 160 }: { percentage: number, color: string, size?: number }) => {
+  // Circular progress component with context text
+  const CircularProgress = ({ percentage, color, context, size = 160 }: { percentage: number, color: string, context: string, size?: number }) => {
     const strokeWidth = 8
     const radius = (size - strokeWidth) / 2
     const circumference = radius * 2 * Math.PI
 
     return (
-      <div className="relative" style={{ width: size, height: size }}>
-        <svg width={size} height={size} className="transform -rotate-90">
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            stroke="#e5e7eb"
-            strokeWidth={strokeWidth}
-            fill="transparent"
-            className="dark:stroke-gray-700"
-          />
-          <motion.circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            stroke={color}
-            strokeWidth={strokeWidth}
-            fill="transparent"
-            strokeLinecap="round"
-            initial={{ strokeDasharray: `0 ${circumference}` }}
-            animate={{ strokeDasharray: `${(percentage / 100) * circumference} ${circumference}` }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-          />
-        </svg>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <motion.span 
-            className="text-3xl md:text-4xl font-bold"
-            style={{ color }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            {percentage}%
-          </motion.span>
+      <div className="flex flex-col items-center">
+        <div className="relative" style={{ width: size, height: size }}>
+          <svg width={size} height={size} className="transform -rotate-90">
+            <circle
+              cx={size / 2}
+              cy={size / 2}
+              r={radius}
+              stroke="#e5e7eb"
+              strokeWidth={strokeWidth}
+              fill="transparent"
+              className="dark:stroke-gray-700"
+            />
+            <motion.circle
+              cx={size / 2}
+              cy={size / 2}
+              r={radius}
+              stroke={color}
+              strokeWidth={strokeWidth}
+              fill="transparent"
+              strokeLinecap="round"
+              initial={{ strokeDasharray: `0 ${circumference}` }}
+              animate={{ strokeDasharray: `${(percentage / 100) * circumference} ${circumference}` }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+            />
+          </svg>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <motion.span 
+              className="text-3xl md:text-4xl font-bold"
+              style={{ color }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              {percentage}%
+            </motion.span>
+          </div>
         </div>
+        {/* Context text below the chart */}
+        <motion.p 
+          className="mt-3 text-sm font-medium text-center max-w-[180px]"
+          style={{ color }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+        >
+          {context}
+        </motion.p>
       </div>
     )
   }
 
-  // Stats data
-  const stats = [
-    { value: "8°", title: t("currentSemester"), subtitle: t("ofSemesters"), color: "#3b82f6", icon: <GraduationCap className="h-6 w-6" style={{ color: "#3b82f6" }} /> },
-    { value: "3.5", title: t("yearsStudied"), subtitle: t("ofYears"), color: "#10b981", icon: <Clock className="h-6 w-6" style={{ color: "#10b981" }} /> },
-    { value: "122", title: t("credits"), subtitle: t("totalCredits"), color: "#f59e0b", icon: <BookOpen className="h-6 w-6" style={{ color: "#f59e0b" }} /> },
-    { value: "3", title: t("certifications"), subtitle: t("completed"), color: "#8b5cf6", icon: <Award className="h-6 w-6" style={{ color: "#8b5cf6" }} /> },
-  ]
+  const sectionTitle = language === "es" ? "Trayectoria Académica" : "Academic Path"
+  const sectionSubtitle = language === "es" 
+    ? "Formación orientada al desarrollo de software, con enfoque en soluciones prácticas y escalables."
+    : "Training focused on software development, with emphasis on practical and scalable solutions."
 
   return (
     <section id="education" className="relative py-16 md:py-20 bg-white dark:bg-gray-900 overflow-hidden">
@@ -242,46 +238,15 @@ const Education = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            {t("educationTitle")}
+            {sectionTitle}
           </h2>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
-            {t("educationDescription")}
+            {sectionSubtitle}
           </p>
           <div className="h-1 w-16 bg-primary mx-auto rounded-full mt-4"></div>
         </motion.div>
 
-        {/* Stats cards */}
-        <motion.div 
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          {stats.map((stat, index) => (
-            <motion.div
-              key={index}
-              className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md border border-gray-100 dark:border-gray-700"
-              whileHover={{ scale: 1.03, y: -2 }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <p className="text-2xl md:text-3xl font-bold" style={{ color: stat.color }}>
-                  {stat.value}
-                </p>
-                <div className="p-2 rounded-full" style={{ backgroundColor: `${stat.color}15` }}>
-                  {stat.icon}
-                </div>
-              </div>
-              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{stat.title}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">{stat.subtitle}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Carousel - same style as skills */}
+        {/* Carousel */}
         <div className="max-w-2xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
@@ -294,13 +259,6 @@ const Education = () => {
             >
               {/* Text content - centered */}
               <div className="text-center order-2 md:order-1">
-                {/* Period badge */}
-                <div className="inline-flex items-center px-3 py-1 rounded-full text-sm mb-4" 
-                  style={{ backgroundColor: `${educationSlides[currentSlide].color}15`, color: educationSlides[currentSlide].color }}>
-                  <Calendar className="h-4 w-4 mr-1" />
-                  {educationSlides[currentSlide].period}
-                </div>
-
                 {/* Title */}
                 <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
                   {educationSlides[currentSlide].title}{" "}
@@ -308,7 +266,7 @@ const Education = () => {
                 </h3>
 
                 {/* Features */}
-                <ul className="space-y-2 mb-6">
+                <ul className="space-y-2">
                   {educationSlides[currentSlide].features.map((feature, index) => (
                     <motion.li
                       key={index}
@@ -321,23 +279,14 @@ const Education = () => {
                     </motion.li>
                   ))}
                 </ul>
-
-                {/* Icon display */}
-                <div className="flex justify-center">
-                  <div 
-                    className="p-3 rounded-full"
-                    style={{ backgroundColor: `${educationSlides[currentSlide].color}15`, color: educationSlides[currentSlide].color }}
-                  >
-                    {educationSlides[currentSlide].icon}
-                  </div>
-                </div>
               </div>
 
-              {/* Circular progress - RIGHT on desktop, top on mobile */}
+              {/* Circular progress with context - RIGHT on desktop, top on mobile */}
               <div className="flex justify-center order-1 md:order-2">
                 <CircularProgress
                   percentage={educationSlides[currentSlide].percentage}
                   color={educationSlides[currentSlide].color}
+                  context={educationSlides[currentSlide].progressContext}
                   size={160}
                 />
               </div>
