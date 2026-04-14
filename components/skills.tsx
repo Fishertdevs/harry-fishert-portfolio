@@ -322,12 +322,15 @@ const Skills = () => {
                   color={services[currentSlide].color}
                   size={160}
                 />
-                <p
+                <motion.p
                   className="text-xs md:text-sm font-medium text-center max-w-[160px] leading-relaxed"
                   style={{ color: services[currentSlide].color }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.8, duration: 0.5, ease: "easeOut" }}
                 >
                   {services[currentSlide].context}
-                </p>
+                </motion.p>
               </div>
             </motion.div>
           </AnimatePresence>
