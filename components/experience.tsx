@@ -13,18 +13,19 @@ const CircularProgress = ({
   percentage,
   label,
   color = "#0ea5e9",
-  size = 110,
+  size = 100,
 }: {
   percentage: number
   label: string
   color?: string
   size?: number
 }) => {
-  const strokeWidth = 7
+  const strokeWidth = size < 80 ? 5 : size < 100 ? 6 : 7
   const radius = (size - strokeWidth) / 2
   const circumference = radius * 2 * Math.PI
+  const fontSize = size < 80 ? "text-sm" : size < 100 ? "text-base" : "text-lg"
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-1 sm:gap-2">
       <div className="relative" style={{ width: size, height: size }}>
         <svg width={size} height={size} className="transform -rotate-90">
           <circle cx={size / 2} cy={size / 2} r={radius} stroke="#e5e7eb" strokeWidth={strokeWidth} fill="transparent" className="dark:stroke-gray-700" />
@@ -37,12 +38,12 @@ const CircularProgress = ({
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <motion.span className="text-lg font-bold" style={{ color }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
+          <motion.span className={`${fontSize} font-bold`} style={{ color }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
             {percentage}%
           </motion.span>
         </div>
       </div>
-      <p className="text-xs text-gray-500 dark:text-gray-400 text-center leading-tight max-w-[90px]">{label}</p>
+      <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 text-center leading-tight max-w-[60px] sm:max-w-[80px] md:max-w-[90px]">{label}</p>
     </div>
   )
 }
@@ -210,23 +211,23 @@ const Experience = () => {
       <div className="relative z-10 container mx-auto px-4">
         {/* Header */}
         <motion.div 
-          className="text-center mb-12"
+          className="text-center mb-6 md:mb-10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
             {language === "es"
               ? "Proyectos que generan impacto"
               : "Projects that generate impact"}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base">
             {language === "es"
               ? "Soluciones reales con métricas comprobables y resultados tangibles para clientes y empresas."
               : "Real solutions with verifiable metrics and tangible results for clients and businesses."}
           </p>
-          <div className="h-1 w-16 bg-primary mx-auto rounded-full mt-4"></div>
+          <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mt-3 md:mt-4"></div>
         </motion.div>
 
         {/* Carousel - side by side on desktop */}
@@ -238,46 +239,46 @@ const Experience = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
-              className="flex flex-col md:flex-row items-center gap-8 md:gap-12 py-4"
+              className="flex flex-col md:flex-row items-center gap-4 md:gap-8 lg:gap-12 py-2 md:py-4"
             >
               {/* Left side - Project info */}
               <div className="flex-1 text-center md:text-left order-2 md:order-1">
                 {/* Project logo badge */}
-                <div className="flex justify-center md:justify-start mb-4">
-                  <div className="w-14 h-14 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
-                    <span className="text-primary font-bold text-sm tracking-wide">
+                <div className="flex justify-center md:justify-start mb-2 md:mb-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg md:rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+                    <span className="text-primary font-bold text-[10px] sm:text-xs md:text-sm tracking-wide">
                       {projects[currentSlide].logo}
                     </span>
                   </div>
                 </div>
 
                 {/* Title */}
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-3">
+                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-2 md:mb-3">
                   {projects[currentSlide].title}{" "}
                   <span className="text-primary">{projects[currentSlide].highlight}</span>
                 </h3>
 
                 {/* Description */}
-                <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base mb-4 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm md:text-base mb-2 md:mb-4 leading-relaxed">
                   {projects[currentSlide].description}
                 </p>
 
-                {/* Scope */}
-                <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                  <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
+                {/* Scope - hidden on mobile for space */}
+                <div className="hidden sm:block mb-2 md:mb-4 p-2 md:p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                  <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
                     {language === "es" ? "Alcance del proyecto" : "Project scope"}
                   </p>
-                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                  <p className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
                     {projects[currentSlide].scope}
                   </p>
                 </div>
 
                 {/* Technologies */}
-                <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-6">
+                <div className="flex flex-wrap justify-center md:justify-start gap-1.5 sm:gap-2 mb-3 md:mb-6">
                   {projects[currentSlide].technologies.map((tech, index) => (
                     <span
                       key={index}
-                      className="px-3 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full"
+                      className="px-2 sm:px-3 py-0.5 sm:py-1 bg-primary/10 text-primary text-[10px] sm:text-xs font-medium rounded-full"
                     >
                       {tech}
                     </span>
@@ -285,24 +286,26 @@ const Experience = () => {
                 </div>
 
                 {/* Buttons */}
-                <div className="flex flex-wrap justify-center md:justify-start gap-3">
+                <div className="flex flex-wrap justify-center md:justify-start gap-2 md:gap-3">
                   <Button
                     asChild
-                    className="bg-[#24292e] hover:bg-[#24292e]/90 text-white rounded-lg px-5 py-2 flex items-center gap-2"
+                    size="sm"
+                    className="bg-[#24292e] hover:bg-[#24292e]/90 text-white rounded-lg px-3 sm:px-4 md:px-5 py-1.5 md:py-2 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm"
                   >
                     <a href={portfolioData.github} target="_blank" rel="noopener noreferrer">
-                      <Github className="w-4 h-4" />
+                      <Github className="w-3 h-3 sm:w-4 sm:h-4" />
                       GitHub
                     </a>
                   </Button>
                   <Button
                     asChild
                     variant="outline"
-                    className="border-primary text-primary hover:bg-primary/10 rounded-lg px-5 py-2 flex items-center gap-2"
+                    size="sm"
+                    className="border-primary text-primary hover:bg-primary/10 rounded-lg px-3 sm:px-4 md:px-5 py-1.5 md:py-2 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm"
                   >
                     <a href={projects[currentSlide].demo} target="_blank" rel="noopener noreferrer">
                       {language === "es" ? "Ver proyecto" : "View project"}
-                      <ExternalLink className="w-4 h-4" />
+                      <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
                     </a>
                   </Button>
                 </div>
@@ -310,11 +313,11 @@ const Experience = () => {
 
               {/* Right side - Circular metrics */}
               <div className="flex-shrink-0 order-1 md:order-2 w-full md:w-auto">
-                <div className="bg-gradient-to-br from-primary/5 to-primary/10 dark:from-primary/10 dark:to-primary/20 rounded-2xl p-6 md:p-8 border border-primary/20">
-                  <h4 className="text-center text-xs font-semibold text-gray-600 dark:text-gray-400 mb-6 uppercase tracking-wider">
+                <div className="bg-gradient-to-br from-primary/5 to-primary/10 dark:from-primary/10 dark:to-primary/20 rounded-xl md:rounded-2xl p-3 sm:p-4 md:p-6 lg:p-8 border border-primary/20">
+                  <h4 className="text-center text-[10px] sm:text-xs font-semibold text-gray-600 dark:text-gray-400 mb-3 md:mb-6 uppercase tracking-wider">
                     {language === "es" ? "Métricas del proyecto" : "Project metrics"}
                   </h4>
-                  <div className="flex items-start justify-center gap-6">
+                  <div className="flex items-start justify-center gap-3 sm:gap-4 md:gap-6">
                     {projects[currentSlide].metrics.map((metric, index) => (
                       <motion.div
                         key={`${currentSlide}-${index}`}
@@ -322,12 +325,30 @@ const Experience = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.15 + 0.1 }}
                       >
-                        <CircularProgress
-                          percentage={metric.value}
-                          label={metric.label}
-                          color="#0ea5e9"
-                          size={110}
-                        />
+                        <div className="block sm:hidden">
+                          <CircularProgress
+                            percentage={metric.value}
+                            label={metric.label}
+                            color="#0ea5e9"
+                            size={70}
+                          />
+                        </div>
+                        <div className="hidden sm:block md:hidden">
+                          <CircularProgress
+                            percentage={metric.value}
+                            label={metric.label}
+                            color="#0ea5e9"
+                            size={85}
+                          />
+                        </div>
+                        <div className="hidden md:block">
+                          <CircularProgress
+                            percentage={metric.value}
+                            label={metric.label}
+                            color="#0ea5e9"
+                            size={100}
+                          />
+                        </div>
                       </motion.div>
                     ))}
                   </div>
@@ -337,14 +358,14 @@ const Experience = () => {
           </AnimatePresence>
 
           {/* Progress bar indicator */}
-          <div className="flex justify-center gap-1.5 mt-8">
+          <div className="flex justify-center gap-1.5 mt-4 md:mt-8">
             {projects.map((_, index) => (
               <div
                 key={index}
-                className={`h-1.5 rounded-full transition-all duration-500 ${
+                className={`h-1 md:h-1.5 rounded-full transition-all duration-500 ${
                   index === currentSlide
-                    ? "w-8 bg-primary"
-                    : "w-2 bg-gray-300 dark:bg-gray-600"
+                    ? "w-6 md:w-8 bg-primary"
+                    : "w-1.5 md:w-2 bg-gray-300 dark:bg-gray-600"
                 }`}
               />
             ))}
@@ -353,13 +374,13 @@ const Experience = () => {
 
         {/* GitHub CTA */}
         <motion.div 
-          className="text-center mt-12"
+          className="text-center mt-6 md:mt-10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm">
+          <p className="text-gray-600 dark:text-gray-400 mb-2 md:mb-4 text-xs sm:text-sm">
             {language === "es"
               ? "Explora más proyectos y contribuciones en mi repositorio"
               : "Explore more projects and contributions in my repository"}
@@ -367,12 +388,13 @@ const Experience = () => {
           <Button
             asChild
             variant="outline"
-            className="border-gray-300 dark:border-gray-600 hover:border-[#24292e] hover:bg-[#24292e] hover:text-white transition-all rounded-lg px-6 py-2 flex items-center gap-2 mx-auto"
+            size="sm"
+            className="border-gray-300 dark:border-gray-600 hover:border-[#24292e] hover:bg-[#24292e] hover:text-white transition-all rounded-lg px-4 md:px-6 py-1.5 md:py-2 flex items-center gap-1.5 md:gap-2 mx-auto text-xs sm:text-sm"
           >
             <a href={portfolioData.github} target="_blank" rel="noopener noreferrer">
-              <Github className="w-5 h-5" />
+              <Github className="w-4 h-4 md:w-5 md:h-5" />
               {language === "es" ? "Ver todo en GitHub" : "View all on GitHub"}
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
             </a>
           </Button>
         </motion.div>

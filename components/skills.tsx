@@ -177,9 +177,9 @@ const Skills = () => {
   
   const whatsappLink = `https://api.whatsapp.com/send?phone=573112512939&text=${encodeURIComponent(whatsappMessage)}`
 
-  // Circular progress component
-  const CircularProgress = ({ percentage, color, size = 160 }: { percentage: number, color: string, size?: number }) => {
-    const strokeWidth = 8
+  // Circular progress component with responsive size
+  const CircularProgress = ({ percentage, color, size = 140 }: { percentage: number, color: string, size?: number }) => {
+    const strokeWidth = size < 120 ? 6 : 8
     const radius = (size - strokeWidth) / 2
     const circumference = radius * 2 * Math.PI
 
@@ -210,7 +210,7 @@ const Skills = () => {
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
           <motion.span 
-            className="text-3xl md:text-4xl font-bold"
+            className="text-xl sm:text-2xl md:text-3xl font-bold"
             style={{ color }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -248,23 +248,23 @@ const Skills = () => {
       <div className="relative z-10 container mx-auto px-4">
         {/* Header - no label, captivating title */}
         <motion.div 
-          className="text-center mb-12"
+          className="text-center mb-6 md:mb-10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
             {language === "es"
               ? "Habilidades tecnológicas orientadas a resultados"
               : "Technology skills oriented to results"}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base">
             {language === "es"
               ? "Desarrollo soluciones digitales escalables y eficientes, orientadas a mejorar resultados y rendimiento."
               : "I build scalable and efficient digital solutions, focused on improving results and performance."}
           </p>
-          <div className="h-1 w-16 bg-primary mx-auto rounded-full mt-4"></div>
+          <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mt-3 md:mt-4"></div>
         </motion.div>
 
         {/* Carousel - balanced grid on desktop, stacked on mobile */}
@@ -276,22 +276,22 @@ const Skills = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
-              className="grid grid-cols-1 md:grid-cols-2 items-center gap-8 py-4"
+              className="grid grid-cols-1 md:grid-cols-2 items-center gap-4 md:gap-8 py-2 md:py-4"
             >
               {/* Text content - centered */}
               <div className="text-center order-2 md:order-1">
                 {/* Title */}
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
                   {services[currentSlide].title}{" "}
                   <span style={{ color: services[currentSlide].color }}>{services[currentSlide].highlight}</span>
                 </h3>
 
                 {/* Features - no icons */}
-                <ul className="space-y-2 mb-6">
+                <ul className="space-y-1 md:space-y-2 mb-3 md:mb-6">
                   {services[currentSlide].features.map((feature, index) => (
                     <motion.li
                       key={index}
-                      className="text-gray-600 dark:text-gray-400 text-sm md:text-base"
+                      className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm md:text-base"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 + 0.2 }}
@@ -305,25 +305,42 @@ const Skills = () => {
                 <div className="flex justify-center">
                   <Button
                     asChild
-                    className="bg-primary hover:bg-primary/90 text-white rounded-lg px-6 py-2 flex items-center gap-2"
+                    size="sm"
+                    className="bg-primary hover:bg-primary/90 text-white rounded-lg px-4 md:px-6 py-1.5 md:py-2 flex items-center gap-2 text-xs md:text-sm"
                   >
                     <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
                       {language === "es" ? "Conoce más" : "Learn more"}
-                      <ArrowRight className="w-4 h-4" />
+                      <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
                     </a>
                   </Button>
                 </div>
               </div>
 
               {/* Circular progress - RIGHT on desktop, top on mobile */}
-              <div className="flex flex-col items-center gap-3 order-1 md:order-2">
-                <CircularProgress
-                  percentage={services[currentSlide].percentage}
-                  color={services[currentSlide].color}
-                  size={160}
-                />
+              <div className="flex flex-col items-center gap-2 md:gap-3 order-1 md:order-2">
+                <div className="block sm:hidden">
+                  <CircularProgress
+                    percentage={services[currentSlide].percentage}
+                    color={services[currentSlide].color}
+                    size={100}
+                  />
+                </div>
+                <div className="hidden sm:block md:hidden">
+                  <CircularProgress
+                    percentage={services[currentSlide].percentage}
+                    color={services[currentSlide].color}
+                    size={120}
+                  />
+                </div>
+                <div className="hidden md:block">
+                  <CircularProgress
+                    percentage={services[currentSlide].percentage}
+                    color={services[currentSlide].color}
+                    size={140}
+                  />
+                </div>
                 <motion.p
-                  className="text-xs md:text-sm font-medium text-center max-w-[160px] leading-relaxed"
+                  className="text-[10px] sm:text-xs md:text-sm font-medium text-center max-w-[100px] sm:max-w-[140px] md:max-w-[160px] leading-relaxed"
                   style={{ color: services[currentSlide].color }}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -336,7 +353,7 @@ const Skills = () => {
           </AnimatePresence>
 
           {/* Progress bar indicator - centered, auto only */}
-          <div className="flex justify-center gap-1.5 mt-8">
+          <div className="flex justify-center gap-1.5 mt-4 md:mt-8">
             {services.map((_, index) => (
               <div
                 key={index}

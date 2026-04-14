@@ -37,22 +37,22 @@ const About = () => {
     <section 
       id="about" 
       ref={sectionRef} 
-      className="py-20 bg-white dark:bg-gray-900 overflow-hidden"
+      className="flex flex-col justify-center min-h-[calc(100vh-4rem)] py-6 md:py-10 bg-white dark:bg-gray-900 overflow-hidden"
     >
       <div className="container mx-auto px-4">
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-6 md:mb-10"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">{t("aboutTitle")}</h2>
-          <div className="h-1 w-20 bg-primary mx-auto"></div>
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4 text-gray-900 dark:text-white">{t("aboutTitle")}</h2>
+          <div className="h-1 w-12 md:w-20 bg-primary mx-auto"></div>
         </motion.div>
 
         {/* Main content - Image LEFT, Text RIGHT */}
         <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 lg:gap-12 items-center">
             
             {/* Image - LEFT side, vertically centered */}
             <motion.div
@@ -61,7 +61,7 @@ const About = () => {
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <div className="w-64 h-64 md:w-72 md:h-72 rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-xl">
+              <div className="w-36 h-36 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-xl md:rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-xl">
                 <img
                   src="/images/avatar.png"
                   alt={portfolioData.name}
@@ -78,9 +78,9 @@ const About = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
             >
               {/* Role badge */}
-              <div className="flex items-center gap-2 mb-4 justify-center">
-                <User className="w-4 h-4 text-primary" />
-                <span className="text-sm text-primary tracking-wider uppercase font-medium">
+              <div className="flex items-center gap-1.5 sm:gap-2 mb-2 md:mb-4 justify-center">
+                <User className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
+                <span className="text-[10px] sm:text-xs md:text-sm text-primary tracking-wider uppercase font-medium">
                   {language === "es"
                     ? "DESARROLLADOR FULL STACK · ARQUITECTO DE SOFTWARE"
                     : "FULL STACK DEVELOPER · SOFTWARE ARCHITECT"}
@@ -88,17 +88,17 @@ const About = () => {
               </div>
 
               {/* Name */}
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
+              <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-1 md:mb-2 text-center">
                 Harry Fishert
               </h3>
 
               {/* Subtitle */}
-              <p className="text-primary font-medium mb-6 text-center">
+              <p className="text-primary font-medium mb-3 md:mb-6 text-center text-xs sm:text-sm md:text-base">
                 {language === "es" ? "Estudiante de Ingeniería de Sistemas" : "Systems Engineering Student"}
               </p>
 
               {/* Text Carousel - auto only, no controls */}
-              <div className="relative min-h-[140px] md:min-h-[120px]">
+              <div className="relative min-h-[80px] sm:min-h-[100px] md:min-h-[120px]">
                 <AnimatePresence mode="wait">
                   <motion.p
                     key={currentSlide}
@@ -106,7 +106,7 @@ const About = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -16 }}
                     transition={{ duration: 0.5 }}
-                    className="text-gray-600 dark:text-gray-400 leading-relaxed text-sm md:text-base text-center"
+                    className="text-gray-600 dark:text-gray-400 leading-relaxed text-xs sm:text-sm md:text-base text-center"
                   >
                     {textSlides[currentSlide]}
                   </motion.p>
@@ -114,14 +114,14 @@ const About = () => {
               </div>
 
               {/* Progress bar indicator */}
-              <div className="flex items-center gap-1.5 mt-6 justify-center">
+              <div className="flex items-center gap-1.5 mt-3 md:mt-6 justify-center">
                 {textSlides.map((_, index) => (
                   <div
                     key={index}
                     className={`h-1 rounded-full transition-all duration-500 ${
                       index === currentSlide
-                        ? "w-8 bg-primary"
-                        : "w-2 bg-gray-300 dark:bg-gray-600"
+                        ? "w-6 md:w-8 bg-primary"
+                        : "w-1.5 md:w-2 bg-gray-300 dark:bg-gray-600"
                     }`}
                   />
                 ))}

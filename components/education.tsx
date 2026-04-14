@@ -143,9 +143,9 @@ const Education = () => {
     return () => clearInterval(interval)
   }, [educationSlides.length])
 
-  // Circular progress component with context text
-  const CircularProgress = ({ percentage, color, context, size = 160 }: { percentage: number, color: string, context: string, size?: number }) => {
-    const strokeWidth = 8
+  // Circular progress component with context text and responsive size
+  const CircularProgress = ({ percentage, color, context, size = 140 }: { percentage: number, color: string, context: string, size?: number }) => {
+    const strokeWidth = size < 120 ? 6 : 8
     const radius = (size - strokeWidth) / 2
     const circumference = radius * 2 * Math.PI
 
@@ -177,7 +177,7 @@ const Education = () => {
           </svg>
           <div className="absolute inset-0 flex items-center justify-center">
             <motion.span 
-              className="text-3xl md:text-4xl font-bold"
+              className="text-xl sm:text-2xl md:text-3xl font-bold"
               style={{ color }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -189,7 +189,7 @@ const Education = () => {
         </div>
         {/* Context text below the chart */}
         <motion.p 
-          className="mt-3 text-sm font-medium text-center max-w-[180px]"
+          className="mt-2 md:mt-3 text-[10px] sm:text-xs md:text-sm font-medium text-center max-w-[100px] sm:max-w-[140px] md:max-w-[180px]"
           style={{ color }}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -231,19 +231,19 @@ const Education = () => {
       <div className="relative z-10 container mx-auto px-4">
         {/* Header - same style as skills */}
         <motion.div 
-          className="text-center mb-12"
+          className="text-center mb-6 md:mb-10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
             {sectionTitle}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base">
             {sectionSubtitle}
           </p>
-          <div className="h-1 w-16 bg-primary mx-auto rounded-full mt-4"></div>
+          <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mt-3 md:mt-4"></div>
         </motion.div>
 
         {/* Carousel */}
@@ -255,22 +255,22 @@ const Education = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
-              className="grid grid-cols-1 md:grid-cols-2 items-center gap-8 py-4"
+              className="grid grid-cols-1 md:grid-cols-2 items-center gap-4 md:gap-8 py-2 md:py-4"
             >
               {/* Text content - centered */}
               <div className="text-center order-2 md:order-1">
                 {/* Title */}
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
                   {educationSlides[currentSlide].title}{" "}
                   <span style={{ color: educationSlides[currentSlide].color }}>{educationSlides[currentSlide].highlight}</span>
                 </h3>
 
                 {/* Features */}
-                <ul className="space-y-2">
+                <ul className="space-y-1 md:space-y-2">
                   {educationSlides[currentSlide].features.map((feature, index) => (
                     <motion.li
                       key={index}
-                      className="text-gray-600 dark:text-gray-400 text-sm md:text-base"
+                      className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm md:text-base"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 + 0.2 }}
@@ -283,18 +283,36 @@ const Education = () => {
 
               {/* Circular progress with context - RIGHT on desktop, top on mobile */}
               <div className="flex justify-center order-1 md:order-2">
-                <CircularProgress
-                  percentage={educationSlides[currentSlide].percentage}
-                  color={educationSlides[currentSlide].color}
-                  context={educationSlides[currentSlide].progressContext}
-                  size={160}
-                />
+                <div className="block sm:hidden">
+                  <CircularProgress
+                    percentage={educationSlides[currentSlide].percentage}
+                    color={educationSlides[currentSlide].color}
+                    context={educationSlides[currentSlide].progressContext}
+                    size={100}
+                  />
+                </div>
+                <div className="hidden sm:block md:hidden">
+                  <CircularProgress
+                    percentage={educationSlides[currentSlide].percentage}
+                    color={educationSlides[currentSlide].color}
+                    context={educationSlides[currentSlide].progressContext}
+                    size={120}
+                  />
+                </div>
+                <div className="hidden md:block">
+                  <CircularProgress
+                    percentage={educationSlides[currentSlide].percentage}
+                    color={educationSlides[currentSlide].color}
+                    context={educationSlides[currentSlide].progressContext}
+                    size={140}
+                  />
+                </div>
               </div>
             </motion.div>
           </AnimatePresence>
 
           {/* Progress bar indicator */}
-          <div className="flex justify-center gap-1.5 mt-8">
+          <div className="flex justify-center gap-1.5 mt-4 md:mt-8">
             {educationSlides.map((_, index) => (
               <button
                 key={index}

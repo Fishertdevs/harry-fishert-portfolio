@@ -42,42 +42,42 @@ const Contact = () => {
       <div className="relative z-10 container mx-auto px-4">
         {/* Header */}
         <motion.div 
-          className="text-center mb-12"
+          className="text-center mb-6 md:mb-10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
             {t("contactTitle")}
           </h2>
-          <div className="h-1 w-16 bg-primary mx-auto rounded-full mt-4"></div>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-base md:text-lg">
+          <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mt-2 md:mt-4"></div>
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base mt-2 md:mt-4">
             {t("contactDescription")}
           </p>
         </motion.div>
 
         {/* Info badges */}
         <motion.div 
-          className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mb-12"
+          className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 md:gap-6 mb-6 md:mb-10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-            <span className="text-sm md:text-base">{t("responseTime")}</span>
+          <div className="flex items-center gap-1.5 sm:gap-2 text-gray-600 dark:text-gray-400">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full animate-pulse"></span>
+            <span className="text-[10px] sm:text-xs md:text-sm">{t("responseTime")}</span>
           </div>
-          <div className="h-4 w-px bg-gray-300 dark:bg-gray-600 hidden sm:block"></div>
-          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-            <span className="w-2 h-2 bg-primary rounded-full"></span>
-            <span className="text-sm md:text-base">{t("freeConsultation")}</span>
+          <div className="h-3 sm:h-4 w-px bg-gray-300 dark:bg-gray-600 hidden sm:block"></div>
+          <div className="flex items-center gap-1.5 sm:gap-2 text-gray-600 dark:text-gray-400">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full"></span>
+            <span className="text-[10px] sm:text-xs md:text-sm">{t("freeConsultation")}</span>
           </div>
-          <div className="h-4 w-px bg-gray-300 dark:bg-gray-600 hidden sm:block"></div>
-          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-            <Clock className="w-4 h-4" />
-            <span className="text-sm md:text-base">{t("availability")}</span>
+          <div className="h-3 sm:h-4 w-px bg-gray-300 dark:bg-gray-600 hidden sm:block"></div>
+          <div className="flex items-center gap-1.5 sm:gap-2 text-gray-600 dark:text-gray-400">
+            <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="text-[10px] sm:text-xs md:text-sm">{t("availability")}</span>
           </div>
         </motion.div>
 
@@ -89,30 +89,30 @@ const Contact = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <div className="relative rounded-2xl overflow-hidden bg-gradient-to-r from-primary to-blue-400 p-8 md:p-10 shadow-xl">
-            <div className="flex flex-col items-center justify-center gap-6 text-center">
+          <div className="relative rounded-xl sm:rounded-2xl overflow-hidden bg-gradient-to-r from-primary to-blue-400 p-4 sm:p-6 md:p-8 lg:p-10 shadow-xl">
+            <div className="flex flex-col items-center justify-center gap-3 sm:gap-4 md:gap-6 text-center">
               <div className="text-white">
-                <h3 className="text-xl md:text-2xl lg:text-3xl font-bold">
+                <h3 className="text-sm sm:text-lg md:text-xl lg:text-2xl font-bold">
                   {t("ctaTitle")}
                 </h3>
               </div>
               
               <Button 
                 asChild
-                size="lg"
-                className="bg-white hover:bg-gray-100 text-gray-800 font-semibold rounded-full px-6 py-3 flex items-center gap-2 shadow-lg transition-all duration-300 hover:scale-105"
+                size="sm"
+                className="bg-white hover:bg-gray-100 text-gray-800 font-semibold rounded-full px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 md:py-3 flex items-center gap-1.5 sm:gap-2 shadow-lg transition-all duration-300 hover:scale-105 text-xs sm:text-sm md:text-base"
               >
                 <a href={portfolioData.whatsapp} target="_blank" rel="noopener noreferrer">
-                  <WhatsAppIcon className="w-5 h-5 text-green-600" />
+                  <WhatsAppIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-green-600" />
                   <span>{t("ctaButton")}</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
                 </a>
               </Button>
             </div>
             
             {/* Decorative elements */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+            <div className="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+            <div className="absolute bottom-0 left-0 w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
           </div>
         </motion.div>
       </div>
