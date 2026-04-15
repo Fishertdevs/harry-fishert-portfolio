@@ -18,7 +18,7 @@ const Contact = () => {
   const { portfolioData } = usePortfolio()
 
   return (
-    <section id="contact" className="relative flex flex-col justify-center min-h-[calc(100vh-4rem)] py-10 bg-white dark:bg-gray-900 overflow-hidden">
+    <section id="contact" className="relative flex flex-col justify-center min-h-[calc(100vh-4rem)] py-4 md:py-10 bg-white dark:bg-gray-900 overflow-hidden">
       {/* Tech background pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -48,11 +48,11 @@ const Contact = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
+          <h2 className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
             {t("contactTitle")}
           </h2>
           <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mt-2 md:mt-4"></div>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base mt-2 md:mt-4">
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-sm md:text-base mt-2 md:mt-4">
             {t("contactDescription")}
           </p>
         </motion.div>
@@ -67,17 +67,17 @@ const Contact = () => {
         >
           <div className="flex items-center gap-1.5 sm:gap-2 text-gray-600 dark:text-gray-400">
             <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full animate-pulse"></span>
-            <span className="text-[10px] sm:text-xs md:text-sm">{t("responseTime")}</span>
+            <span className="text-xs sm:text-sm md:text-sm">{t("responseTime")}</span>
           </div>
           <div className="h-3 sm:h-4 w-px bg-gray-300 dark:bg-gray-600 hidden sm:block"></div>
           <div className="flex items-center gap-1.5 sm:gap-2 text-gray-600 dark:text-gray-400">
             <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full"></span>
-            <span className="text-[10px] sm:text-xs md:text-sm">{t("freeConsultation")}</span>
+            <span className="text-xs sm:text-sm md:text-sm">{t("freeConsultation")}</span>
           </div>
           <div className="h-3 sm:h-4 w-px bg-gray-300 dark:bg-gray-600 hidden sm:block"></div>
           <div className="flex items-center gap-1.5 sm:gap-2 text-gray-600 dark:text-gray-400">
             <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
-            <span className="text-[10px] sm:text-xs md:text-sm">{t("availability")}</span>
+            <span className="text-xs sm:text-sm md:text-sm">{t("availability")}</span>
           </div>
         </motion.div>
 
@@ -92,7 +92,7 @@ const Contact = () => {
           <div className="relative rounded-xl sm:rounded-2xl overflow-hidden bg-gradient-to-r from-primary to-blue-400 p-4 sm:p-6 md:p-8 lg:p-10 shadow-xl">
             <div className="flex flex-col items-center justify-center gap-3 sm:gap-4 md:gap-6 text-center">
               <div className="text-white">
-                <h3 className="text-sm sm:text-lg md:text-xl lg:text-2xl font-bold">
+                <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold">
                   {t("ctaTitle")}
                 </h3>
               </div>
@@ -100,7 +100,7 @@ const Contact = () => {
               <Button 
                 asChild
                 size="sm"
-                className="bg-white hover:bg-gray-100 text-gray-800 font-semibold rounded-full px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 md:py-3 flex items-center gap-1.5 sm:gap-2 shadow-lg transition-all duration-300 hover:scale-105 text-xs sm:text-sm md:text-base"
+                className="bg-white hover:bg-gray-100 text-gray-800 font-semibold rounded-full px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 md:py-3 flex items-center gap-1.5 sm:gap-2 shadow-lg transition-all duration-300 hover:scale-105 text-sm md:text-base"
               >
                 <a href={portfolioData.whatsapp} target="_blank" rel="noopener noreferrer">
                   <WhatsAppIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-green-600" />
