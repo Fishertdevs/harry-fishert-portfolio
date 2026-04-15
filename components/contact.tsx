@@ -18,7 +18,7 @@ const Contact = () => {
   const { portfolioData } = usePortfolio()
 
   return (
-    <section id="contact" className="relative flex flex-col justify-center py-2 md:py-4 bg-white dark:bg-gray-900 overflow-hidden">
+    <section id="contact" className="relative flex flex-col justify-center min-h-[calc(100vh-4rem)] py-6 md:py-8 bg-white dark:bg-gray-900 overflow-hidden">
       {/* Tech background pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -42,7 +42,7 @@ const Contact = () => {
       <div className="relative z-10 container mx-auto px-4">
         {/* Header */}
         <motion.div 
-          className="text-center mb-2 md:mb-3"
+          className="text-center mb-4 md:mb-6"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -59,7 +59,7 @@ const Contact = () => {
 
         {/* Info badges */}
         <motion.div 
-          className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 md:gap-6 mb-3 md:mb-4"
+          className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 md:gap-6 mb-4 md:mb-6"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
