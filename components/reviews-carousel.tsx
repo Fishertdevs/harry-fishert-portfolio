@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useLanguage } from "@/lib/language-context"
 import { motion, AnimatePresence } from "framer-motion"
-import { Star, Plus, ArrowRight, ArrowLeft, Check, Send, User, Mail, Briefcase, Building, MessageSquare } from "lucide-react"
+import { Star, Plus, Check, Send, User, Briefcase, Building, MessageSquare } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -128,7 +128,7 @@ const ReviewsCarousel = () => {
   const canProceed = () => {
     switch (currentStep) {
       case 1:
-        return formData.name.trim() !== "" && formData.email.trim() !== ""
+        return formData.name.trim() !== ""
       case 2:
         return true // Position and company are optional
       case 3:
@@ -199,17 +199,6 @@ const ReviewsCarousel = () => {
                   placeholder={language === "es" ? "Tu nombre completo *" : "Your full name *"}
                   value={formData.name}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  required
-                  className="pl-10 border-gray-200 dark:border-gray-700 focus:border-primary h-12"
-                />
-              </div>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <Input
-                  type="email"
-                  placeholder={language === "es" ? "Tu correo electrónico *" : "Your email address *"}
-                  value={formData.email}
-                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                   required
                   className="pl-10 border-gray-200 dark:border-gray-700 focus:border-primary h-12"
                 />
@@ -508,9 +497,7 @@ const ReviewsCarousel = () => {
                       variant="outline"
                       onClick={prevStep}
                       disabled={currentStep === 1}
-                      className="gap-2"
                     >
-                      <ArrowLeft className="w-4 h-4" />
                       {language === "es" ? "Anterior" : "Previous"}
                     </Button>
                     
@@ -519,10 +506,9 @@ const ReviewsCarousel = () => {
                         type="button"
                         onClick={nextStep}
                         disabled={!canProceed()}
-                        className="bg-primary hover:bg-primary/90 text-white gap-2"
+                        className="bg-primary hover:bg-primary/90 text-white"
                       >
                         {language === "es" ? "Siguiente" : "Next"}
-                        <ArrowRight className="w-4 h-4" />
                       </Button>
                     ) : (
                       <Button 
