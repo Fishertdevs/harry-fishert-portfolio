@@ -182,7 +182,7 @@ const Experience = () => {
           technologies: ["React", "Tailwind CSS", "Framer Motion"],
           scope: "Landing page interactiva con diseño moderno y optimización para redes sociales.",
           hasGithub: false,
-          demo: "#",
+          demo: "https://club-sacrifice-powerlifting.vercel.app",
           featured: false,
           color: projectColors[5],
         },
@@ -298,7 +298,7 @@ const Experience = () => {
           technologies: ["React", "Tailwind CSS", "Framer Motion"],
           scope: "Interactive landing page with modern design and optimization for social networks.",
           hasGithub: false,
-          demo: "#",
+          demo: "https://club-sacrifice-powerlifting.vercel.app",
           featured: false,
           color: projectColors[5],
         },
@@ -382,14 +382,14 @@ const Experience = () => {
               {/* Text content - centered */}
               <div className="text-center order-2 md:order-1">
                 {/* Title with star for featured */}
-                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-1 md:mb-2 flex items-center justify-center gap-2">
-                  <span>
-                    {currentProject.title}{" "}
+                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-1 md:mb-2 text-center">
+                  <span className="block">{currentProject.title}</span>
+                  <span className="inline-flex items-center gap-1">
                     <span style={{ color: currentProject.color }}>{currentProject.highlight}</span>
+                    {currentProject.featured && (
+                      <Star className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500 fill-amber-500" />
+                    )}
                   </span>
-                  {currentProject.featured && (
-                    <Star className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500 fill-amber-500 flex-shrink-0" />
-                  )}
                 </h3>
 
                 {/* Role and period */}
@@ -459,7 +459,6 @@ const Experience = () => {
                     >
                       <a href={currentProject.demo} target="_blank" rel="noopener noreferrer">
                         {language === "es" ? "Ver proyecto" : "View project"}
-                        <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
                       </a>
                     </Button>
                   )}
@@ -560,19 +559,17 @@ const Experience = () => {
         >
           <p className="text-gray-600 dark:text-gray-400 mb-2 md:mb-4 text-xs sm:text-sm max-w-md mx-auto">
             {language === "es"
-              ? "Explora más proyectos y contribuciones en mi repositorio"
-              : "Explore more projects and contributions in my repository"}
+              ? "Explora más proyectos y contribuciones"
+              : "Explore more projects and contributions"}
           </p>
           <Button
             asChild
-            variant="outline"
             size="sm"
-            className="border-gray-300 dark:border-gray-600 hover:border-[#24292e] hover:bg-[#24292e] hover:text-white transition-all rounded-lg px-4 md:px-6 py-1.5 md:py-2 inline-flex items-center gap-1.5 md:gap-2 text-xs sm:text-sm w-auto"
+            className="bg-[#24292e] hover:bg-[#1a1e22] text-white transition-all rounded-lg px-4 md:px-6 py-1.5 md:py-2 inline-flex items-center gap-1.5 md:gap-2 text-xs sm:text-sm w-auto"
           >
             <a href={portfolioData.github} target="_blank" rel="noopener noreferrer">
               <Github className="w-4 h-4 md:w-5 md:h-5" />
               {language === "es" ? "Ver más en GitHub" : "View more on GitHub"}
-              <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
             </a>
           </Button>
         </motion.div>

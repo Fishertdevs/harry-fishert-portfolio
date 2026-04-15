@@ -5,7 +5,7 @@ import { usePortfolio } from "@/lib/portfolio-context"
 import { motion, AnimatePresence } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef, useState, useEffect } from "react"
-import { User } from "lucide-react"
+
 
 const About = () => {
   const { t, language } = useLanguage()
@@ -61,7 +61,7 @@ const About = () => {
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <div className="w-36 h-36 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-xl md:rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-xl">
+              <div className="w-40 h-40 sm:w-52 sm:h-52 md:w-60 md:h-60 lg:w-72 lg:h-72 rounded-xl md:rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-xl">
                 <img
                   src="/images/avatar.png"
                   alt={portfolioData.name}
@@ -77,24 +77,21 @@ const About = () => {
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              {/* Role badge */}
-              <div className="flex items-center gap-1.5 sm:gap-2 mb-2 md:mb-4 justify-center">
-                <User className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
-                <span className="text-[10px] sm:text-xs md:text-sm text-primary tracking-wider uppercase font-medium">
-                  {language === "es"
-                    ? "DESARROLLADOR FULL STACK · ARQUITECTO DE SOFTWARE"
-                    : "FULL STACK DEVELOPER · SOFTWARE ARCHITECT"}
-                </span>
-              </div>
-
               {/* Name */}
-              <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-1 md:mb-2 text-center">
+              <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-1 text-center">
                 Harry Fishert
               </h3>
 
-              {/* Subtitle */}
-              <p className="text-primary font-medium mb-3 md:mb-6 text-center text-xs sm:text-sm md:text-base">
+              {/* Subtitle - Student */}
+              <p className="text-primary font-medium mb-1 md:mb-2 text-center text-xs sm:text-sm md:text-base">
                 {language === "es" ? "Estudiante de Ingeniería de Sistemas" : "Systems Engineering Student"}
+              </p>
+
+              {/* Role badge - without icon */}
+              <p className="text-[10px] sm:text-xs md:text-sm text-primary tracking-wider uppercase font-medium mb-3 md:mb-6 text-center">
+                {language === "es"
+                  ? "DESARROLLADOR FULL STACK · ARQUITECTO DE SOFTWARE"
+                  : "FULL STACK DEVELOPER · SOFTWARE ARCHITECT"}
               </p>
 
               {/* Text Carousel - auto only, no controls */}
