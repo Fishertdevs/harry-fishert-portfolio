@@ -131,83 +131,107 @@ export default function Home() {
           </motion.div>
 
           <motion.div
-            className="relative z-10 text-center px-4 max-w-4xl mx-auto"
+            className="relative z-10 px-4 max-w-6xl mx-auto w-full"
             variants={containerVariants}
             initial="hidden"
             animate={isVisible ? "visible" : "hidden"}
           >
-            <motion.p 
-              className="text-sm md:text-base text-primary/80 uppercase tracking-widest mb-2"
-              variants={itemVariants}
-            >
-              {language === "es" ? "Bienvenido a mi portafolio" : "Welcome to my portfolio"}
-            </motion.p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+              {/* Text Content - LEFT side */}
+              <motion.div 
+                className="flex flex-col justify-center text-center md:text-left order-2 md:order-1"
+                variants={itemVariants}
+              >
+                <motion.p 
+                  className="text-sm md:text-base text-primary/80 uppercase tracking-widest mb-2"
+                  variants={itemVariants}
+                >
+                  {language === "es" ? "Bienvenido a mi portafolio" : "Welcome to my portfolio"}
+                </motion.p>
 
-            <motion.h1 className="text-4xl md:text-6xl font-bold mb-4 gradient-text" variants={itemVariants}>
-              {portfolioData.name}
-            </motion.h1>
+                <motion.h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-4 gradient-text" variants={itemVariants}>
+                  {portfolioData.name}
+                </motion.h1>
 
-            <motion.div className="h-8 mb-6" variants={itemVariants}>
-              <p className="text-xl md:text-2xl text-primary">
-                {portfolioData.title}
-                <span className="animate-pulse">|</span>
-              </p>
-            </motion.div>
+                <motion.div className="h-8 mb-4 md:mb-6" variants={itemVariants}>
+                  <p className="text-lg sm:text-xl md:text-2xl text-primary">
+                    {portfolioData.title}
+                    <span className="animate-pulse">|</span>
+                  </p>
+                </motion.div>
 
-            <motion.p
-              className="text-gray-700 dark:text-gray-300 text-lg md:text-xl mb-8 max-w-2xl mx-auto"
-              variants={itemVariants}
-            >
-              {language === "es" 
-                ? "Transformo ideas en soluciones digitales. Explora mis proyectos, habilidades y experiencia en desarrollo de software."
-                : "I transform ideas into digital solutions. Explore my projects, skills and experience in software development."}
-            </motion.p>
+                <motion.p
+                  className="text-gray-700 dark:text-gray-300 text-base md:text-lg mb-6 md:mb-8"
+                  variants={itemVariants}
+                >
+                  {language === "es" 
+                    ? "Transformo ideas en soluciones digitales. Explora mis proyectos, habilidades y experiencia en desarrollo de software."
+                    : "I transform ideas into digital solutions. Explore my projects, skills and experience in software development."}
+                </motion.p>
 
-            <motion.div className="flex items-center justify-center" variants={itemVariants}>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="secondary" size="lg" className="group">
-                      <FileDown className="mr-2 h-4 w-4" />
-                      Ver CV
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                          <Eye className="mr-2 h-4 w-4" />
-                          <span>Ver Preview</span>
+                <motion.div className="flex items-center justify-center md:justify-start" variants={itemVariants}>
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="secondary" size="lg" className="group">
+                          <FileDown className="mr-2 h-4 w-4" />
+                          Ver CV
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="start" className="w-56">
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                              <Eye className="mr-2 h-4 w-4" />
+                              <span>Ver Preview</span>
+                            </DropdownMenuItem>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-4xl h-[80vh] p-0">
+                            <DialogHeader className="p-4 border-b">
+                              <DialogTitle>Curriculum Vitae - {portfolioData.name}</DialogTitle>
+                              <DialogClose className="absolute right-4 top-4" />
+                            </DialogHeader>
+                            <div className="h-full overflow-auto p-0">
+                              <CVPreview onDownload={handleDownloadCV} />
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+
+                        <DropdownMenuItem
+                          onClick={() =>
+                            window.open(
+                              "https://drive.google.com/file/d/1AkywFwEI7V0WQwshUHyGuJmnydpFcXNW/view?usp=drivesdk",
+                              "_blank",
+                            )
+                          }
+                        >
+                          <FileText className="mr-2 h-4 w-4" />
+                          <span>Ver CV completo</span>
                         </DropdownMenuItem>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-4xl h-[80vh] p-0">
-                        <DialogHeader className="p-4 border-b">
-                          <DialogTitle>Curriculum Vitae - {portfolioData.name}</DialogTitle>
-                          <DialogClose className="absolute right-4 top-4" />
-                        </DialogHeader>
-                        <div className="h-full overflow-auto p-0">
-                          <CVPreview onDownload={handleDownloadCV} />
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-
-                    <DropdownMenuItem
-                      onClick={() =>
-                        window.open(
-                          "https://drive.google.com/file/d/1AkywFwEI7V0WQwshUHyGuJmnydpFcXNW/view?usp=drivesdk",
-                          "_blank",
-                        )
-                      }
-                    >
-                      <FileText className="mr-2 h-4 w-4" />
-                      <span>Ver CV completo</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </motion.div>
+                </motion.div>
               </motion.div>
-            </motion.div>
 
-
+              {/* Avatar Image - RIGHT side */}
+              <motion.div 
+                className="flex justify-center items-center order-1 md:order-2"
+                variants={itemVariants}
+              >
+                <motion.div
+                  className="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-80 lg:h-80 rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-2xl"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <img
+                    src="/images/avatar.png"
+                    alt={portfolioData.name}
+                    className="w-full h-full object-cover object-top"
+                  />
+                </motion.div>
+              </motion.div>
+            </div>
           </motion.div>
         </section>
 
