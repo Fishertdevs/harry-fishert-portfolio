@@ -18,42 +18,48 @@ const projectColors = [
   "#ec4899", // Rosa - Club Sacrifice
 ]
 
-// Reusable circular progress — same visual as Skills section
-const CircularProgress = ({
-  percentage,
-  label,
-  color = "#0ea5e9",
-  size = 100,
-}: {
-  percentage: number
-  label: string
-  color?: string
-  size?: number
-}) => {
-  const strokeWidth = size < 80 ? 5 : size < 100 ? 6 : 7
+// Circular progress component - same style as Skills section
+const CircularProgress = ({ percentage, color, size = 140 }: { percentage: number, color: string, size?: number }) => {
+  const strokeWidth = size < 120 ? 6 : 8
   const radius = (size - strokeWidth) / 2
   const circumference = radius * 2 * Math.PI
-  const fontSize = size < 80 ? "text-sm" : size < 100 ? "text-base" : "text-lg"
+
   return (
-    <div className="flex flex-col items-center gap-1 sm:gap-2">
-      <div className="relative" style={{ width: size, height: size }}>
-        <svg width={size} height={size} className="transform -rotate-90">
-          <circle cx={size / 2} cy={size / 2} r={radius} stroke="#e5e7eb" strokeWidth={strokeWidth} fill="transparent" className="dark:stroke-gray-700" />
-          <motion.circle
-            cx={size / 2} cy={size / 2} r={radius}
-            stroke={color} strokeWidth={strokeWidth} fill="transparent" strokeLinecap="round"
-            initial={{ strokeDasharray: `0 ${circumference}` }}
-            animate={{ strokeDasharray: `${(percentage / 100) * circumference} ${circumference}` }}
-            transition={{ duration: 1.4, ease: "easeOut" }}
-          />
-        </svg>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <motion.span className={`${fontSize} font-bold`} style={{ color }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
-            {percentage}%
-          </motion.span>
-        </div>
+    <div className="relative" style={{ width: size, height: size }}>
+      <svg width={size} height={size} className="transform -rotate-90">
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke="#e5e7eb"
+          strokeWidth={strokeWidth}
+          fill="transparent"
+          className="dark:stroke-gray-700"
+        />
+        <motion.circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={color}
+          strokeWidth={strokeWidth}
+          fill="transparent"
+          strokeLinecap="round"
+          initial={{ strokeDasharray: `0 ${circumference}` }}
+          animate={{ strokeDasharray: `${(percentage / 100) * circumference} ${circumference}` }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+        />
+      </svg>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <motion.span 
+          className="text-xl sm:text-2xl md:text-3xl font-bold"
+          style={{ color }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
+          {percentage}%
+        </motion.span>
       </div>
-      <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 text-center leading-tight max-w-[60px] sm:max-w-[80px] md:max-w-[90px]">{label}</p>
     </div>
   )
 }
@@ -62,25 +68,25 @@ const Experience = () => {
   const { language } = useLanguage()
   const { portfolioData } = usePortfolio()
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [currentMetricIndex, setCurrentMetricIndex] = useState(0)
 
   const projects = language === "es"
     ? [
         {
           title: "Picapastos y Molinos",
           highlight: "Vilar",
-          logo: "PMV",
           role: "Web Developer",
           period: "Dic 2025 – Feb 2026",
           duration: "3 meses",
           description: "Desarrollo de sitio web corporativo con catálogo de productos y sistema administrativo interno, logrando un mayor posicionamiento de la marca y la optimización de la gestión de su catálogo.",
           metrics: [
-            { label: "Posicionamiento", value: 95 },
-            { label: "Optimización", value: 90 },
-            { label: "Usabilidad", value: 100 },
+            { label: "Posicionamiento de marca", value: 95 },
+            { label: "Optimización de catálogo", value: 90 },
+            { label: "Usabilidad del sistema", value: 100 },
           ],
           technologies: ["Next.js", "React", "Tailwind CSS", "Vercel"],
           scope: "Sitio web corporativo con catálogo de productos dinámico y panel administrativo para gestión de contenido.",
-          github: "https://github.com/harryfishert",
+          hasGithub: false,
           demo: "https://www.picapastosymolinosvilar.com.co",
           featured: true,
           color: projectColors[0],
@@ -88,19 +94,18 @@ const Experience = () => {
         {
           title: "AlterEgo",
           highlight: "Store",
-          logo: "AE",
           role: "Web Developer & UX/UI",
           period: "Sep 2025 – Nov 2025",
           duration: "2 meses",
           description: "Desarrollo de e-commerce con panel de administración y flujo de ventas integrado a WhatsApp, mejorando la gestión de pedidos y la experiencia de usuario.",
           metrics: [
-            { label: "Conversión", value: 85 },
-            { label: "UX Score", value: 92 },
-            { label: "Satisfacción", value: 95 },
+            { label: "Conversión de ventas", value: 85 },
+            { label: "Experiencia de usuario", value: 92 },
+            { label: "Satisfacción cliente", value: 95 },
           ],
           technologies: ["Next.js", "React", "Supabase", "WhatsApp API"],
           scope: "E-commerce completo con carrito de compras, panel admin y flujo de ventas automatizado via WhatsApp.",
-          github: "https://github.com/harryfishert",
+          hasGithub: false,
           demo: "https://www.alterego-store.com.co",
           featured: true,
           color: projectColors[1],
@@ -108,19 +113,18 @@ const Experience = () => {
         {
           title: "Mi Kaza",
           highlight: "Rental",
-          logo: "MK",
           role: "Full Stack Developer",
           period: "May 2025 – Jun 2025",
           duration: "2 meses",
           description: "Implementación de plataforma de alojamiento universitario utilizando Next.js, React y Supabase, con gestión de datos en tiempo real y una base sólida para futuras versiones del producto.",
           metrics: [
-            { label: "Real-time", value: 100 },
+            { label: "Datos en tiempo real", value: 100 },
             { label: "Escalabilidad", value: 88 },
             { label: "Performance", value: 90 },
           ],
           technologies: ["Next.js", "React", "Supabase", "PostgreSQL"],
           scope: "Plataforma de alojamiento con búsqueda avanzada, sistema de reservas y gestión de propiedades en tiempo real.",
-          github: "https://github.com/harryfishert",
+          hasGithub: false,
           demo: "#",
           featured: false,
           color: projectColors[2],
@@ -128,39 +132,37 @@ const Experience = () => {
         {
           title: "Tender",
           highlight: "Go",
-          logo: "TG",
           role: "Desarrollador SaaS",
           period: "Mar 2025 – May 2025",
           duration: "3 meses",
           description: "Diseño e implementación de sistema SaaS para la gestión de ingresos de caja, adaptable a múltiples tipos de negocio, facilitando el control financiero y la toma de decisiones.",
           metrics: [
-            { label: "Eficiencia", value: 92 },
+            { label: "Eficiencia operativa", value: 92 },
             { label: "Adaptabilidad", value: 95 },
-            { label: "Control", value: 88 },
+            { label: "Control financiero", value: 88 },
           ],
           technologies: ["React", "Node.js", "PostgreSQL", "Stripe"],
           scope: "Sistema SaaS multi-tenant para gestión financiera con reportes automáticos y dashboard analítico.",
-          github: "https://github.com/harryfishert",
-          demo: "#",
+          hasGithub: false,
+          demo: "https://tender-go.vercel.app",
           featured: false,
           color: projectColors[3],
         },
         {
           title: "MC",
           highlight: "Arquitectos",
-          logo: "MC",
           role: "Arquitecto de Software & Backend",
           period: "Sep 2024 – Dic 2024",
           duration: "4 meses",
           description: "Definición de arquitectura backend con FastAPI e implementación de sistema de geolocalización por coordenadas para predios en Bogotá, integrando bases de datos relacionales y preparando la estructura para modelos de machine learning.",
           metrics: [
-            { label: "Arquitectura", value: 95 },
+            { label: "Arquitectura robusta", value: 95 },
             { label: "Geolocalización", value: 90 },
-            { label: "ML Ready", value: 85 },
+            { label: "Preparación ML", value: 85 },
           ],
           technologies: ["FastAPI", "Python", "PostgreSQL", "GIS"],
           scope: "Backend escalable con sistema de geolocalización, API REST y preparación para integración de modelos ML.",
-          github: "https://github.com/harryfishert",
+          hasGithub: true,
           demo: "#",
           featured: false,
           color: projectColors[4],
@@ -168,19 +170,18 @@ const Experience = () => {
         {
           title: "Club Sacrifice",
           highlight: "Powerlifting",
-          logo: "CS",
           role: "Frontend Developer",
           period: "Ene 2024",
           duration: "1 mes",
           description: "Desarrollo de interfaz web optimizada para el fortalecimiento de la presencia digital de la marca y mejora de la interacción con la comunidad.",
           metrics: [
             { label: "Engagement", value: 88 },
-            { label: "Diseño", value: 92 },
-            { label: "Velocidad", value: 95 },
+            { label: "Diseño visual", value: 92 },
+            { label: "Velocidad de carga", value: 95 },
           ],
           technologies: ["React", "Tailwind CSS", "Framer Motion"],
           scope: "Landing page interactiva con diseño moderno y optimización para redes sociales.",
-          github: "https://github.com/harryfishert",
+          hasGithub: false,
           demo: "#",
           featured: false,
           color: projectColors[5],
@@ -190,19 +191,18 @@ const Experience = () => {
         {
           title: "Picapastos y Molinos",
           highlight: "Vilar",
-          logo: "PMV",
           role: "Web Developer",
           period: "Dec 2025 – Feb 2026",
           duration: "3 months",
           description: "Development of corporate website with product catalog and internal administrative system, achieving greater brand positioning and optimization of catalog management.",
           metrics: [
-            { label: "Positioning", value: 95 },
-            { label: "Optimization", value: 90 },
-            { label: "Usability", value: 100 },
+            { label: "Brand positioning", value: 95 },
+            { label: "Catalog optimization", value: 90 },
+            { label: "System usability", value: 100 },
           ],
           technologies: ["Next.js", "React", "Tailwind CSS", "Vercel"],
           scope: "Corporate website with dynamic product catalog and admin panel for content management.",
-          github: "https://github.com/harryfishert",
+          hasGithub: false,
           demo: "https://www.picapastosymolinosvilar.com.co",
           featured: true,
           color: projectColors[0],
@@ -210,19 +210,18 @@ const Experience = () => {
         {
           title: "AlterEgo",
           highlight: "Store",
-          logo: "AE",
           role: "Web Developer & UX/UI",
           period: "Sep 2025 – Nov 2025",
           duration: "2 months",
           description: "E-commerce development with admin panel and sales flow integrated with WhatsApp, improving order management and user experience.",
           metrics: [
-            { label: "Conversion", value: 85 },
-            { label: "UX Score", value: 92 },
-            { label: "Satisfaction", value: 95 },
+            { label: "Sales conversion", value: 85 },
+            { label: "User experience", value: 92 },
+            { label: "Client satisfaction", value: 95 },
           ],
           technologies: ["Next.js", "React", "Supabase", "WhatsApp API"],
           scope: "Complete e-commerce with shopping cart, admin panel and automated sales flow via WhatsApp.",
-          github: "https://github.com/harryfishert",
+          hasGithub: false,
           demo: "https://www.alterego-store.com.co",
           featured: true,
           color: projectColors[1],
@@ -230,19 +229,18 @@ const Experience = () => {
         {
           title: "Mi Kaza",
           highlight: "Rental",
-          logo: "MK",
           role: "Full Stack Developer",
           period: "May 2025 – Jun 2025",
           duration: "2 months",
           description: "Implementation of university housing platform using Next.js, React and Supabase, with real-time data management and a solid foundation for future product versions.",
           metrics: [
-            { label: "Real-time", value: 100 },
+            { label: "Real-time data", value: 100 },
             { label: "Scalability", value: 88 },
             { label: "Performance", value: 90 },
           ],
           technologies: ["Next.js", "React", "Supabase", "PostgreSQL"],
           scope: "Housing platform with advanced search, booking system and real-time property management.",
-          github: "https://github.com/harryfishert",
+          hasGithub: false,
           demo: "#",
           featured: false,
           color: projectColors[2],
@@ -250,39 +248,37 @@ const Experience = () => {
         {
           title: "Tender",
           highlight: "Go",
-          logo: "TG",
           role: "SaaS Developer",
           period: "Mar 2025 – May 2025",
           duration: "3 months",
           description: "Design and implementation of SaaS system for cash income management, adaptable to multiple types of business, facilitating financial control and decision making.",
           metrics: [
-            { label: "Efficiency", value: 92 },
+            { label: "Operational efficiency", value: 92 },
             { label: "Adaptability", value: 95 },
-            { label: "Control", value: 88 },
+            { label: "Financial control", value: 88 },
           ],
           technologies: ["React", "Node.js", "PostgreSQL", "Stripe"],
           scope: "Multi-tenant SaaS system for financial management with automatic reports and analytical dashboard.",
-          github: "https://github.com/harryfishert",
-          demo: "#",
+          hasGithub: false,
+          demo: "https://tender-go.vercel.app",
           featured: false,
           color: projectColors[3],
         },
         {
           title: "MC",
           highlight: "Arquitectos",
-          logo: "MC",
           role: "Software Architect & Backend",
           period: "Sep 2024 – Dec 2024",
           duration: "4 months",
           description: "Backend architecture definition with FastAPI and implementation of geolocation system by coordinates for properties in Bogota, integrating relational databases and preparing the structure for machine learning models.",
           metrics: [
-            { label: "Architecture", value: 95 },
+            { label: "Robust architecture", value: 95 },
             { label: "Geolocation", value: 90 },
-            { label: "ML Ready", value: 85 },
+            { label: "ML preparation", value: 85 },
           ],
           technologies: ["FastAPI", "Python", "PostgreSQL", "GIS"],
           scope: "Scalable backend with geolocation system, REST API and preparation for ML model integration.",
-          github: "https://github.com/harryfishert",
+          hasGithub: true,
           demo: "#",
           featured: false,
           color: projectColors[4],
@@ -290,50 +286,60 @@ const Experience = () => {
         {
           title: "Club Sacrifice",
           highlight: "Powerlifting",
-          logo: "CS",
           role: "Frontend Developer",
           period: "Jan 2024",
           duration: "1 month",
           description: "Development of optimized web interface for strengthening the brand's digital presence and improving interaction with the community.",
           metrics: [
             { label: "Engagement", value: 88 },
-            { label: "Design", value: 92 },
-            { label: "Speed", value: 95 },
+            { label: "Visual design", value: 92 },
+            { label: "Load speed", value: 95 },
           ],
           technologies: ["React", "Tailwind CSS", "Framer Motion"],
           scope: "Interactive landing page with modern design and optimization for social networks.",
-          github: "https://github.com/harryfishert",
+          hasGithub: false,
           demo: "#",
           featured: false,
           color: projectColors[5],
         },
       ]
 
-  // Auto-play carousel
+  // Auto-play carousel for projects
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % projects.length)
+      setCurrentMetricIndex(0) // Reset metric index when project changes
     }, 7000)
     return () => clearInterval(interval)
   }, [projects.length])
 
+  // Auto-play carousel for metrics (one at a time)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentMetricIndex((prev) => (prev + 1) % 3)
+    }, 2000)
+    return () => clearInterval(interval)
+  }, [])
+
   const currentProject = projects[currentSlide]
+  const currentMetric = currentProject.metrics[currentMetricIndex]
 
   return (
     <section id="experience" className="relative flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden">
       {/* Tech background pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.3) 0%, transparent 40%),
-                           radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.3) 0%, transparent 40%),
-                           radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 60%)`
+          backgroundImage: `radial-gradient(circle at 5% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 40%),
+                           radial-gradient(circle at 95% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 40%),
+                           radial-gradient(circle at 50% 10%, rgba(59, 130, 246, 0.2) 0%, transparent 40%),
+                           radial-gradient(circle at 50% 90%, rgba(59, 130, 246, 0.2) 0%, transparent 40%)`
         }} />
         <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <pattern id="experience-dots" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
-              <circle cx="40" cy="40" r="2" fill="rgba(59, 130, 246, 0.3)" />
-              <circle cx="10" cy="10" r="1.5" fill="rgba(59, 130, 246, 0.2)" />
-              <circle cx="70" cy="70" r="1.5" fill="rgba(59, 130, 246, 0.2)" />
+            <pattern id="experience-dots" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+              <circle cx="50" cy="50" r="2" fill="rgba(59, 130, 246, 0.3)" />
+              <circle cx="15" cy="15" r="1.5" fill="rgba(59, 130, 246, 0.2)" />
+              <circle cx="85" cy="85" r="1.5" fill="rgba(59, 130, 246, 0.2)" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#experience-dots)" />
@@ -362,53 +368,32 @@ const Experience = () => {
           <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mt-3 md:mt-4"></div>
         </motion.div>
 
-        {/* Carousel - side by side on desktop */}
-        <div className="max-w-5xl mx-auto">
+        {/* Carousel - same layout as Skills */}
+        <div className="max-w-2xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlide}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-              className="flex flex-col md:flex-row items-center gap-4 md:gap-8 lg:gap-12 py-2 md:py-4"
+              transition={{ duration: 0.4 }}
+              className="grid grid-cols-1 md:grid-cols-2 items-center gap-4 md:gap-8 py-2 md:py-4"
             >
-              {/* Left side - Project info */}
-              <div className="flex-1 text-center md:text-left order-2 md:order-1">
-                {/* Project logo badge with featured indicator */}
-                <div className="flex justify-center md:justify-start items-center gap-2 mb-2 md:mb-4">
-                  <div 
-                    className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg md:rounded-xl flex items-center justify-center"
-                    style={{ 
-                      backgroundColor: `${currentProject.color}15`,
-                      border: `1px solid ${currentProject.color}30`
-                    }}
-                  >
-                    <span 
-                      className="font-bold text-[10px] sm:text-xs md:text-sm tracking-wide"
-                      style={{ color: currentProject.color }}
-                    >
-                      {currentProject.logo}
-                    </span>
-                  </div>
+              {/* Text content - centered */}
+              <div className="text-center order-2 md:order-1">
+                {/* Title with star for featured */}
+                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-1 md:mb-2 flex items-center justify-center gap-2">
+                  <span>
+                    {currentProject.title}{" "}
+                    <span style={{ color: currentProject.color }}>{currentProject.highlight}</span>
+                  </span>
                   {currentProject.featured && (
-                    <div className="flex items-center gap-1 px-2 py-1 bg-amber-100 dark:bg-amber-900/30 rounded-full">
-                      <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
-                      <span className="text-[10px] sm:text-xs font-medium text-amber-700 dark:text-amber-400">
-                        {language === "es" ? "Destacado" : "Featured"}
-                      </span>
-                    </div>
+                    <Star className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500 fill-amber-500 flex-shrink-0" />
                   )}
-                </div>
-
-                {/* Title with integrated logo */}
-                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-1 md:mb-2">
-                  {currentProject.title}{" "}
-                  <span style={{ color: currentProject.color }}>{currentProject.highlight}</span>
                 </h3>
 
                 {/* Role and period */}
-                <div className="flex flex-wrap justify-center md:justify-start items-center gap-2 mb-2 md:mb-3">
+                <div className="flex flex-wrap justify-center items-center gap-2 mb-2 md:mb-3">
                   <span 
                     className="text-xs sm:text-sm font-semibold"
                     style={{ color: currentProject.color }}
@@ -426,18 +411,8 @@ const Experience = () => {
                   {currentProject.description}
                 </p>
 
-                {/* Scope - hidden on mobile for space */}
-                <div className="hidden sm:block mb-2 md:mb-4 p-2 md:p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                  <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
-                    {language === "es" ? "Alcance del proyecto" : "Project scope"}
-                  </p>
-                  <p className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
-                    {currentProject.scope}
-                  </p>
-                </div>
-
                 {/* Technologies */}
-                <div className="flex flex-wrap justify-center md:justify-start gap-1.5 sm:gap-2 mb-3 md:mb-6">
+                <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2 mb-3 md:mb-4">
                   {currentProject.technologies.map((tech, index) => (
                     <span
                       key={index}
@@ -452,18 +427,22 @@ const Experience = () => {
                   ))}
                 </div>
 
-                {/* Buttons */}
-                <div className="flex flex-wrap justify-center md:justify-start gap-2 md:gap-3">
-                  <Button
-                    asChild
-                    size="sm"
-                    className="bg-[#24292e] hover:bg-[#24292e]/90 text-white rounded-lg px-3 sm:px-4 md:px-5 py-1.5 md:py-2 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm"
-                  >
-                    <a href={portfolioData.github} target="_blank" rel="noopener noreferrer">
-                      <Github className="w-3 h-3 sm:w-4 sm:h-4" />
-                      GitHub
-                    </a>
-                  </Button>
+                {/* Buttons - conditional based on project */}
+                <div className="flex flex-wrap justify-center gap-2 md:gap-3">
+                  {/* GitHub button - only for MC-Arquitectos */}
+                  {currentProject.hasGithub && (
+                    <Button
+                      asChild
+                      size="sm"
+                      className="bg-[#24292e] hover:bg-[#24292e]/90 text-white rounded-lg px-3 sm:px-4 md:px-5 py-1.5 md:py-2 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm"
+                    >
+                      <a href={portfolioData.github} target="_blank" rel="noopener noreferrer">
+                        <Github className="w-3 h-3 sm:w-4 sm:h-4" />
+                        GitHub
+                      </a>
+                    </Button>
+                  )}
+                  {/* Ver proyecto button - for all projects with demo link */}
                   {currentProject.demo !== "#" && (
                     <Button
                       asChild
@@ -484,53 +463,66 @@ const Experience = () => {
                 </div>
               </div>
 
-              {/* Right side - Circular metrics */}
-              <div className="flex-shrink-0 order-1 md:order-2 w-full md:w-auto">
-                <div 
-                  className="rounded-xl md:rounded-2xl p-3 sm:p-4 md:p-6 lg:p-8"
-                  style={{
-                    background: `linear-gradient(135deg, ${currentProject.color}08 0%, ${currentProject.color}15 100%)`,
-                    border: `1px solid ${currentProject.color}25`
-                  }}
+              {/* Circular progress - ONE at a time with carousel effect */}
+              <div className="flex flex-col items-center gap-2 md:gap-3 order-1 md:order-2">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={`${currentSlide}-${currentMetricIndex}`}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="block sm:hidden">
+                      <CircularProgress
+                        percentage={currentMetric.value}
+                        color={currentProject.color}
+                        size={100}
+                      />
+                    </div>
+                    <div className="hidden sm:block md:hidden">
+                      <CircularProgress
+                        percentage={currentMetric.value}
+                        color={currentProject.color}
+                        size={120}
+                      />
+                    </div>
+                    <div className="hidden md:block">
+                      <CircularProgress
+                        percentage={currentMetric.value}
+                        color={currentProject.color}
+                        size={140}
+                      />
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+                <motion.p
+                  key={`label-${currentSlide}-${currentMetricIndex}`}
+                  className="text-[10px] sm:text-xs md:text-sm font-medium text-center max-w-[100px] sm:max-w-[140px] md:max-w-[160px] leading-relaxed"
+                  style={{ color: currentProject.color }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  <h4 className="text-center text-[10px] sm:text-xs font-semibold text-gray-600 dark:text-gray-400 mb-3 md:mb-6 uppercase tracking-wider">
-                    {language === "es" ? "Métricas del proyecto" : "Project metrics"}
-                  </h4>
-                  <div className="flex items-start justify-center gap-3 sm:gap-4 md:gap-6">
-                    {currentProject.metrics.map((metric, index) => (
-                      <motion.div
-                        key={`${currentSlide}-${index}`}
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.15 + 0.1 }}
-                      >
-                        <div className="block sm:hidden">
-                          <CircularProgress
-                            percentage={metric.value}
-                            label={metric.label}
-                            color={currentProject.color}
-                            size={70}
-                          />
-                        </div>
-                        <div className="hidden sm:block md:hidden">
-                          <CircularProgress
-                            percentage={metric.value}
-                            label={metric.label}
-                            color={currentProject.color}
-                            size={85}
-                          />
-                        </div>
-                        <div className="hidden md:block">
-                          <CircularProgress
-                            percentage={metric.value}
-                            label={metric.label}
-                            color={currentProject.color}
-                            size={100}
-                          />
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
+                  {currentMetric.label}
+                </motion.p>
+                
+                {/* Metric indicators */}
+                <div className="flex justify-center gap-1.5 mt-2">
+                  {currentProject.metrics.map((_, index) => (
+                    <div
+                      key={index}
+                      className={`h-1 rounded-full transition-all duration-300 ${
+                        index === currentMetricIndex
+                          ? "w-4"
+                          : "w-1.5 bg-gray-300 dark:bg-gray-600"
+                      }`}
+                      style={{
+                        backgroundColor: index === currentMetricIndex ? currentProject.color : undefined
+                      }}
+                    />
+                  ))}
                 </div>
               </div>
             </motion.div>
@@ -541,7 +533,10 @@ const Experience = () => {
             {projects.map((project, index) => (
               <button
                 key={index}
-                onClick={() => setCurrentSlide(index)}
+                onClick={() => {
+                  setCurrentSlide(index)
+                  setCurrentMetricIndex(0)
+                }}
                 className={`h-1 md:h-1.5 rounded-full transition-all duration-500 ${
                   index === currentSlide
                     ? "w-6 md:w-8"
