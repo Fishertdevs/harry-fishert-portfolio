@@ -63,9 +63,9 @@ const Footer = () => {
               target="_blank" 
               rel="noopener noreferrer" 
               aria-label="GitHub"
-              className="group w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center transition-all duration-300 hover:bg-[#24292e] active:bg-[#24292e] hover:scale-105"
+              className="group w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center transition-all duration-300 hover:bg-[#24292e] dark:hover:bg-[#f0f6fc] active:bg-[#24292e] dark:active:bg-[#f0f6fc] hover:scale-105"
             >
-              <GitHubIcon className="h-4 w-4 md:h-5 md:w-5 text-gray-700 dark:text-gray-300 group-hover:text-white group-active:text-white transition-colors" />
+              <GitHubIcon className="h-4 w-4 md:h-5 md:w-5 text-gray-700 dark:text-gray-300 group-hover:text-white dark:group-hover:text-[#24292e] group-active:text-white dark:group-active:text-[#24292e] transition-colors" />
             </a>
             
             {/* Instagram */}

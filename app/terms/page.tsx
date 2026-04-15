@@ -1,103 +1,156 @@
 "use client"
 
 import { useLanguage } from "@/lib/language-context"
-import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import Navbar from "@/components/navbar"
+import Footer from "@/components/footer"
+import { motion } from "framer-motion"
 
 export default function TermsPage() {
   const { language } = useLanguage()
 
+  const fadeInUp = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+  }
+
   return (
-    <main className="min-h-screen bg-white dark:bg-gray-900 py-16 px-4">
-      <div className="container mx-auto max-w-3xl">
-        <Link 
-          href="/" 
-          className="inline-flex items-center gap-2 text-primary hover:underline mb-8"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          {language === "es" ? "Volver al inicio" : "Back to home"}
-        </Link>
+    <>
+      <Navbar />
+      <main className="min-h-screen bg-white dark:bg-gray-900 pt-20 pb-16 px-4">
+        <div className="container mx-auto max-w-3xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Link 
+              href="/" 
+              className="inline-flex items-center gap-2 text-primary hover:underline mb-8"
+            >
+              {language === "es" ? "Volver al inicio" : "Back to home"}
+            </Link>
+          </motion.div>
 
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-8">
-          {language === "es" ? "Términos y Condiciones" : "Terms and Conditions"}
-        </h1>
+          <motion.h1 
+            className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            {language === "es" ? "Términos y Condiciones" : "Terms and Conditions"}
+          </motion.h1>
 
-        <div className="prose prose-gray dark:prose-invert max-w-none">
-          {language === "es" ? (
-            <>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Última actualización: {new Date().toLocaleDateString("es-ES")}
-              </p>
+          <div className="prose prose-gray dark:prose-invert max-w-none">
+            {language === "es" ? (
+              <>
+                <motion.p 
+                  className="text-gray-600 dark:text-gray-400 mb-6"
+                  {...fadeInUp}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                >
+                  Última actualización: {new Date().toLocaleDateString("es-ES")}
+                </motion.p>
 
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">1. Aceptación de los Términos</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Al acceder y utilizar este sitio web, aceptas estar sujeto a estos términos y condiciones de uso. Si no estás de acuerdo con alguna parte de estos términos, no debes utilizar este sitio.
-              </p>
+                <motion.div {...fadeInUp} transition={{ duration: 0.5, delay: 0.3 }}>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">1. Aceptación de los Términos</h2>
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    Al acceder y utilizar este sitio web, aceptas estar sujeto a estos términos y condiciones de uso. Si no estás de acuerdo con alguna parte de estos términos, no debes utilizar este sitio.
+                  </p>
+                </motion.div>
 
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">2. Uso del Sitio</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Este sitio web es un portafolio profesional destinado a mostrar mis habilidades, proyectos y experiencia como desarrollador. El contenido es solo para fines informativos.
-              </p>
+                <motion.div {...fadeInUp} transition={{ duration: 0.5, delay: 0.4 }}>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">2. Uso del Sitio</h2>
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    Este sitio web es un portafolio profesional destinado a mostrar mis habilidades, proyectos y experiencia como desarrollador. El contenido es solo para fines informativos.
+                  </p>
+                </motion.div>
 
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">3. Propiedad Intelectual</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Todo el contenido de este sitio, incluyendo textos, gráficos, logos y código, es de mi propiedad o tengo licencia para usarlo. No está permitido copiar, modificar o distribuir el contenido sin autorización previa.
-              </p>
+                <motion.div {...fadeInUp} transition={{ duration: 0.5, delay: 0.5 }}>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">3. Propiedad Intelectual</h2>
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    Todo el contenido de este sitio, incluyendo textos, gráficos, logos y código, es de mi propiedad o tengo licencia para usarlo. No está permitido copiar, modificar o distribuir el contenido sin autorización previa.
+                  </p>
+                </motion.div>
 
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">4. Limitación de Responsabilidad</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                No me hago responsable de daños directos o indirectos que puedan surgir del uso de este sitio web o de la imposibilidad de acceder a él.
-              </p>
+                <motion.div {...fadeInUp} transition={{ duration: 0.5, delay: 0.6 }}>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">4. Limitación de Responsabilidad</h2>
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    No me hago responsable de daños directos o indirectos que puedan surgir del uso de este sitio web o de la imposibilidad de acceder a él.
+                  </p>
+                </motion.div>
 
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">5. Modificaciones</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Me reservo el derecho de modificar estos términos en cualquier momento. Los cambios entrarán en vigor inmediatamente después de su publicación en el sitio.
-              </p>
+                <motion.div {...fadeInUp} transition={{ duration: 0.5, delay: 0.7 }}>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">5. Modificaciones</h2>
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    Me reservo el derecho de modificar estos términos en cualquier momento. Los cambios entrarán en vigor inmediatamente después de su publicación en el sitio.
+                  </p>
+                </motion.div>
 
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">6. Contacto</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Si tienes preguntas sobre estos términos, puedes contactarme a través de los medios proporcionados en la sección de contacto.
-              </p>
-            </>
-          ) : (
-            <>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Last updated: {new Date().toLocaleDateString("en-US")}
-              </p>
+                <motion.div {...fadeInUp} transition={{ duration: 0.5, delay: 0.8 }}>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">6. Contacto</h2>
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    Si tienes preguntas sobre estos términos, puedes contactarme a través de los medios proporcionados en la sección de contacto.
+                  </p>
+                </motion.div>
+              </>
+            ) : (
+              <>
+                <motion.p 
+                  className="text-gray-600 dark:text-gray-400 mb-6"
+                  {...fadeInUp}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                >
+                  Last updated: {new Date().toLocaleDateString("en-US")}
+                </motion.p>
 
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">1. Acceptance of Terms</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                By accessing and using this website, you agree to be bound by these terms and conditions of use. If you do not agree with any part of these terms, you should not use this site.
-              </p>
+                <motion.div {...fadeInUp} transition={{ duration: 0.5, delay: 0.3 }}>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">1. Acceptance of Terms</h2>
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    By accessing and using this website, you agree to be bound by these terms and conditions of use. If you do not agree with any part of these terms, you should not use this site.
+                  </p>
+                </motion.div>
 
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">2. Use of the Site</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                This website is a professional portfolio intended to showcase my skills, projects, and experience as a developer. The content is for informational purposes only.
-              </p>
+                <motion.div {...fadeInUp} transition={{ duration: 0.5, delay: 0.4 }}>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">2. Use of the Site</h2>
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    This website is a professional portfolio intended to showcase my skills, projects, and experience as a developer. The content is for informational purposes only.
+                  </p>
+                </motion.div>
 
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">3. Intellectual Property</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                All content on this site, including text, graphics, logos, and code, is my property or I have a license to use it. Copying, modifying, or distributing the content without prior authorization is not permitted.
-              </p>
+                <motion.div {...fadeInUp} transition={{ duration: 0.5, delay: 0.5 }}>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">3. Intellectual Property</h2>
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    All content on this site, including text, graphics, logos, and code, is my property or I have a license to use it. Copying, modifying, or distributing the content without prior authorization is not permitted.
+                  </p>
+                </motion.div>
 
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">4. Limitation of Liability</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                I am not responsible for direct or indirect damages that may arise from the use of this website or the inability to access it.
-              </p>
+                <motion.div {...fadeInUp} transition={{ duration: 0.5, delay: 0.6 }}>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">4. Limitation of Liability</h2>
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    I am not responsible for direct or indirect damages that may arise from the use of this website or the inability to access it.
+                  </p>
+                </motion.div>
 
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">5. Modifications</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                I reserve the right to modify these terms at any time. Changes will take effect immediately after being published on the site.
-              </p>
+                <motion.div {...fadeInUp} transition={{ duration: 0.5, delay: 0.7 }}>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">5. Modifications</h2>
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    I reserve the right to modify these terms at any time. Changes will take effect immediately after being published on the site.
+                  </p>
+                </motion.div>
 
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">6. Contact</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                If you have questions about these terms, you can contact me through the means provided in the contact section.
-              </p>
-            </>
-          )}
+                <motion.div {...fadeInUp} transition={{ duration: 0.5, delay: 0.8 }}>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">6. Contact</h2>
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    If you have questions about these terms, you can contact me through the means provided in the contact section.
+                  </p>
+                </motion.div>
+              </>
+            )}
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+      <Footer />
+    </>
   )
 }

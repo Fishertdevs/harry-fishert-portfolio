@@ -469,7 +469,7 @@ const Experience = () => {
                         color: currentProject.color
                       }}
                     >
-                      <a href={currentProject.demo} target="_blank" rel="noopener noreferrer">
+                      <a href={currentProject.demo} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">
                         {language === "es" ? "Ver proyecto" : "View project"}
                       </a>
                     </Button>

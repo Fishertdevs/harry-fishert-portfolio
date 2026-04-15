@@ -77,7 +77,7 @@ const Navbar = () => {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus-visible:outline-none ${
                     isActive(item.href)
                       ? "text-primary bg-primary/10"
                       : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white"
@@ -116,7 +116,7 @@ const Navbar = () => {
                   onClick={() => toggleLanguage("es")}
                   className={language === "es" ? "bg-primary/10 text-primary" : ""}
                 >
-                  Espanol
+                  Español
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => toggleLanguage("en")}
@@ -187,7 +187,7 @@ const Navbar = () => {
                     onClick={() => toggleLanguage("es")}
                     className={language === "es" ? "bg-primary/10 text-primary" : ""}
                   >
-                    Espanol
+                    Español
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => toggleLanguage("en")}
