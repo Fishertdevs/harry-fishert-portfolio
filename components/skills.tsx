@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { ArrowRight } from "lucide-react"
+
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/lib/language-context"
 import { usePortfolio } from "@/lib/portfolio-context"
@@ -306,11 +306,10 @@ const Skills = () => {
                   <Button
                     asChild
                     size="sm"
-                    className="bg-primary hover:bg-primary/90 text-white rounded-lg px-4 md:px-6 py-1.5 md:py-2 flex items-center gap-2 text-xs md:text-sm"
+                    className="bg-primary hover:bg-primary/90 text-white rounded-lg px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm"
                   >
                     <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
                       {language === "es" ? "Conoce más" : "Learn more"}
-                      <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
                     </a>
                   </Button>
                 </div>

@@ -70,6 +70,18 @@ const Education = () => {
           ],
           color: "#f59e0b",
           progressContext: "Conocimientos en desarrollo"
+        },
+        {
+          title: "Inteligencia Artificial y",
+          highlight: "Redes Neuronales",
+          percentage: 80,
+          features: [
+            "Platzi (2026)",
+            "Fundamentos de IA y aprendizaje profundo.",
+            "Implementación de modelos de redes neuronales."
+          ],
+          color: "#78350f",
+          progressContext: "Dominio en técnicas de IA"
         }
       ]
     : [
@@ -132,6 +144,18 @@ const Education = () => {
           ],
           color: "#f59e0b",
           progressContext: "Knowledge in development"
+        },
+        {
+          title: "Artificial Intelligence and",
+          highlight: "Neural Networks",
+          percentage: 80,
+          features: [
+            "Platzi (2026)",
+            "AI fundamentals and deep learning.",
+            "Implementation of neural network models."
+          ],
+          color: "#78350f",
+          progressContext: "Mastery in AI techniques"
         }
       ]
 
@@ -201,7 +225,7 @@ const Education = () => {
     )
   }
 
-  const sectionTitle = language === "es" ? "Trayectoria Académica" : "Academic Path"
+  const sectionTitle = language === "es" ? "Trayectoria Académica y Certificaciones" : "Academic Path and Certifications"
   const sectionSubtitle = language === "es" 
     ? "Formación orientada al desarrollo de software, con enfoque en soluciones prácticas y escalables."
     : "Training focused on software development, with emphasis on practical and scalable solutions."

@@ -383,13 +383,25 @@ const Experience = () => {
               <div className="text-center order-2 md:order-1">
                 {/* Title with star for featured */}
                 <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-1 md:mb-2 text-center">
-                  <span className="block">{currentProject.title}</span>
-                  <span className="inline-flex items-center gap-1">
-                    <span style={{ color: currentProject.color }}>{currentProject.highlight}</span>
-                    {currentProject.featured && (
-                      <Star className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500 fill-amber-500" />
-                    )}
-                  </span>
+                  {["Mi Kaza", "Tender", "AlterEgo", "MC"].includes(currentProject.title) ? (
+                    <span className="inline-flex items-center justify-center gap-1 flex-wrap">
+                      <span>{currentProject.title}</span>
+                      <span style={{ color: currentProject.color }}>{currentProject.highlight}</span>
+                      {currentProject.featured && (
+                        <Star className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500 fill-amber-500" />
+                      )}
+                    </span>
+                  ) : (
+                    <>
+                      <span className="block">{currentProject.title}</span>
+                      <span className="inline-flex items-center gap-1">
+                        <span style={{ color: currentProject.color }}>{currentProject.highlight}</span>
+                        {currentProject.featured && (
+                          <Star className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500 fill-amber-500" />
+                        )}
+                      </span>
+                    </>
+                  )}
                 </h3>
 
                 {/* Role and period */}
