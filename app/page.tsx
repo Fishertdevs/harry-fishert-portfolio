@@ -89,11 +89,11 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground flex flex-col">
       <Navbar />
-      <main>
+      <main className="flex-1">
         {/* Hero Section */}
-        <section id="home" ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <section id="home" ref={heroRef} className="relative flex items-center justify-center py-16 md:py-20 overflow-hidden">
           <motion.div className="absolute inset-0 z-0" variants={backgroundVariants} initial="hidden" animate="visible">
             <div className="absolute inset-0 bg-gradient-to-b from-blue-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800"></div>
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.1),transparent_70%)]"></div>

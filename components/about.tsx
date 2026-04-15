@@ -37,7 +37,7 @@ const About = () => {
     <section 
       id="about" 
       ref={sectionRef} 
-      className="flex flex-col justify-center min-h-[calc(100vh-4rem)] py-6 md:py-10 bg-white dark:bg-gray-900 overflow-hidden"
+      className="flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden"
     >
       <div className="container mx-auto px-4">
         <motion.div
