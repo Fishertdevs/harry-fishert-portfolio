@@ -10,12 +10,12 @@ import { motion, AnimatePresence } from "framer-motion"
 
 // Colores para cada proyecto
 const projectColors = [
-  "#10b981", // Verde esmeralda - Picapastos
-  "#8b5cf6", // Violeta - AlterEgo
-  "#0ea5e9", // Azul cielo - Mi Kaza
-  "#f59e0b", // Ámbar - Tender Go
-  "#ef4444", // Rojo - MC-Arquitectos
-  "#ec4899", // Rosa - Club Sacrifice
+  "#ef0000", // Rojo puro - Picapastos
+  "#722f37", // Vinotinto - AlterEgo
+  "#7c3aed", // Morado semioscuro - Mi Kaza
+  "#1e3a5f", // Azul oscuro - Tender Go
+  "#3b82f6", // Azul - MC-Arquitectos
+  "#991b1b", // Rojo oscuro - Club Sacrifice Powerlifting
 ]
 
 // Circular progress component - same style as Skills section
@@ -73,8 +73,8 @@ const Experience = () => {
   const projects = language === "es"
     ? [
         {
-          title: "Picapastos y Molinos",
-          highlight: "Vilar",
+          title: "Picapastos",
+          highlight: "y Molinos Vilar",
           role: "Web Developer",
           period: "Dic 2025 – Feb 2026",
           duration: "3 meses",
@@ -125,7 +125,7 @@ const Experience = () => {
           technologies: ["Next.js", "React", "Supabase", "PostgreSQL"],
           scope: "Plataforma de alojamiento con búsqueda avanzada, sistema de reservas y gestión de propiedades en tiempo real.",
           hasGithub: false,
-          demo: "#",
+          demo: "https://mi-kaza-rental.vercel.app",
           featured: false,
           color: projectColors[2],
         },
@@ -189,8 +189,8 @@ const Experience = () => {
       ]
     : [
         {
-          title: "Picapastos y Molinos",
-          highlight: "Vilar",
+          title: "Picapastos",
+          highlight: "y Molinos Vilar",
           role: "Web Developer",
           period: "Dec 2025 – Feb 2026",
           duration: "3 months",
@@ -241,7 +241,7 @@ const Experience = () => {
           technologies: ["Next.js", "React", "Supabase", "PostgreSQL"],
           scope: "Housing platform with advanced search, booking system and real-time property management.",
           hasGithub: false,
-          demo: "#",
+          demo: "https://mi-kaza-rental.vercel.app",
           featured: false,
           color: projectColors[2],
         },
@@ -313,11 +313,11 @@ const Experience = () => {
     return () => clearInterval(interval)
   }, [projects.length])
 
-  // Auto-play carousel for metrics (one at a time)
+  // Auto-play carousel for metrics (one at a time) - slower for better visualization
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentMetricIndex((prev) => (prev + 1) % 3)
-    }, 2000)
+    }, 4000)
     return () => clearInterval(interval)
   }, [])
 
@@ -362,8 +362,8 @@ const Experience = () => {
           </h2>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base">
             {language === "es"
-              ? "Proyectos reales con resultados tangibles para clientes y empresas."
-              : "Real projects with tangible results for clients and businesses."}
+              ? "Desarrollo de soluciones full stack basadas en problemas reales y enfocadas en entornos de producción."
+              : "Development of full stack solutions based on real problems and focused on production environments."}
           </p>
           <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mt-3 md:mt-4"></div>
         </motion.div>
@@ -412,7 +412,7 @@ const Experience = () => {
                 </p>
 
                 {/* Technologies */}
-                <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2 mb-3 md:mb-4">
+                <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
                   {currentProject.technologies.map((tech, index) => (
                     <span
                       key={index}
@@ -426,15 +426,19 @@ const Experience = () => {
                     </span>
                   ))}
                 </div>
+              </div>
 
-                {/* Buttons - conditional based on project */}
-                <div className="flex flex-wrap justify-center gap-2 md:gap-3">
+              {/* Circular progress - ONE at a time with carousel effect */}
+              <div className="flex flex-col items-center gap-2 md:gap-3 order-1 md:order-2">
+                {/* Buttons - above the graph */}
+                <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-2">
                   {/* GitHub button - only for MC-Arquitectos */}
                   {currentProject.hasGithub && (
                     <Button
                       asChild
+                      variant="ghost"
                       size="sm"
-                      className="bg-[#24292e] hover:bg-[#24292e]/90 text-white rounded-lg px-3 sm:px-4 md:px-5 py-1.5 md:py-2 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm"
+                      className="rounded-lg px-3 sm:px-4 md:px-5 py-1 md:py-1.5 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-700 dark:text-gray-300 hover:bg-transparent"
                     >
                       <a href={portfolioData.github} target="_blank" rel="noopener noreferrer">
                         <Github className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -446,25 +450,20 @@ const Experience = () => {
                   {currentProject.demo !== "#" && (
                     <Button
                       asChild
-                      variant="outline"
+                      variant="ghost"
                       size="sm"
-                      className="rounded-lg px-3 sm:px-4 md:px-5 py-1.5 md:py-2 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm"
+                      className="rounded-lg px-3 sm:px-4 md:px-5 py-1 md:py-1.5 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm hover:bg-transparent"
                       style={{ 
-                        borderColor: currentProject.color,
                         color: currentProject.color
                       }}
                     >
                       <a href={currentProject.demo} target="_blank" rel="noopener noreferrer">
                         {language === "es" ? "Ver proyecto" : "View project"}
-                        <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
+                        <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
                       </a>
                     </Button>
                   )}
                 </div>
-              </div>
-
-              {/* Circular progress - ONE at a time with carousel effect */}
-              <div className="flex flex-col items-center gap-2 md:gap-3 order-1 md:order-2">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={`${currentSlide}-${currentMetricIndex}`}
@@ -559,7 +558,7 @@ const Experience = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <p className="text-gray-600 dark:text-gray-400 mb-2 md:mb-4 text-xs sm:text-sm">
+          <p className="text-gray-600 dark:text-gray-400 mb-2 md:mb-4 text-xs sm:text-sm max-w-md mx-auto">
             {language === "es"
               ? "Explora más proyectos y contribuciones en mi repositorio"
               : "Explore more projects and contributions in my repository"}
@@ -568,11 +567,11 @@ const Experience = () => {
             asChild
             variant="outline"
             size="sm"
-            className="border-gray-300 dark:border-gray-600 hover:border-[#24292e] hover:bg-[#24292e] hover:text-white transition-all rounded-lg px-4 md:px-6 py-1.5 md:py-2 flex items-center gap-1.5 md:gap-2 mx-auto text-xs sm:text-sm"
+            className="border-gray-300 dark:border-gray-600 hover:border-[#24292e] hover:bg-[#24292e] hover:text-white transition-all rounded-lg px-4 md:px-6 py-1.5 md:py-2 inline-flex items-center gap-1.5 md:gap-2 text-xs sm:text-sm w-auto"
           >
             <a href={portfolioData.github} target="_blank" rel="noopener noreferrer">
               <Github className="w-4 h-4 md:w-5 md:h-5" />
-              {language === "es" ? "Ver todo en GitHub" : "View all on GitHub"}
+              {language === "es" ? "Ver más en GitHub" : "View more on GitHub"}
               <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
             </a>
           </Button>
