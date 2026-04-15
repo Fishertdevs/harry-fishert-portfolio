@@ -3,12 +3,36 @@
 import { useState, useEffect } from "react"
 import { useLanguage } from "@/lib/language-context"
 import { motion, AnimatePresence } from "framer-motion"
-import { Star, ChevronLeft, ChevronRight, Plus, Send, X } from "lucide-react"
+import { Star, Plus, Send } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { reviewsStorage, type Review } from "@/lib/reviews-storage"
+
+// Generate avatar with initials
+const generateAvatar = (name: string) => {
+  const initials = name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2)
+
+  const colors = [
+    "bg-blue-500",
+    "bg-green-500",
+    "bg-purple-500",
+    "bg-pink-500",
+    "bg-indigo-500",
+    "bg-amber-500",
+    "bg-rose-500",
+    "bg-teal-500",
+  ]
+
+  const colorIndex = name.length % colors.length
+  return { initials, color: colors[colorIndex] }
+}
 
 const ReviewsCarousel = () => {
   const { language } = useLanguage()
@@ -20,7 +44,6 @@ const ReviewsCarousel = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
   
-  // Form state
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -55,24 +78,6 @@ const ReviewsCarousel = () => {
 
     return () => clearInterval(interval)
   }, [isAutoPlaying, reviews.length])
-
-  const handleDotClick = (index: number) => {
-    setCurrentSlide(index)
-    setIsAutoPlaying(false)
-    setTimeout(() => setIsAutoPlaying(true), 10000)
-  }
-
-  const handlePrev = () => {
-    setCurrentSlide((prev) => (prev - 1 + reviews.length) % reviews.length)
-    setIsAutoPlaying(false)
-    setTimeout(() => setIsAutoPlaying(true), 10000)
-  }
-
-  const handleNext = () => {
-    setCurrentSlide((prev) => (prev + 1) % reviews.length)
-    setIsAutoPlaying(false)
-    setTimeout(() => setIsAutoPlaying(true), 10000)
-  }
 
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -112,15 +117,9 @@ const ReviewsCarousel = () => {
     }
   }
 
-  const textVariants = {
-    enter: { opacity: 0, y: 30 },
-    center: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -30 }
-  }
-
   if (isLoading) {
     return (
-      <section className="py-20 bg-gray-50 dark:bg-gray-800/50">
+      <section className="py-12 md:py-16 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
@@ -133,24 +132,24 @@ const ReviewsCarousel = () => {
     )
   }
 
-  return (
-    <section className="py-20 bg-gray-50 dark:bg-gray-800/50 relative overflow-hidden">
-      {/* Decorative elements with portfolio colors */}
-      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-32 h-64 bg-gradient-to-r from-primary/10 to-transparent rounded-r-full blur-2xl" />
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-32 h-64 bg-gradient-to-l from-primary/10 to-transparent rounded-l-full blur-2xl" />
+  const currentReview = reviews[currentSlide]
+  const avatar = currentReview ? generateAvatar(currentReview.name) : null
 
+  return (
+    <section className="py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden">
       <div className="container mx-auto px-4">
+        {/* Header */}
         <motion.div
-          className="text-center mb-12"
+          className="text-center mb-6 md:mb-10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4 text-gray-900 dark:text-white">
             {language === "es" ? "Reseñas" : "Reviews"}
           </h2>
-          <div className="h-1 w-20 bg-primary mx-auto"></div>
+          <div className="h-1 w-12 md:w-20 bg-primary mx-auto"></div>
         </motion.div>
 
         {reviews.length === 0 ? (
@@ -160,95 +159,106 @@ const ReviewsCarousel = () => {
             </p>
           </div>
         ) : (
-          /* Carousel Container */
-          <div className="max-w-4xl mx-auto relative mb-12">
-            {/* Navigation Arrows */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handlePrev}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 z-10 rounded-full bg-white dark:bg-gray-900 shadow-lg hover:bg-gray-100 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700"
-              aria-label="Previous review"
-            >
-              <ChevronLeft className="h-6 w-6 text-primary" />
-            </Button>
+          /* Main content - Avatar LEFT, Text RIGHT (like professional profile) */
+          <div className="max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 lg:gap-12 items-center">
+              
+              {/* Avatar - LEFT side */}
+              <motion.div
+                className="flex justify-center items-center"
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+              >
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentSlide}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.5 }}
+                    className={`w-40 h-40 sm:w-52 sm:h-52 md:w-60 md:h-60 lg:w-72 lg:h-72 rounded-xl md:rounded-2xl ${avatar?.color} shadow-xl flex items-center justify-center`}
+                  >
+                    <span className="text-white text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold">
+                      {avatar?.initials}
+                    </span>
+                  </motion.div>
+                </AnimatePresence>
+              </motion.div>
 
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleNext}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 z-10 rounded-full bg-white dark:bg-gray-900 shadow-lg hover:bg-gray-100 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700"
-              aria-label="Next review"
-            >
-              <ChevronRight className="h-6 w-6 text-primary" />
-            </Button>
+              {/* Text Content - RIGHT side with Carousel */}
+              <motion.div
+                className="flex flex-col justify-center items-center text-center"
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+              >
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentSlide}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.5 }}
+                    className="text-center"
+                  >
+                    {/* Name */}
+                    <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-1 text-center">
+                      {currentReview?.name}
+                    </h3>
 
-            {/* Review Content */}
-            <div className="min-h-[280px] flex items-center justify-center px-8">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentSlide}
-                  variants={textVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
-                  className="text-center"
-                >
-                  {/* Stars */}
-                  <div className="flex justify-center gap-1 mb-6">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star
-                        key={star}
-                        className={`h-6 w-6 ${
-                          star <= reviews[currentSlide].rating
-                            ? "text-primary fill-primary"
-                            : "text-gray-300 dark:text-gray-600"
-                        }`}
-                      />
-                    ))}
-                  </div>
-
-                  {/* Review Text */}
-                  <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-200 font-medium mb-8 leading-relaxed max-w-3xl mx-auto">
-                    &ldquo;{reviews[currentSlide].review}&rdquo;
-                  </p>
-
-                  {/* Reviewer Info */}
-                  <div className="space-y-1">
-                    <p className="font-semibold text-gray-900 dark:text-white text-lg">
-                      {reviews[currentSlide].name}
+                    {/* Position & Company */}
+                    <p className="text-primary font-medium mb-1 md:mb-2 text-center text-xs sm:text-sm md:text-base">
+                      {currentReview?.position && currentReview?.company
+                        ? `${currentReview.position} - ${currentReview.company}`
+                        : currentReview?.company || currentReview?.position || ""}
                     </p>
-                    <p className="text-primary text-sm font-medium">
-                      {reviews[currentSlide].position && reviews[currentSlide].company
-                        ? `${reviews[currentSlide].position} - ${reviews[currentSlide].company}`
-                        : reviews[currentSlide].company || reviews[currentSlide].position || ""}
-                    </p>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
 
-            {/* Navigation Dots */}
-            <div className="flex justify-center gap-3 mt-8">
-              {reviews.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleDotClick(index)}
-                  className={`transition-all duration-300 rounded-full ${
-                    currentSlide === index 
-                      ? "w-8 h-3 bg-primary" 
-                      : "w-3 h-3 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500"
-                  }`}
-                  aria-label={`Go to review ${index + 1}`}
-                />
-              ))}
+                    {/* Stars */}
+                    <div className="flex justify-center gap-1 mb-3 md:mb-4">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          className={`h-4 w-4 sm:h-5 sm:w-5 ${
+                            star <= (currentReview?.rating || 5)
+                              ? "text-amber-400 fill-amber-400"
+                              : "text-gray-300 dark:text-gray-600"
+                          }`}
+                        />
+                      ))}
+                    </div>
+
+                    {/* Review Text */}
+                    <div className="relative min-h-[80px] sm:min-h-[100px] md:min-h-[120px]">
+                      <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-xs sm:text-sm md:text-base text-center italic">
+                        &ldquo;{currentReview?.review}&rdquo;
+                      </p>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Progress bar indicator */}
+                <div className="flex items-center gap-1.5 mt-3 md:mt-6 justify-center">
+                  {reviews.map((_, index) => (
+                    <div
+                      key={index}
+                      className={`h-1 rounded-full transition-all duration-500 ${
+                        index === currentSlide
+                          ? "w-6 md:w-8 bg-primary"
+                          : "w-1.5 md:w-2 bg-gray-300 dark:bg-gray-600"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </motion.div>
             </div>
           </div>
         )}
 
         {/* Add Review Button and Dialog */}
-        <div className="text-center">
+        <div className="text-center mt-8">
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <Button className="bg-primary hover:bg-primary/90 text-white gap-2">

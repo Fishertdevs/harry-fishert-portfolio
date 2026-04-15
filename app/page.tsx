@@ -12,6 +12,7 @@ import CVPreview from "@/components/cv-preview"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import ReviewsCarousel from "@/components/reviews-carousel"
+import Languages from "@/components/languages"
 
 export default function Home() {
   const { t, language } = useLanguage()
@@ -135,6 +136,13 @@ export default function Home() {
             initial="hidden"
             animate={isVisible ? "visible" : "hidden"}
           >
+            <motion.p 
+              className="text-sm md:text-base text-primary/80 uppercase tracking-widest mb-2"
+              variants={itemVariants}
+            >
+              {language === "es" ? "Bienvenido a mi portafolio" : "Welcome to my portfolio"}
+            </motion.p>
+
             <motion.h1 className="text-4xl md:text-6xl font-bold mb-4 gradient-text" variants={itemVariants}>
               {portfolioData.name}
             </motion.h1>
@@ -150,7 +158,9 @@ export default function Home() {
               className="text-gray-700 dark:text-gray-300 text-lg md:text-xl mb-8 max-w-2xl mx-auto"
               variants={itemVariants}
             >
-              {portfolioData.description}
+              {language === "es" 
+                ? "Transformo ideas en soluciones digitales. Explora mis proyectos, habilidades y experiencia en desarrollo de software."
+                : "I transform ideas into digital solutions. Explore my projects, skills and experience in software development."}
             </motion.p>
 
             <motion.div className="flex items-center justify-center" variants={itemVariants}>
@@ -200,6 +210,9 @@ export default function Home() {
 
           </motion.div>
         </section>
+
+        {/* Languages Section */}
+        <Languages />
 
         {/* Reviews Section */}
         <ReviewsCarousel />

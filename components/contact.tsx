@@ -117,9 +117,9 @@ const Contact = () => {
               href={portfolioData.whatsapp} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="group w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 transition-all duration-300 hover:bg-[#25D366] hover:scale-110"
+              className="group w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 transition-all duration-300 hover:bg-[#25D366] dark:hover:bg-[#25D366] hover:scale-110"
             >
-              <WhatsAppIcon className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 dark:text-gray-300 transition-colors duration-300 group-hover:text-white" />
+              <WhatsAppIcon className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 dark:text-gray-300 transition-colors duration-300 group-hover:text-white dark:group-hover:text-white" />
             </a>
           </div>
         </motion.div>

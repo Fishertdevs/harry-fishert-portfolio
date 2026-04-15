@@ -77,7 +77,7 @@ const Navbar = () => {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus-visible:outline-none ${
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors outline-none ring-0 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 ${
                     isActive(item.href)
                       ? "text-primary bg-primary/10"
                       : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white"
@@ -150,7 +150,7 @@ const Navbar = () => {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-3 py-2 rounded-md text-base font-medium ${
+                className={`px-3 py-2 rounded-md text-base font-medium outline-none ring-0 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 ${
                   isActive(item.href)
                     ? "text-primary bg-primary/10"
                     : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white"

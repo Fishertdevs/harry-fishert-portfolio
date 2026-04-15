@@ -85,9 +85,9 @@ const Footer = () => {
               target="_blank" 
               rel="noopener noreferrer" 
               aria-label="WhatsApp"
-              className="group w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center transition-all duration-300 hover:bg-[#25D366] active:bg-[#25D366] hover:scale-105"
+              className="group w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center transition-all duration-300 hover:bg-[#25D366] dark:hover:bg-[#25D366] active:bg-[#25D366] dark:active:bg-[#25D366] hover:scale-105"
             >
-              <WhatsAppIcon className="h-4 w-4 md:h-5 md:w-5 text-gray-700 dark:text-gray-300 group-hover:text-white group-active:text-white transition-colors" />
+              <WhatsAppIcon className="h-4 w-4 md:h-5 md:w-5 text-gray-700 dark:text-gray-300 group-hover:text-white dark:group-hover:text-white group-active:text-white dark:group-active:text-white transition-colors" />
             </a>
           </div>
 
