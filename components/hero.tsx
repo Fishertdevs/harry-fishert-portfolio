@@ -150,10 +150,10 @@ const Hero = () => {
           {/* Left side - Text content */}
           <div className="flex-1 flex flex-col justify-center items-center lg:items-start text-center lg:text-left">
             <motion.div variants={itemVariants} className="mb-8">
-              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-gray-900 dark:text-gray-900 leading-tight">
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight" style={{ color: '#000000' }}>
                 {language === "es" ? "Bienvenido" : "Welcome"}
               </h1>
-              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-gray-900 dark:text-gray-900 leading-tight">
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight" style={{ color: '#000000' }}>
                 {language === "es" ? "a mi portafolio" : "to my portfolio"}
               </h1>
             </motion.div>
