@@ -12,10 +12,10 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 const WhatsAppFloatingButton = () => {
   const { language } = useLanguage()
 
-  // Same message as "Solicitar cotizacion" in contact section
+  // Professional quote request message
   const whatsappMessage = language === "es"
-    ? "Hola Harry, vi tu portafolio y me gustaria solicitar una cotizacion para un proyecto. ¿Podrias ayudarme?"
-    : "Hi Harry, I saw your portfolio and I would like to request a quote for a project. Could you help me?"
+    ? "Estimado Harry, me comunico contigo tras revisar tu portafolio profesional. Estoy interesado en conocer mas sobre tus servicios de desarrollo y me gustaria solicitar una cotizacion personalizada para un proyecto. Quedo atento a tu disponibilidad para coordinar una reunion. Saludos cordiales."
+    : "Dear Harry, I am reaching out after reviewing your professional portfolio. I am interested in learning more about your development services and would like to request a personalized quote for a project. I look forward to your availability to schedule a meeting. Best regards."
 
   const whatsappLink = `https://api.whatsapp.com/send?phone=573112512939&text=${encodeURIComponent(whatsappMessage)}`
 

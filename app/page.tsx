@@ -167,9 +167,31 @@ export default function Home() {
                     <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight">
                       {language === "es" ? "Bienvenido" : "Welcome"}
                     </h1>
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight mb-4">
                       {language === "es" ? "a mi portafolio" : "to my portfolio"}
                     </h1>
+                    <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-400 mb-6">
+                      {language === "es" 
+                        ? "Arquitecturas Escalables | Testing Automatizado e IA | Rendimiento | SEO & UX"
+                        : "Scalable Architectures | Automated Testing & AI | Performance | SEO & UX"}
+                    </p>
+                    <div className="flex justify-center gap-3">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="rounded-lg px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm"
+                        onClick={() => setShowCVPreview(true)}
+                      >
+                        {language === "es" ? "Ver CV" : "View CV"}
+                      </Button>
+                      <Button
+                        size="sm"
+                        className="bg-primary hover:bg-primary/90 text-white rounded-lg px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm"
+                        onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })}
+                      >
+                        {language === "es" ? "Ver proyectos" : "View projects"}
+                      </Button>
+                    </div>
                   </div>
                   <div className="flex justify-center items-center order-1 md:order-2">
                     <div className="w-48 h-48 sm:w-60 sm:h-60 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-xl md:rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-xl">
@@ -183,7 +205,7 @@ export default function Home() {
                 </motion.div>
               )}
 
-              {/* Slide 2: Experience with skills-style layout */}
+              {/* Slide 2: Mi Stack de Trabajo */}
               {heroSlide === 1 && (
                 <motion.div
                   key="slide2"
@@ -194,204 +216,161 @@ export default function Home() {
                   className="flex flex-col items-center text-center"
                 >
                   <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4 text-gray-900 dark:text-white">
-                    {language === "es" 
-                      ? "Desarrollo de soluciones full stack"
-                      : "Full stack solutions development"}
+                    {language === "es" ? "Mi Stack de Trabajo" : "My Work Stack"}
                   </h2>
-                  <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base mb-6 md:mb-10">
+                  <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base mb-6 md:mb-8">
                     {language === "es" 
-                      ? "Experiencia disenando soluciones funcionales para proyectos en produccion, con enfasis en rendimiento, escalabilidad y experiencia de usuario."
-                      : "Experience designing functional solutions for production projects, with emphasis on performance, scalability and user experience."}
+                      ? "Implementacion de arquitecturas modernas para el desarrollo de soluciones integrales, escalables y orientadas a resultados."
+                      : "Implementation of modern architectures for the development of comprehensive, scalable and results-oriented solutions."}
                   </p>
-                  <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mb-6 md:mb-10"></div>
+                  <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mb-6 md:mb-8"></div>
                   
-                  {/* Skills-style grid layout */}
-                  <div className="max-w-2xl mx-auto">
-                    <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-4 md:gap-8 py-2 md:py-4">
-                      {/* Text content - centered */}
-                      <div className="text-center order-2 md:order-1">
-                        <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
-                          {language === "es" ? "Experiencia" : "Experience"}{" "}
-                          <span className="text-primary">{language === "es" ? "Full Stack" : "Full Stack"}</span>
-                        </h3>
-
-                        <ul className="space-y-1 md:space-y-2 mb-3 md:mb-6">
-                          <motion.li
-                            className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm md:text-base"
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
-                          >
-                            {language === "es" ? "+6 proyectos en produccion" : "+6 projects in production"}
-                          </motion.li>
-                          <motion.li
-                            className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm md:text-base"
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.3 }}
-                          >
-                            {language === "es" ? "JavaScript, TypeScript, Python" : "JavaScript, TypeScript, Python"}
-                          </motion.li>
-                          <motion.li
-                            className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm md:text-base"
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4 }}
-                          >
-                            {language === "es" ? "Enfoque en rendimiento y escalabilidad" : "Focus on performance and scalability"}
-                          </motion.li>
-                        </ul>
-
-                        <div className="flex justify-center gap-3">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="rounded-lg px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm"
-                            onClick={() => setShowCVPreview(true)}
-                          >
-                            {language === "es" ? "Ver CV" : "View CV"}
-                          </Button>
-                          <Button
-                            size="sm"
-                            className="bg-primary hover:bg-primary/90 text-white rounded-lg px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm"
-                            onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })}
-                          >
-                            {language === "es" ? "Ver proyectos" : "View projects"}
-                          </Button>
+                  {/* Stack Cards with Circular Progress */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto w-full">
+                    {/* Python Card */}
+                    <motion.div 
+                      className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-lg border border-gray-100 dark:border-gray-700"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <div className="flex flex-col items-center mb-4">
+                        <div className="relative" style={{ width: 80, height: 80 }}>
+                          <svg width={80} height={80} className="transform -rotate-90">
+                            <circle cx={40} cy={40} r={34} stroke="#e5e7eb" strokeWidth={5} fill="transparent" className="dark:stroke-gray-700" />
+                            <motion.circle
+                              cx={40}
+                              cy={40}
+                              r={34}
+                              stroke="#3776AB"
+                              strokeWidth={5}
+                              fill="transparent"
+                              strokeLinecap="round"
+                              initial={{ strokeDasharray: "0 214" }}
+                              animate={{ strokeDasharray: "182 214" }}
+                              transition={{ duration: 1.5, ease: "easeOut" }}
+                            />
+                          </svg>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-lg font-bold text-[#3776AB]">85%</span>
+                          </div>
                         </div>
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mt-3">Python</h3>
                       </div>
+                      <p className="text-xs text-primary font-semibold mb-1">
+                        {language === "es" ? "Enfoque:" : "Focus:"}
+                      </p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                        {language === "es" 
+                          ? "IA, Automatizacion de Testing y Backend"
+                          : "AI, Testing Automation and Backend"}
+                      </p>
+                      <p className="text-xs text-primary font-semibold mb-1">
+                        {language === "es" ? "Valor:" : "Value:"}
+                      </p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">
+                        {language === "es" 
+                          ? "Manejo de datos, modelos de IA y servicios seguros"
+                          : "Data handling, AI models and secure services"}
+                      </p>
+                    </motion.div>
 
-                      {/* Circular progress - RIGHT on desktop, top on mobile */}
-                      <div className="flex flex-col items-center gap-2 md:gap-3 order-1 md:order-2">
-                        {/* Mobile size */}
-                        <div className="block sm:hidden">
-                          <div className="relative" style={{ width: 100, height: 100 }}>
-                            <svg width={100} height={100} className="transform -rotate-90">
-                              <circle cx={50} cy={50} r={42} stroke="#e5e7eb" strokeWidth={6} fill="transparent" className="dark:stroke-gray-700" />
-                              <motion.circle
-                                cx={50}
-                                cy={50}
-                                r={42}
-                                stroke="#3b82f6"
-                                strokeWidth={6}
-                                fill="transparent"
-                                strokeLinecap="round"
-                                initial={{ strokeDasharray: "0 264" }}
-                                animate={{ strokeDasharray: "237.6 264" }}
-                                transition={{ duration: 1.5, ease: "easeOut" }}
-                              />
-                            </svg>
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <motion.span 
-                                className="text-xl font-bold text-primary"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.5 }}
-                              >
-                                90%
-                              </motion.span>
-                            </div>
+                    {/* TypeScript Card */}
+                    <motion.div 
+                      className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-lg border border-gray-100 dark:border-gray-700"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                    >
+                      <div className="flex flex-col items-center mb-4">
+                        <div className="relative" style={{ width: 80, height: 80 }}>
+                          <svg width={80} height={80} className="transform -rotate-90">
+                            <circle cx={40} cy={40} r={34} stroke="#e5e7eb" strokeWidth={5} fill="transparent" className="dark:stroke-gray-700" />
+                            <motion.circle
+                              cx={40}
+                              cy={40}
+                              r={34}
+                              stroke="#3178C6"
+                              strokeWidth={5}
+                              fill="transparent"
+                              strokeLinecap="round"
+                              initial={{ strokeDasharray: "0 214" }}
+                              animate={{ strokeDasharray: "192 214" }}
+                              transition={{ duration: 1.5, ease: "easeOut" }}
+                            />
+                          </svg>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-lg font-bold text-[#3178C6]">90%</span>
                           </div>
                         </div>
-                        {/* Tablet size */}
-                        <div className="hidden sm:block md:hidden">
-                          <div className="relative" style={{ width: 120, height: 120 }}>
-                            <svg width={120} height={120} className="transform -rotate-90">
-                              <circle cx={60} cy={60} r={52} stroke="#e5e7eb" strokeWidth={6} fill="transparent" className="dark:stroke-gray-700" />
-                              <motion.circle
-                                cx={60}
-                                cy={60}
-                                r={52}
-                                stroke="#3b82f6"
-                                strokeWidth={6}
-                                fill="transparent"
-                                strokeLinecap="round"
-                                initial={{ strokeDasharray: "0 327" }}
-                                animate={{ strokeDasharray: "294.3 327" }}
-                                transition={{ duration: 1.5, ease: "easeOut" }}
-                              />
-                            </svg>
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <motion.span 
-                                className="text-2xl font-bold text-primary"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.5 }}
-                              >
-                                90%
-                              </motion.span>
-                            </div>
-                          </div>
-                        </div>
-                        {/* Desktop size */}
-                        <div className="hidden md:block">
-                          <div className="relative" style={{ width: 140, height: 140 }}>
-                            <svg width={140} height={140} className="transform -rotate-90">
-                              <circle cx={70} cy={70} r={62} stroke="#e5e7eb" strokeWidth={8} fill="transparent" className="dark:stroke-gray-700" />
-                              <motion.circle
-                                cx={70}
-                                cy={70}
-                                r={62}
-                                stroke="#3b82f6"
-                                strokeWidth={8}
-                                fill="transparent"
-                                strokeLinecap="round"
-                                initial={{ strokeDasharray: "0 390" }}
-                                animate={{ strokeDasharray: "351 390" }}
-                                transition={{ duration: 1.5, ease: "easeOut" }}
-                              />
-                            </svg>
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <motion.span 
-                                className="text-3xl font-bold text-primary"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.5 }}
-                              >
-                                90%
-                              </motion.span>
-                            </div>
-                          </div>
-                        </div>
-                        <motion.p
-                          className="text-[10px] sm:text-xs md:text-sm font-medium text-center max-w-[100px] sm:max-w-[140px] md:max-w-[160px] leading-relaxed text-primary"
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 1.8, duration: 0.5, ease: "easeOut" }}
-                        >
-                          {language === "es" ? "Dominio en desarrollo de soluciones full stack" : "Mastery in full stack solution development"}
-                        </motion.p>
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mt-3">TypeScript</h3>
                       </div>
-                    </div>
+                      <p className="text-xs text-primary font-semibold mb-1">
+                        {language === "es" ? "Enfoque:" : "Focus:"}
+                      </p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                        {language === "es" 
+                          ? "Desarrollo escalable y tipado seguro"
+                          : "Scalable development and safe typing"}
+                      </p>
+                      <p className="text-xs text-primary font-semibold mb-1">
+                        {language === "es" ? "Valor:" : "Value:"}
+                      </p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">
+                        {language === "es" 
+                          ? "Mantenibilidad y calidad en proyectos grandes"
+                          : "Maintainability and quality in large projects"}
+                      </p>
+                    </motion.div>
+
+                    {/* JavaScript Card */}
+                    <motion.div 
+                      className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-lg border border-gray-100 dark:border-gray-700"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6 }}
+                    >
+                      <div className="flex flex-col items-center mb-4">
+                        <div className="relative" style={{ width: 80, height: 80 }}>
+                          <svg width={80} height={80} className="transform -rotate-90">
+                            <circle cx={40} cy={40} r={34} stroke="#e5e7eb" strokeWidth={5} fill="transparent" className="dark:stroke-gray-700" />
+                            <motion.circle
+                              cx={40}
+                              cy={40}
+                              r={34}
+                              stroke="#F7DF1E"
+                              strokeWidth={5}
+                              fill="transparent"
+                              strokeLinecap="round"
+                              initial={{ strokeDasharray: "0 214" }}
+                              animate={{ strokeDasharray: "192 214" }}
+                              transition={{ duration: 1.5, ease: "easeOut" }}
+                            />
+                          </svg>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-lg font-bold text-[#F7DF1E] drop-shadow-sm">90%</span>
+                          </div>
+                        </div>
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mt-3">JavaScript</h3>
+                      </div>
+                      <p className="text-xs text-primary font-semibold mb-1">
+                        {language === "es" ? "Enfoque:" : "Focus:"}
+                      </p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                        {language === "es" 
+                          ? "Interactividad y ecosistemas modernos"
+                          : "Interactivity and modern ecosystems"}
+                      </p>
+                      <p className="text-xs text-primary font-semibold mb-1">
+                        {language === "es" ? "Valor:" : "Value:"}
+                      </p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">
+                        {language === "es" 
+                          ? "Experiencias de usuario fluidas e interactivas"
+                          : "Smooth and interactive user experiences"}
+                      </p>
+                    </motion.div>
                   </div>
-                  
-                  {/* CV Preview Modal */}
-                  {showCVPreview && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setShowCVPreview(false)}>
-                      <div className="bg-white dark:bg-gray-900 rounded-xl p-4 max-w-4xl w-full mx-4 max-h-[90vh] overflow-hidden shadow-2xl" onClick={(e) => e.stopPropagation()}>
-                        <div className="flex justify-between items-center mb-4">
-                          <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                            {language === "es" ? "Vista previa del CV" : "CV Preview"}
-                          </h3>
-                          <div className="flex gap-2">
-                            <Button variant="default" size="sm" onClick={handleDownloadCV}>
-                              {language === "es" ? "Descargar" : "Download"}
-                            </Button>
-                            <Button variant="outline" size="sm" onClick={() => setShowCVPreview(false)}>
-                              {language === "es" ? "Cerrar" : "Close"}
-                            </Button>
-                          </div>
-                        </div>
-                        <div className="w-full h-[70vh] overflow-auto">
-                          <iframe 
-                            src="/cv/HARRY_FISHERT_DEV_2026.pdf" 
-                            className="w-full h-full border-0 rounded-lg"
-                            title="CV Preview"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -410,6 +389,40 @@ export default function Home() {
                 />
               ))}
             </div>
+
+            {/* CV Preview Modal */}
+            {showCVPreview && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setShowCVPreview(false)}>
+                <motion.div 
+                  className="bg-white dark:bg-gray-900 rounded-xl p-4 max-w-4xl w-full mx-4 max-h-[90vh] overflow-hidden shadow-2xl"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                      {language === "es" ? "Vista previa del CV" : "CV Preview"}
+                    </h3>
+                    <div className="flex gap-2">
+                      <Button variant="default" size="sm" onClick={handleDownloadCV}>
+                        {language === "es" ? "Descargar" : "Download"}
+                      </Button>
+                      <Button variant="outline" size="sm" onClick={() => setShowCVPreview(false)}>
+                        {language === "es" ? "Cerrar" : "Close"}
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="w-full h-[70vh] overflow-auto">
+                    <iframe 
+                      src="/cv/HARRY_FISHERT_DEV_2026.pdf" 
+                      className="w-full h-full border-0 rounded-lg"
+                      title="CV Preview"
+                    />
+                  </div>
+                </motion.div>
+              </div>
+            )}
           </motion.div>
         </section>
 

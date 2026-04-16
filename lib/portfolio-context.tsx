@@ -63,7 +63,7 @@ const defaultPortfolioData: PortfolioData = {
   github: "https://github.com/Fishertdevs",
   instagram: "https://instagram.com/",
   whatsapp:
-    "https://api.whatsapp.com/send?phone=573112512939&text=Hola%20Harry,%20vi%20tu%20portafolio%20y%20me%20gustaría%20hablar%20contigo%20sobre%20una%20oportunidad",
+    "https://api.whatsapp.com/send?phone=573112512939&text=Estimado%20Harry,%20me%20comunico%20contigo%20tras%20revisar%20tu%20portafolio%20profesional.%20Estoy%20interesado%20en%20conocer%20mas%20sobre%20tus%20servicios%20de%20desarrollo%20y%20me%20gustaria%20solicitar%20una%20cotizacion%20personalizada%20para%20un%20proyecto.%20Quedo%20atento%20a%20tu%20disponibilidad%20para%20coordinar%20una%20reunion.%20Saludos%20cordiales.",
 
   // Sobre mí
   aboutParagraph1:
