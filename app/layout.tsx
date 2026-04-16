@@ -12,9 +12,52 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Harry Lasso - Estudiante Ingeniería de Sistemas Desarrollador Full Stack",
-  description: "Portfolio personal de Harry Fishert Lasso Hernández, estudiante de Ingeniería de Sistemas",
-    generator: 'v0.dev'
+  title: "Harry | Desarrollador Full Stack",
+  description: "Desarrollador Full Stack y Arquitecto de Software especializado en Python, React, Next.js y Node.js. Diseño soluciones web escalables y sistemas en produccion.",
+  keywords: ["Desarrollador Full Stack", "React", "Next.js", "Node.js", "Python", "Arquitecto de Software", "Desarrollo Web", "Sistemas SaaS", "E-commerce", "Colombia"],
+  authors: [{ name: "Harry Fishert Lasso Hernandez" }],
+  creator: "Harry Fishert Lasso Hernandez",
+  publisher: "Harry Fishert Lasso Hernandez",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "es_CO",
+    url: "https://harryfishert.dev",
+    siteName: "Harry | Desarrollador Full Stack",
+    title: "Harry | Desarrollador Full Stack",
+    description: "Desarrollador Full Stack y Arquitecto de Software especializado en Python, React, Next.js y Node.js. Diseño soluciones web escalables y sistemas en produccion.",
+    images: [
+      {
+        url: "/images/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Harry Fishert - Desarrollador Full Stack",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Harry | Desarrollador Full Stack",
+    description: "Desarrollador Full Stack y Arquitecto de Software especializado en Python, React, Next.js y Node.js.",
+    images: ["/images/og-image.png"],
+  },
+  verification: {
+    google: "google-site-verification-code",
+  },
+  alternates: {
+    canonical: "https://harryfishert.dev",
+  },
+  generator: 'v0.dev'
 }
 
 export default function RootLayout({

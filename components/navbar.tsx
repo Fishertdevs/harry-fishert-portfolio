@@ -122,7 +122,7 @@ const Navbar = () => {
                   onClick={() => toggleLanguage("en")}
                   className={language === "en" ? "bg-primary/10 text-primary" : ""}
                 >
-                  English
+                  {language === "es" ? "Ingles" : "English"}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -161,7 +161,7 @@ const Navbar = () => {
                   onClick={() => toggleLanguage("en")}
                   className={language === "en" ? "bg-primary/10 text-primary" : ""}
                 >
-                  English
+                  {language === "es" ? "Ingles" : "English"}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

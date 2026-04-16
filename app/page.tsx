@@ -2,17 +2,14 @@
 
 import { useEffect, useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
-import { FileDown, FileText, Eye } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 import { usePortfolio } from "@/lib/portfolio-context"
 import { motion, AnimatePresence } from "framer-motion"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import CVPreview from "@/components/cv-preview"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import ReviewsCarousel from "@/components/reviews-carousel"
 import Languages from "@/components/languages"
+import WhatsAppFloatingButton from "@/components/whatsapp-floating-button"
 
 export default function Home() {
   const { t, language } = useLanguage()
@@ -22,7 +19,7 @@ export default function Home() {
   const [isVisible, setIsVisible] = useState(false)
   const heroRef = useRef<HTMLDivElement>(null)
   const [heroSlide, setHeroSlide] = useState(0)
-  const totalHeroSlides = 3
+  const totalHeroSlides = 2
 
   // Auto-rotate hero slides
   useEffect(() => {
@@ -147,35 +144,8 @@ export default function Home() {
             animate={isVisible ? "visible" : "hidden"}
           >
             <AnimatePresence mode="wait">
-              {/* Slide 1: Welcome + Image */}
+              {/* Slide 1: About + Skills */}
               {heroSlide === 0 && (
-                <motion.div
-                  key="slide1"
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -50 }}
-                  transition={{ duration: 0.5 }}
-                  className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center"
-                >
-                  <div className="flex flex-col justify-center text-center md:text-left order-2 md:order-1">
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 gradient-text">
-                      {language === "es" ? "Bienvenido a mi portafolio" : "Welcome to my portfolio"}
-                    </h1>
-                  </div>
-                  <div className="flex justify-center items-center order-1 md:order-2">
-                    <div className="w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-96 lg:h-96 overflow-hidden">
-                      <img
-                        src="/images/hero-avatar.webp"
-                        alt={portfolioData.name}
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Slide 2: About + Skills */}
-              {heroSlide === 1 && (
                 <motion.div
                   key="slide2"
                   initial={{ opacity: 0, x: 50 }}
@@ -218,8 +188,8 @@ export default function Home() {
                 </motion.div>
               )}
 
-              {/* Slide 3: Experience + CTA */}
-              {heroSlide === 2 && (
+              {/* Slide 2: Experience + CTA */}
+              {heroSlide === 1 && (
                 <motion.div
                   key="slide3"
                   initial={{ opacity: 0, x: 50 }}
@@ -267,7 +237,7 @@ export default function Home() {
 
             {/* Carousel Indicators */}
             <div className="flex justify-center gap-2 mt-8">
-              {[0, 1, 2].map((index) => (
+              {[0, 1].map((index) => (
                 <button
                   key={index}
                   onClick={() => setHeroSlide(index)}
@@ -290,6 +260,7 @@ export default function Home() {
 
       </main>
       <Footer />
+      <WhatsAppFloatingButton />
     </div>
   )
 }
