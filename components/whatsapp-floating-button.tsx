@@ -1,6 +1,5 @@
 "use client"
 
-import { motion } from "framer-motion"
 import { useLanguage } from "@/lib/language-context"
 
 // WhatsApp Official SVG Icon
@@ -21,23 +20,15 @@ const WhatsAppFloatingButton = () => {
   const whatsappLink = `https://api.whatsapp.com/send?phone=573112512939&text=${encodeURIComponent(whatsappMessage)}`
 
   return (
-    <motion.a
+    <a
       href={whatsappLink}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-24 right-6 z-50 flex items-center justify-center w-14 h-14 bg-[#25D366] rounded-full shadow-lg hover:shadow-xl transition-shadow"
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ delay: 1, type: "spring", stiffness: 200 }}
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.95 }}
+      className="fixed bottom-24 right-6 z-50 flex items-center justify-center w-14 h-14 bg-[#25D366] rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all"
       aria-label="WhatsApp"
     >
       <WhatsAppIcon className="w-8 h-8 text-white" />
-      
-      {/* Pulse animation */}
-      <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-25"></span>
-    </motion.a>
+    </a>
   )
 }
 

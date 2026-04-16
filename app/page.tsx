@@ -144,42 +144,28 @@ export default function Home() {
             animate={isVisible ? "visible" : "hidden"}
           >
             <AnimatePresence mode="wait">
-              {/* Slide 1: About + Skills */}
+              {/* Slide 1: Bienvenido + Image */}
               {heroSlide === 0 && (
                 <motion.div
-                  key="slide2"
+                  key="slide1"
                   initial={{ opacity: 0, x: 50 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -50 }}
                   transition={{ duration: 0.5 }}
                   className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center"
                 >
-                  <div className="flex flex-col justify-center text-center md:text-left order-2 md:order-1">
-                    <p className="text-sm md:text-base text-primary/80 uppercase tracking-widest mb-2">
-                      {language === "es" ? "Desarrollador Full Stack" : "Full Stack Developer"}
-                    </p>
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-gray-900 dark:text-white">
-                      {language === "es" 
-                        ? "Transformo ideas en soluciones digitales"
-                        : "I transform ideas into digital solutions"}
-                    </h2>
-                    <p className="text-gray-700 dark:text-gray-300 text-base md:text-lg mb-6">
-                      {language === "es" 
-                        ? "Especializado en React, Next.js, Node.js y arquitecturas escalables. Creo aplicaciones web modernas y eficientes."
-                        : "Specialized in React, Next.js, Node.js and scalable architectures. I create modern and efficient web applications."}
-                    </p>
-                    <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-                      {["React", "Next.js", "TypeScript", "Node.js", "Supabase"].map((tech) => (
-                        <span key={tech} className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
+                  <div className="flex flex-col justify-center text-center order-2 md:order-1">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight">
+                      {language === "es" ? "Bienvenido" : "Welcome"}
+                    </h1>
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-red-600 leading-tight">
+                      {language === "es" ? "a mi portafolio" : "to my portfolio"}
+                    </h1>
                   </div>
                   <div className="flex justify-center items-center order-1 md:order-2">
-                    <div className="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-80 lg:h-80 rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-2xl">
+                    <div className="w-48 h-48 sm:w-60 sm:h-60 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-xl md:rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-xl">
                       <img
-                        src="/images/avatar.png"
+                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Gemini_Generated_Image_fg8qd1fg8qd1fg8q-Photoroom-ujx6hQDY5lsfZDeUo0fk2OVZurdv7L.webp"
                         alt={portfolioData.name}
                         className="w-full h-full object-cover object-top"
                       />
@@ -188,48 +174,109 @@ export default function Home() {
                 </motion.div>
               )}
 
-              {/* Slide 2: Experience + CTA */}
+              {/* Slide 2: Experience with circular charts */}
               {heroSlide === 1 && (
                 <motion.div
-                  key="slide3"
+                  key="slide2"
                   initial={{ opacity: 0, x: 50 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -50 }}
                   transition={{ duration: 0.5 }}
-                  className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center"
+                  className="flex flex-col items-center text-center"
                 >
-                  <div className="flex flex-col justify-center text-center md:text-left order-2 md:order-1">
-                    <p className="text-sm md:text-base text-primary/80 uppercase tracking-widest mb-2">
-                      {language === "es" ? "Experiencia comprobada" : "Proven experience"}
-                    </p>
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-gray-900 dark:text-white">
-                      {language === "es" 
-                        ? "Proyectos que generan resultados"
-                        : "Projects that generate results"}
-                    </h2>
-                    <p className="text-gray-700 dark:text-gray-300 text-base md:text-lg mb-6">
-                      {language === "es" 
-                        ? "Desde plataformas de renta hasta sistemas de e-commerce con WhatsApp integrado. Cada proyecto diseñado para impulsar tu negocio."
-                        : "From rental platforms to e-commerce systems with integrated WhatsApp. Each project designed to boost your business."}
-                    </p>
-                    <div className="flex items-center justify-center md:justify-start gap-4">
-                      <Button 
-                        variant="default"
-                        size="lg"
-                        onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })}
-                      >
-                        {language === "es" ? "Ver proyectos" : "View projects"}
-                      </Button>
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-gray-900 dark:text-white">
+                    {language === "es" 
+                      ? "Desarrollo de soluciones full stack"
+                      : "Full stack solutions development"}
+                  </h2>
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 text-red-600">
+                    {language === "es" 
+                      ? "en entornos de produccion"
+                      : "in production environments"}
+                  </h3>
+                  <p className="text-gray-700 dark:text-gray-300 text-sm md:text-base mb-8 max-w-3xl">
+                    {language === "es" 
+                      ? "Experiencia disenando soluciones funcionales para proyectos en produccion, con enfasis en rendimiento, escalabilidad y experiencia de usuario."
+                      : "Experience designing functional solutions for production projects, with emphasis on performance, scalability and user experience."}
+                  </p>
+                  
+                  {/* Circular Charts Section */}
+                  <div className="flex flex-wrap justify-center gap-6 md:gap-8 mb-8">
+                    {/* Projects Chart */}
+                    <div className="flex flex-col items-center">
+                      <div className="relative w-24 h-24 md:w-28 md:h-28">
+                        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                          <circle cx="50" cy="50" r="40" fill="none" stroke="#e5e7eb" strokeWidth="8" className="dark:stroke-gray-700" />
+                          <circle cx="50" cy="50" r="40" fill="none" stroke="#dc2626" strokeWidth="8" strokeLinecap="round" strokeDasharray="251.2" strokeDashoffset="0" />
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-lg md:text-xl font-bold text-red-600">+6</span>
+                        </div>
+                      </div>
+                      <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mt-2 text-center max-w-[100px]">
+                        {language === "es" ? "Proyectos en produccion" : "Projects in production"}
+                      </p>
+                    </div>
+                    
+                    {/* JavaScript Chart */}
+                    <div className="flex flex-col items-center">
+                      <div className="relative w-24 h-24 md:w-28 md:h-28">
+                        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                          <circle cx="50" cy="50" r="40" fill="none" stroke="#e5e7eb" strokeWidth="8" className="dark:stroke-gray-700" />
+                          <circle cx="50" cy="50" r="40" fill="none" stroke="#f59e0b" strokeWidth="8" strokeLinecap="round" strokeDasharray="251.2" strokeDashoffset="25.12" />
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-base md:text-lg font-bold text-amber-500">JS</span>
+                        </div>
+                      </div>
+                      <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mt-2">JavaScript</p>
+                    </div>
+                    
+                    {/* TypeScript Chart */}
+                    <div className="flex flex-col items-center">
+                      <div className="relative w-24 h-24 md:w-28 md:h-28">
+                        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                          <circle cx="50" cy="50" r="40" fill="none" stroke="#e5e7eb" strokeWidth="8" className="dark:stroke-gray-700" />
+                          <circle cx="50" cy="50" r="40" fill="none" stroke="#3b82f6" strokeWidth="8" strokeLinecap="round" strokeDasharray="251.2" strokeDashoffset="50.24" />
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-base md:text-lg font-bold text-blue-500">TS</span>
+                        </div>
+                      </div>
+                      <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mt-2">TypeScript</p>
+                    </div>
+                    
+                    {/* Python Chart */}
+                    <div className="flex flex-col items-center">
+                      <div className="relative w-24 h-24 md:w-28 md:h-28">
+                        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                          <circle cx="50" cy="50" r="40" fill="none" stroke="#e5e7eb" strokeWidth="8" className="dark:stroke-gray-700" />
+                          <circle cx="50" cy="50" r="40" fill="none" stroke="#10b981" strokeWidth="8" strokeLinecap="round" strokeDasharray="251.2" strokeDashoffset="37.68" />
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-base md:text-lg font-bold text-emerald-500">Py</span>
+                        </div>
+                      </div>
+                      <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mt-2">Python</p>
                     </div>
                   </div>
-                  <div className="flex justify-center items-center order-1 md:order-2">
-                    <div className="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-80 lg:h-80 rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-2xl">
-                      <img
-                        src="/images/avatar.png"
-                        alt={portfolioData.name}
-                        className="w-full h-full object-cover object-top"
-                      />
-                    </div>
+                  
+                  {/* CTA Buttons */}
+                  <div className="flex items-center justify-center gap-4">
+                    <Button 
+                      variant="outline"
+                      size="lg"
+                      onClick={handleDownloadCV}
+                    >
+                      {language === "es" ? "Ver CV" : "View CV"}
+                    </Button>
+                    <Button 
+                      variant="default"
+                      size="lg"
+                      onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })}
+                    >
+                      {language === "es" ? "Ver proyectos" : "View projects"}
+                    </Button>
                   </div>
                 </motion.div>
               )}
