@@ -25,7 +25,7 @@ export default function CTASection() {
   }
 
   return (
-    <section className="py-12 md:py-16 bg-gradient-to-r from-red-600 to-red-700">
+    <section className="py-12 md:py-16 bg-gradient-to-r from-blue-600 to-blue-700">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
@@ -35,15 +35,15 @@ export default function CTASection() {
           </h2>
           <p className="text-white/90 text-sm md:text-base mb-8 max-w-2xl mx-auto">
             {language === "es"
-              ? "Contactame hoy y descubre como puedo ayudarte a transformar tus ideas en soluciones tecnologicas de alto impacto. Asesoria personalizada sin compromiso."
-              : "Contact me today and discover how I can help you transform your ideas into high-impact technological solutions. Personalized advice with no commitment."}
+              ? "Contactame hoy y descubre como puedo ayudarte a desarrollar tus ideas en soluciones a medida. Asesoria personalizada sin compromiso."
+              : "Contact me today and discover how I can help you develop your ideas into custom solutions. Personalized advice with no commitment."}
           </p>
           
           <div className="flex flex-wrap justify-center gap-4">
             <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
               <Button 
                 size="lg" 
-                className="bg-white text-gray-900 hover:bg-gray-100 gap-2 font-semibold"
+                className="bg-gray-900 text-white hover:bg-gray-800 gap-2 font-semibold"
               >
                 <WhatsAppIcon className="w-5 h-5" />
                 {language === "es" ? "Cotizar" : "Get Quote"}
@@ -51,8 +51,7 @@ export default function CTASection() {
             </a>
             <Button 
               size="lg" 
-              variant="outline"
-              className="border-white text-white hover:bg-white/10 gap-2 font-semibold"
+              className="bg-gray-900 text-white hover:bg-gray-800 gap-2 font-semibold"
               onClick={handleCall}
             >
               <Phone className="w-5 h-5" />
@@ -65,8 +64,8 @@ export default function CTASection() {
         <div className="text-center mt-8 pt-6 border-t border-white/20">
           <p className="text-white/80 text-sm">
             {language === "es" 
-              ? "+6 proyectos desplegados en produccion" 
-              : "+6 projects deployed in production"}
+              ? "Soluciones escalables a medida" 
+              : "Scalable custom solutions"}
           </p>
         </div>
       </div>
