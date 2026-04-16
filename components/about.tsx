@@ -51,7 +51,7 @@ const About = () => {
             <div className="flex justify-center items-center">
               <div className="w-48 h-48 sm:w-60 sm:h-60 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-xl md:rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-xl">
                 <img
-                  src="/images/avatar.png"
+                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Gemini_Generated_Image_fg8qd1fg8qd1fg8q-Photoroom-ujx6hQDY5lsfZDeUo0fk2OVZurdv7L.webp"
                   alt={portfolioData.name}
                   className="w-full h-full object-cover object-top"
                 />

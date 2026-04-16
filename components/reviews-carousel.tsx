@@ -344,12 +344,12 @@ const ReviewsCarousel = () => {
           viewport={{ once: true }}
         >
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4 text-gray-900 dark:text-white">
-            {language === "es" ? "Lo que mis clientes opinan" : "What my clients say"}
+            {language === "es" ? "Clientes y resultados" : "Clients and results"}
           </h2>
           <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base mb-3">
             {language === "es" 
-              ? "Testimonios de quienes han confiado en mi trabajo"
-              : "Testimonials from those who have trusted my work"}
+              ? "Proyectos desarrollados en entornos productivos para quienes han confiado en mi trabajo"
+              : "Projects developed in production environments for those who have trusted my work"}
           </p>
           <div className="h-1 w-12 md:w-20 bg-primary mx-auto"></div>
         </motion.div>

@@ -172,12 +172,12 @@ const Languages = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
-            {language === "es" ? "Idiomas" : "Languages"}
+            {language === "es" ? "Comunicación técnica" : "Technical Communication"}
           </h2>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base">
             {language === "es"
-              ? "Capacidad de comunicación en múltiples idiomas para proyectos internacionales."
-              : "Communication ability in multiple languages for international projects."}
+              ? "Comunicación efectiva aplicada al desarrollo de proyectos técnicos con equipos y clientes en múltiples idiomas."
+              : "Effective communication applied to technical project development with teams and clients in multiple languages."}
           </p>
           <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mt-3 md:mt-4"></div>
         </motion.div>
