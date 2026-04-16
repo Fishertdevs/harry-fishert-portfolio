@@ -183,7 +183,7 @@ export default function Home() {
                 </motion.div>
               )}
 
-              {/* Slide 2: Experience with circular charts */}
+              {/* Slide 2: Experience with skills-style layout */}
               {heroSlide === 1 && (
                 <motion.div
                   key="slide2"
@@ -193,99 +193,176 @@ export default function Home() {
                   transition={{ duration: 0.5 }}
                   className="flex flex-col items-center text-center"
                 >
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-gray-900 dark:text-white">
+                  <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4 text-gray-900 dark:text-white">
                     {language === "es" 
                       ? "Desarrollo de soluciones full stack"
                       : "Full stack solutions development"}
                   </h2>
-                  <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 text-red-600">
-                    {language === "es" 
-                      ? "en entornos de produccion"
-                      : "in production environments"}
-                  </h3>
-                  <p className="text-gray-700 dark:text-gray-300 text-sm md:text-base mb-8 max-w-3xl">
+                  <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base mb-6 md:mb-10">
                     {language === "es" 
                       ? "Experiencia disenando soluciones funcionales para proyectos en produccion, con enfasis en rendimiento, escalabilidad y experiencia de usuario."
                       : "Experience designing functional solutions for production projects, with emphasis on performance, scalability and user experience."}
                   </p>
+                  <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mb-6 md:mb-10"></div>
                   
-                  {/* Circular Charts Section */}
-                  <div className="flex flex-wrap justify-center gap-6 md:gap-8 mb-8">
-                    {/* Projects Chart */}
-                    <div className="flex flex-col items-center">
-                      <div className="relative w-24 h-24 md:w-28 md:h-28">
-                        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                          <circle cx="50" cy="50" r="40" fill="none" stroke="#e5e7eb" strokeWidth="8" className="dark:stroke-gray-700" />
-                          <circle cx="50" cy="50" r="40" fill="none" stroke="#dc2626" strokeWidth="8" strokeLinecap="round" strokeDasharray="251.2" strokeDashoffset="0" />
-                        </svg>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-lg md:text-xl font-bold text-red-600">+6</span>
+                  {/* Skills-style grid layout */}
+                  <div className="max-w-2xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-4 md:gap-8 py-2 md:py-4">
+                      {/* Text content - centered */}
+                      <div className="text-center order-2 md:order-1">
+                        <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
+                          {language === "es" ? "Experiencia" : "Experience"}{" "}
+                          <span className="text-primary">{language === "es" ? "Full Stack" : "Full Stack"}</span>
+                        </h3>
+
+                        <ul className="space-y-1 md:space-y-2 mb-3 md:mb-6">
+                          <motion.li
+                            className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm md:text-base"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                          >
+                            {language === "es" ? "+6 proyectos en produccion" : "+6 projects in production"}
+                          </motion.li>
+                          <motion.li
+                            className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm md:text-base"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3 }}
+                          >
+                            {language === "es" ? "JavaScript, TypeScript, Python" : "JavaScript, TypeScript, Python"}
+                          </motion.li>
+                          <motion.li
+                            className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm md:text-base"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.4 }}
+                          >
+                            {language === "es" ? "Enfoque en rendimiento y escalabilidad" : "Focus on performance and scalability"}
+                          </motion.li>
+                        </ul>
+
+                        <div className="flex justify-center gap-3">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="rounded-lg px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm"
+                            onClick={() => setShowCVPreview(true)}
+                          >
+                            {language === "es" ? "Ver CV" : "View CV"}
+                          </Button>
+                          <Button
+                            size="sm"
+                            className="bg-primary hover:bg-primary/90 text-white rounded-lg px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm"
+                            onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })}
+                          >
+                            {language === "es" ? "Ver proyectos" : "View projects"}
+                          </Button>
                         </div>
                       </div>
-                      <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mt-2 text-center max-w-[100px]">
-                        {language === "es" ? "Proyectos en produccion" : "Projects in production"}
-                      </p>
-                    </div>
-                    
-                    {/* JavaScript Chart */}
-                    <div className="flex flex-col items-center">
-                      <div className="relative w-24 h-24 md:w-28 md:h-28">
-                        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                          <circle cx="50" cy="50" r="40" fill="none" stroke="#e5e7eb" strokeWidth="8" className="dark:stroke-gray-700" />
-                          <circle cx="50" cy="50" r="40" fill="none" stroke="#f59e0b" strokeWidth="8" strokeLinecap="round" strokeDasharray="251.2" strokeDashoffset="25.12" />
-                        </svg>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-base md:text-lg font-bold text-amber-500">JS</span>
+
+                      {/* Circular progress - RIGHT on desktop, top on mobile */}
+                      <div className="flex flex-col items-center gap-2 md:gap-3 order-1 md:order-2">
+                        {/* Mobile size */}
+                        <div className="block sm:hidden">
+                          <div className="relative" style={{ width: 100, height: 100 }}>
+                            <svg width={100} height={100} className="transform -rotate-90">
+                              <circle cx={50} cy={50} r={42} stroke="#e5e7eb" strokeWidth={6} fill="transparent" className="dark:stroke-gray-700" />
+                              <motion.circle
+                                cx={50}
+                                cy={50}
+                                r={42}
+                                stroke="#3b82f6"
+                                strokeWidth={6}
+                                fill="transparent"
+                                strokeLinecap="round"
+                                initial={{ strokeDasharray: "0 264" }}
+                                animate={{ strokeDasharray: "237.6 264" }}
+                                transition={{ duration: 1.5, ease: "easeOut" }}
+                              />
+                            </svg>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <motion.span 
+                                className="text-xl font-bold text-primary"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.5 }}
+                              >
+                                90%
+                              </motion.span>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mt-2">JavaScript</p>
-                    </div>
-                    
-                    {/* TypeScript Chart */}
-                    <div className="flex flex-col items-center">
-                      <div className="relative w-24 h-24 md:w-28 md:h-28">
-                        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                          <circle cx="50" cy="50" r="40" fill="none" stroke="#e5e7eb" strokeWidth="8" className="dark:stroke-gray-700" />
-                          <circle cx="50" cy="50" r="40" fill="none" stroke="#3b82f6" strokeWidth="8" strokeLinecap="round" strokeDasharray="251.2" strokeDashoffset="50.24" />
-                        </svg>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-base md:text-lg font-bold text-blue-500">TS</span>
+                        {/* Tablet size */}
+                        <div className="hidden sm:block md:hidden">
+                          <div className="relative" style={{ width: 120, height: 120 }}>
+                            <svg width={120} height={120} className="transform -rotate-90">
+                              <circle cx={60} cy={60} r={52} stroke="#e5e7eb" strokeWidth={6} fill="transparent" className="dark:stroke-gray-700" />
+                              <motion.circle
+                                cx={60}
+                                cy={60}
+                                r={52}
+                                stroke="#3b82f6"
+                                strokeWidth={6}
+                                fill="transparent"
+                                strokeLinecap="round"
+                                initial={{ strokeDasharray: "0 327" }}
+                                animate={{ strokeDasharray: "294.3 327" }}
+                                transition={{ duration: 1.5, ease: "easeOut" }}
+                              />
+                            </svg>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <motion.span 
+                                className="text-2xl font-bold text-primary"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.5 }}
+                              >
+                                90%
+                              </motion.span>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mt-2">TypeScript</p>
-                    </div>
-                    
-                    {/* Python Chart */}
-                    <div className="flex flex-col items-center">
-                      <div className="relative w-24 h-24 md:w-28 md:h-28">
-                        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                          <circle cx="50" cy="50" r="40" fill="none" stroke="#e5e7eb" strokeWidth="8" className="dark:stroke-gray-700" />
-                          <circle cx="50" cy="50" r="40" fill="none" stroke="#10b981" strokeWidth="8" strokeLinecap="round" strokeDasharray="251.2" strokeDashoffset="37.68" />
-                        </svg>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-base md:text-lg font-bold text-emerald-500">Py</span>
+                        {/* Desktop size */}
+                        <div className="hidden md:block">
+                          <div className="relative" style={{ width: 140, height: 140 }}>
+                            <svg width={140} height={140} className="transform -rotate-90">
+                              <circle cx={70} cy={70} r={62} stroke="#e5e7eb" strokeWidth={8} fill="transparent" className="dark:stroke-gray-700" />
+                              <motion.circle
+                                cx={70}
+                                cy={70}
+                                r={62}
+                                stroke="#3b82f6"
+                                strokeWidth={8}
+                                fill="transparent"
+                                strokeLinecap="round"
+                                initial={{ strokeDasharray: "0 390" }}
+                                animate={{ strokeDasharray: "351 390" }}
+                                transition={{ duration: 1.5, ease: "easeOut" }}
+                              />
+                            </svg>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <motion.span 
+                                className="text-3xl font-bold text-primary"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.5 }}
+                              >
+                                90%
+                              </motion.span>
+                            </div>
+                          </div>
                         </div>
+                        <motion.p
+                          className="text-[10px] sm:text-xs md:text-sm font-medium text-center max-w-[100px] sm:max-w-[140px] md:max-w-[160px] leading-relaxed text-primary"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 1.8, duration: 0.5, ease: "easeOut" }}
+                        >
+                          {language === "es" ? "Dominio en desarrollo de soluciones full stack" : "Mastery in full stack solution development"}
+                        </motion.p>
                       </div>
-                      <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mt-2">Python</p>
                     </div>
-                  </div>
-                  
-                  {/* CTA Buttons */}
-                  <div className="flex items-center justify-center gap-4">
-                    <Button 
-                      variant="outline"
-                      size="lg"
-                      onClick={() => setShowCVPreview(true)}
-                    >
-                      {language === "es" ? "Ver CV" : "View CV"}
-                    </Button>
-                    <Button 
-                      variant="default"
-                      size="lg"
-                      onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })}
-                    >
-                      {language === "es" ? "Ver proyectos" : "View projects"}
-                    </Button>
                   </div>
                   
                   {/* CV Preview Modal */}

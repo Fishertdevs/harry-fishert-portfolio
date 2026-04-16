@@ -42,18 +42,18 @@ export default function CookieBanner() {
               <Cookie className="w-5 h-5 text-amber-500" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-red-600 mb-1">
+              <h3 className="text-sm font-semibold text-primary mb-1">
                 {language === "es" ? "Uso de Cookies" : "Cookie Usage"}
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 {language === "es" 
                   ? "Utilizamos cookies para mejorar tu experiencia en nuestro sitio web. Al continuar navegando, aceptas nuestro uso de cookies. "
                   : "We use cookies to improve your experience on our website. By continuing to browse, you accept our use of cookies. "}
-                <a href="#" className="text-red-600 hover:underline">
+                <a href="#" className="text-primary hover:underline">
                   {language === "es" ? "Politica de Cookies" : "Cookie Policy"}
                 </a>
                 {" "}{language === "es" ? "y" : "and"}{" "}
-                <a href="#" className="text-red-600 hover:underline">
+                <a href="#" className="text-primary hover:underline">
                   {language === "es" ? "Terminos y Condiciones" : "Terms and Conditions"}
                 </a>.
               </p>
@@ -72,7 +72,7 @@ export default function CookieBanner() {
             <Button 
               size="sm"
               onClick={handleAccept}
-              className="flex-1 md:flex-none bg-red-600 hover:bg-red-700 text-white"
+              className="flex-1 md:flex-none bg-primary hover:bg-primary/90 text-primary-foreground"
             >
               {language === "es" ? "Aceptar" : "Accept"}
             </Button>
