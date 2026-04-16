@@ -90,12 +90,21 @@ const Hero = () => {
     },
   }
 
+  const imageVariants = {
+    hidden: { scale: 0.8, opacity: 0 },
+    visible: {
+      scale: 1,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 100, delay: 0.5 },
+    },
+  }
+
   const handleDownloadCV = () => {
     window.open("https://drive.google.com/file/d/1AkywFwEI7V0WQwshUHyGuJmnydpFcXNW/view?usp=drivesdk", "_blank")
   }
 
   return (
-    <section id="home" ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
+    <section id="home" ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <motion.div className="absolute inset-0 z-0" variants={backgroundVariants} initial="hidden" animate="visible">
         <div className="absolute inset-0 bg-gradient-to-b from-blue-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800"></div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.1),transparent_70%)]"></div>
@@ -132,131 +141,154 @@ const Hero = () => {
       </motion.div>
 
       <motion.div
-        className="relative z-10 text-center px-4 max-w-4xl mx-auto"
+        className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
         variants={containerVariants}
         initial="hidden"
         animate={isVisible ? "visible" : "hidden"}
       >
-        <motion.h1 className="text-4xl md:text-6xl font-bold mb-4 gradient-text" variants={itemVariants}>
-          {portfolioData.name}
-        </motion.h1>
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
+          {/* Left side - Text content */}
+          <div className="flex-1 flex flex-col justify-center items-center lg:items-start text-center lg:text-left">
+            <motion.div variants={itemVariants} className="mb-8">
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-gray-900 dark:text-gray-900 leading-tight">
+                {language === "es" ? "Bienvenido" : "Welcome"}
+              </h1>
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-gray-900 dark:text-gray-900 leading-tight">
+                {language === "es" ? "a mi portafolio" : "to my portfolio"}
+              </h1>
+            </motion.div>
 
-        <motion.div className="h-8 mb-6" variants={itemVariants}>
-          <p className="text-xl md:text-2xl text-primary">
-            {portfolioData.title}
-            <span className="animate-pulse">|</span>
-          </p>
-        </motion.div>
-
-        <motion.p
-          className="text-gray-700 dark:text-gray-300 text-lg md:text-xl mb-8 max-w-2xl mx-auto"
-          variants={itemVariants}
-        >
-          {portfolioData.description}
-        </motion.p>
-
-        <motion.div className="flex flex-col sm:flex-row items-center justify-center gap-4" variants={itemVariants}>
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 group">
-              <a href="#contact">
-                {t("contactMe")}
-                <span className="ml-1 group-hover:translate-x-1 transition-transform">→</span>
-              </a>
-            </Button>
-          </motion.div>
-
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button asChild variant="outline" size="lg" className="group bg-transparent">
-              <a href="#projects">
-                {t("viewProjects")}
-                <span className="ml-1 group-hover:translate-x-1 transition-transform">→</span>
-              </a>
-            </Button>
-          </motion.div>
-
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="secondary" size="lg" className="group">
-                  <FileDown className="mr-2 h-4 w-4" />
-                  Ver CV
+            <motion.div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-8" variants={itemVariants}>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button asChild size="lg" className="bg-primary hover:bg-primary/90 group">
+                  <a href="#contact">
+                    {t("contactMe")}
+                    <span className="ml-1 group-hover:translate-x-1 transition-transform">→</span>
+                  </a>
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                      <Eye className="mr-2 h-4 w-4" />
-                      <span>Ver Preview</span>
+              </motion.div>
+
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button asChild variant="outline" size="lg" className="group bg-transparent">
+                  <a href="#projects">
+                    {t("viewProjects")}
+                    <span className="ml-1 group-hover:translate-x-1 transition-transform">→</span>
+                  </a>
+                </Button>
+              </motion.div>
+
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="secondary" size="lg" className="group">
+                      <FileDown className="mr-2 h-4 w-4" />
+                      Ver CV
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                          <Eye className="mr-2 h-4 w-4" />
+                          <span>Ver Preview</span>
+                        </DropdownMenuItem>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-4xl h-[80vh] p-0">
+                        <DialogHeader className="p-4 border-b">
+                          <DialogTitle>Curriculum Vitae - {portfolioData.name}</DialogTitle>
+                          <DialogClose className="absolute right-4 top-4" />
+                        </DialogHeader>
+                        <div className="h-full overflow-auto p-0">
+                          <CVPreview onDownload={handleDownloadCV} />
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+
+                    <DropdownMenuItem
+                      onClick={() =>
+                        window.open(
+                          "https://drive.google.com/file/d/1AkywFwEI7V0WQwshUHyGuJmnydpFcXNW/view?usp=drivesdk",
+                          "_blank",
+                        )
+                      }
+                    >
+                      <FileText className="mr-2 h-4 w-4" />
+                      <span>Ver CV completo</span>
                     </DropdownMenuItem>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-4xl h-[80vh] p-0">
-                    <DialogHeader className="p-4 border-b">
-                      <DialogTitle>Curriculum Vitae - {portfolioData.name}</DialogTitle>
-                      <DialogClose className="absolute right-4 top-4" />
-                    </DialogHeader>
-                    <div className="h-full overflow-auto p-0">
-                      <CVPreview onDownload={handleDownloadCV} />
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </motion.div>
+            </motion.div>
 
-                <DropdownMenuItem
-                  onClick={() =>
-                    window.open(
-                      "https://drive.google.com/file/d/1AkywFwEI7V0WQwshUHyGuJmnydpFcXNW/view?usp=drivesdk",
-                      "_blank",
-                    )
-                  }
+            <motion.div className="flex justify-center lg:justify-start space-x-4" variants={socialVariants}>
+              <motion.div whileHover={{ scale: 1.2, rotate: 5 }} whileTap={{ scale: 0.9 }}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  asChild
+                  className="rounded-full hover:bg-primary/10 hover:text-primary transition-colors"
                 >
-                  <FileText className="mr-2 h-4 w-4" />
-                  <span>Ver CV completo</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </motion.div>
-        </motion.div>
+                  <a href={portfolioData.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                    <Github className="h-6 w-6" />
+                  </a>
+                </Button>
+              </motion.div>
 
-        <motion.div className="mt-12 flex justify-center space-x-4" variants={socialVariants}>
-          <motion.div whileHover={{ scale: 1.2, rotate: 5 }} whileTap={{ scale: 0.9 }}>
-            <Button
-              variant="ghost"
-              size="icon"
-              asChild
-              className="rounded-full hover:bg-primary/10 hover:text-primary transition-colors"
-            >
-              <a href={portfolioData.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                <Github className="h-6 w-6" />
-              </a>
-            </Button>
-          </motion.div>
+              <motion.div whileHover={{ scale: 1.2, rotate: 5 }} whileTap={{ scale: 0.9 }}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  asChild
+                  className="rounded-full hover:bg-primary/10 hover:text-primary transition-colors"
+                >
+                  <a href={portfolioData.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                    <Instagram className="h-6 w-6" />
+                  </a>
+                </Button>
+              </motion.div>
 
-          <motion.div whileHover={{ scale: 1.2, rotate: 5 }} whileTap={{ scale: 0.9 }}>
-            <Button
-              variant="ghost"
-              size="icon"
-              asChild
-              className="rounded-full hover:bg-primary/10 hover:text-primary transition-colors"
-            >
-              <a href={portfolioData.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                <Instagram className="h-6 w-6" />
-              </a>
-            </Button>
-          </motion.div>
+              <motion.div whileHover={{ scale: 1.2, rotate: 5 }} whileTap={{ scale: 0.9 }}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  asChild
+                  className="rounded-full hover:bg-primary/10 hover:text-primary transition-colors bg-green-100 dark:bg-green-900"
+                >
+                  <a href={portfolioData.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                    <MessageCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
+                  </a>
+                </Button>
+              </motion.div>
+            </motion.div>
+          </div>
 
-          <motion.div whileHover={{ scale: 1.2, rotate: 5 }} whileTap={{ scale: 0.9 }}>
-            <Button
-              variant="ghost"
-              size="icon"
-              asChild
-              className="rounded-full hover:bg-primary/10 hover:text-primary transition-colors bg-green-100 dark:bg-green-900"
+          {/* Right side - Avatar image with same size as profile section */}
+          <motion.div 
+            className="flex-shrink-0"
+            variants={imageVariants}
+          >
+            <motion.div 
+              className="w-48 h-48 sm:w-60 sm:h-60 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-xl md:rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-xl"
+              whileHover={{ scale: 1.05, rotate: 2 }}
+              transition={{ type: "spring", stiffness: 300 }}
             >
-              <a href={portfolioData.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-                <MessageCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
-              </a>
-            </Button>
+              <motion.img
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Gemini_Generated_Image_fg8qd1fg8qd1fg8q-Photoroom-ujx6hQDY5lsfZDeUo0fk2OVZurdv7L.webp"
+                alt={portfolioData.name}
+                className="w-full h-full object-cover object-top"
+                animate={{
+                  y: [0, -10, 0],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Number.POSITIVE_INFINITY,
+                  repeatType: "reverse",
+                  ease: "easeInOut",
+                }}
+              />
+            </motion.div>
           </motion.div>
-        </motion.div>
+        </div>
       </motion.div>
     </section>
   )
