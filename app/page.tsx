@@ -10,6 +10,8 @@ import Footer from "@/components/footer"
 import ReviewsCarousel from "@/components/reviews-carousel"
 import Languages from "@/components/languages"
 import WhatsAppFloatingButton from "@/components/whatsapp-floating-button"
+import CTASection from "@/components/cta-section"
+import CookieBanner from "@/components/cookie-banner"
 
 export default function Home() {
   const { t, language } = useLanguage()
@@ -92,8 +94,15 @@ export default function Home() {
     },
   }
 
+  const [showCVPreview, setShowCVPreview] = useState(false)
+  
   const handleDownloadCV = () => {
-    window.open("https://drive.google.com/file/d/1AkywFwEI7V0WQwshUHyGuJmnydpFcXNW/view?usp=drivesdk", "_blank")
+    const link = document.createElement('a')
+    link.href = '/cv/HARRY_FISHERT_DEV_2026.pdf'
+    link.download = 'HARRY_FISHERT_DEV_2026.pdf'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
   }
 
   return (
@@ -158,7 +167,7 @@ export default function Home() {
                     <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight">
                       {language === "es" ? "Bienvenido" : "Welcome"}
                     </h1>
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-red-600 leading-tight">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight">
                       {language === "es" ? "a mi portafolio" : "to my portfolio"}
                     </h1>
                   </div>
@@ -266,7 +275,7 @@ export default function Home() {
                     <Button 
                       variant="outline"
                       size="lg"
-                      onClick={handleDownloadCV}
+                      onClick={() => setShowCVPreview(true)}
                     >
                       {language === "es" ? "Ver CV" : "View CV"}
                     </Button>
@@ -278,6 +287,34 @@ export default function Home() {
                       {language === "es" ? "Ver proyectos" : "View projects"}
                     </Button>
                   </div>
+                  
+                  {/* CV Preview Modal */}
+                  {showCVPreview && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setShowCVPreview(false)}>
+                      <div className="bg-white dark:bg-gray-900 rounded-xl p-4 max-w-4xl w-full mx-4 max-h-[90vh] overflow-hidden shadow-2xl" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex justify-between items-center mb-4">
+                          <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                            {language === "es" ? "Vista previa del CV" : "CV Preview"}
+                          </h3>
+                          <div className="flex gap-2">
+                            <Button variant="default" size="sm" onClick={handleDownloadCV}>
+                              {language === "es" ? "Descargar" : "Download"}
+                            </Button>
+                            <Button variant="outline" size="sm" onClick={() => setShowCVPreview(false)}>
+                              {language === "es" ? "Cerrar" : "Close"}
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="w-full h-[70vh] overflow-auto">
+                          <iframe 
+                            src="/cv/HARRY_FISHERT_DEV_2026.pdf" 
+                            className="w-full h-full border-0 rounded-lg"
+                            title="CV Preview"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -305,9 +342,13 @@ export default function Home() {
         {/* Reviews Section */}
         <ReviewsCarousel />
 
+        {/* CTA Section */}
+        <CTASection />
+
       </main>
       <Footer />
       <WhatsAppFloatingButton />
+      <CookieBanner />
     </div>
   )
 }
