@@ -128,7 +128,44 @@ const Navbar = () => {
             </DropdownMenu>
           </div>
 
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center gap-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              className="text-gray-700 dark:text-gray-300"
+            >
+              {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            </Button>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Change language"
+                  className="text-gray-700 dark:text-gray-300"
+                >
+                  <Globe className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem
+                  onClick={() => toggleLanguage("es")}
+                  className={language === "es" ? "bg-primary/10 text-primary" : ""}
+                >
+                  Español
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => toggleLanguage("en")}
+                  className={language === "en" ? "bg-primary/10 text-primary" : ""}
+                >
+                  English
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             <Button
               variant="ghost"
               size="icon"
@@ -160,44 +197,6 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
-            <div className="flex items-center space-x-2 pt-4 border-t border-gray-200 dark:border-gray-700">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleTheme}
-                aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-                className="text-gray-700 dark:text-gray-300"
-              >
-                {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-              </Button>
-
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    aria-label="Change language"
-                    className="text-gray-700 dark:text-gray-300"
-                  >
-                    <Globe className="h-5 w-5" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem
-                    onClick={() => toggleLanguage("es")}
-                    className={language === "es" ? "bg-primary/10 text-primary" : ""}
-                  >
-                    Español
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => toggleLanguage("en")}
-                    className={language === "en" ? "bg-primary/10 text-primary" : ""}
-                  >
-                    English
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
           </div>
         </div>
       )}

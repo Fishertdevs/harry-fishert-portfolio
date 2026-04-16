@@ -158,67 +158,16 @@ export default function Home() {
                   className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center"
                 >
                   <div className="flex flex-col justify-center text-center md:text-left order-2 md:order-1">
-                    <p className="text-sm md:text-base text-primary/80 uppercase tracking-widest mb-2">
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 gradient-text">
                       {language === "es" ? "Bienvenido a mi portafolio" : "Welcome to my portfolio"}
-                    </p>
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-4 gradient-text">
-                      {portfolioData.name}
                     </h1>
-                    <div className="h-8 mb-4 md:mb-6">
-                      <p className="text-lg sm:text-xl md:text-2xl text-primary">
-                        {portfolioData.title}
-                        <span className="animate-pulse">|</span>
-                      </p>
-                    </div>
-                    <div className="flex items-center justify-center md:justify-start">
-                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="secondary" size="lg" className="group">
-                              <FileDown className="mr-2 h-4 w-4" />
-                              Ver CV
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="start" className="w-56">
-                            <Dialog>
-                              <DialogTrigger asChild>
-                                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                                  <Eye className="mr-2 h-4 w-4" />
-                                  <span>Ver Preview</span>
-                                </DropdownMenuItem>
-                              </DialogTrigger>
-                              <DialogContent className="max-w-4xl h-[80vh] p-0">
-                                <DialogHeader className="p-4 border-b">
-                                  <DialogTitle>Curriculum Vitae - {portfolioData.name}</DialogTitle>
-                                  <DialogClose className="absolute right-4 top-4" />
-                                </DialogHeader>
-                                <div className="h-full overflow-auto p-0">
-                                  <CVPreview onDownload={handleDownloadCV} />
-                                </div>
-                              </DialogContent>
-                            </Dialog>
-                            <DropdownMenuItem
-                              onClick={() =>
-                                window.open(
-                                  "https://drive.google.com/file/d/1AkywFwEI7V0WQwshUHyGuJmnydpFcXNW/view?usp=drivesdk",
-                                  "_blank",
-                                )
-                              }
-                            >
-                              <FileText className="mr-2 h-4 w-4" />
-                              <span>Ver CV completo</span>
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </motion.div>
-                    </div>
                   </div>
                   <div className="flex justify-center items-center order-1 md:order-2">
-                    <div className="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-80 lg:h-80 rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-2xl">
+                    <div className="w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-96 lg:h-96 overflow-hidden">
                       <img
-                        src="/images/avatar.png"
+                        src="/images/hero-avatar.webp"
                         alt={portfolioData.name}
-                        className="w-full h-full object-cover object-top"
+                        className="w-full h-full object-contain"
                       />
                     </div>
                   </div>
