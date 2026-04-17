@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
+import { X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/lib/language-context"
 import { usePortfolio } from "@/lib/portfolio-context"
@@ -12,6 +13,167 @@ import Languages from "@/components/languages"
 import WhatsAppFloatingButton from "@/components/whatsapp-floating-button"
 import CTASection from "@/components/cta-section"
 import CookieBanner from "@/components/cookie-banner"
+
+// Stack Carousel Component
+function StackCarousel({ language }: { language: string }) {
+  const [stackSlide, setStackSlide] = useState(0)
+  const totalStackSlides = 3
+  
+  const stackData = [
+    {
+      name: "Python",
+      percentage: 85,
+      color: "#3776AB",
+      dashArray: "182 214",
+      focus: language === "es" ? "IA, Automatizacion de Testing y Backend" : "AI, Testing Automation and Backend",
+      value: language === "es" ? "Manejo de datos, modelos de IA y servicios seguros" : "Data handling, AI models and secure services"
+    },
+    {
+      name: "TypeScript",
+      percentage: 90,
+      color: "#3178C6",
+      dashArray: "192 214",
+      focus: language === "es" ? "Desarrollo escalable y tipado seguro" : "Scalable development and safe typing",
+      value: language === "es" ? "Mantenibilidad y calidad en proyectos grandes" : "Maintainability and quality in large projects"
+    },
+    {
+      name: "JavaScript",
+      percentage: 90,
+      color: "#F7DF1E",
+      dashArray: "192 214",
+      focus: language === "es" ? "Interactividad y ecosistemas modernos" : "Interactivity and modern ecosystems",
+      value: language === "es" ? "Experiencias de usuario fluidas e interactivas" : "Smooth and interactive user experiences"
+    }
+  ]
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStackSlide((prev) => (prev + 1) % totalStackSlides)
+    }, 4000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const currentStack = stackData[stackSlide]
+
+  return (
+    <motion.div
+      key="slide2"
+      initial={{ opacity: 0, x: 50 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -50 }}
+      transition={{ duration: 0.5 }}
+      className="flex flex-col items-center text-center"
+    >
+      <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4 text-gray-900 dark:text-white">
+        {language === "es" ? "Mi Stack de Trabajo" : "My Work Stack"}
+      </h2>
+      <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base mb-6 md:mb-8">
+        {language === "es" 
+          ? "Implementacion de arquitecturas modernas para el desarrollo de soluciones integrales, escalables y orientadas a resultados."
+          : "Implementation of modern architectures for the development of comprehensive, scalable and results-oriented solutions."}
+      </p>
+      <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mb-6 md:mb-8"></div>
+      
+      {/* Stack Carousel */}
+      <div className="max-w-md mx-auto w-full">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={stackSlide}
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -30 }}
+            transition={{ duration: 0.4 }}
+            className="flex flex-col items-center"
+          >
+            {/* Circular Progress */}
+            <div className="relative mb-4" style={{ width: 120, height: 120 }}>
+              <svg width={120} height={120} className="transform -rotate-90">
+                <circle cx={60} cy={60} r={52} stroke="#e5e7eb" strokeWidth={6} fill="transparent" className="dark:stroke-gray-700" />
+                <motion.circle
+                  cx={60}
+                  cy={60}
+                  r={52}
+                  stroke={currentStack.color}
+                  strokeWidth={6}
+                  fill="transparent"
+                  strokeLinecap="round"
+                  initial={{ strokeDasharray: "0 327" }}
+                  animate={{ strokeDasharray: currentStack.dashArray.replace("214", "327").replace("182", "278").replace("192", "294") }}
+                  transition={{ duration: 1.2, ease: "easeOut" }}
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <motion.span 
+                  className="text-2xl font-bold"
+                  style={{ color: currentStack.color, textShadow: currentStack.name === "JavaScript" ? "0 0 2px rgba(0,0,0,0.1)" : "none" }}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  {currentStack.percentage}%
+                </motion.span>
+              </div>
+            </div>
+
+            {/* Name */}
+            <motion.h3 
+              className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              {currentStack.name}
+            </motion.h3>
+
+            {/* Focus */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7 }}
+              className="mb-3"
+            >
+              <p className="text-xs text-primary font-semibold mb-1">
+                {language === "es" ? "Enfoque:" : "Focus:"}
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                {currentStack.focus}
+              </p>
+            </motion.div>
+
+            {/* Value */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9 }}
+            >
+              <p className="text-xs text-primary font-semibold mb-1">
+                {language === "es" ? "Valor:" : "Value:"}
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 max-w-xs">
+                {currentStack.value}
+              </p>
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Stack Indicators */}
+        <div className="flex justify-center gap-2 mt-6">
+          {stackData.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setStackSlide(index)}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                index === stackSlide
+                  ? "w-6 bg-primary"
+                  : "w-1.5 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  )
+}
 
 export default function Home() {
   const { t, language } = useLanguage()
@@ -205,173 +367,9 @@ export default function Home() {
                 </motion.div>
               )}
 
-              {/* Slide 2: Mi Stack de Trabajo */}
+              {/* Slide 2: Mi Stack de Trabajo - Carrusel */}
               {heroSlide === 1 && (
-                <motion.div
-                  key="slide2"
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -50 }}
-                  transition={{ duration: 0.5 }}
-                  className="flex flex-col items-center text-center"
-                >
-                  <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4 text-gray-900 dark:text-white">
-                    {language === "es" ? "Mi Stack de Trabajo" : "My Work Stack"}
-                  </h2>
-                  <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base mb-6 md:mb-8">
-                    {language === "es" 
-                      ? "Implementacion de arquitecturas modernas para el desarrollo de soluciones integrales, escalables y orientadas a resultados."
-                      : "Implementation of modern architectures for the development of comprehensive, scalable and results-oriented solutions."}
-                  </p>
-                  <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mb-6 md:mb-8"></div>
-                  
-                  {/* Stack Cards with Circular Progress */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto w-full">
-                    {/* Python Card */}
-                    <motion.div 
-                      className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-lg border border-gray-100 dark:border-gray-700"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 }}
-                    >
-                      <div className="flex flex-col items-center mb-4">
-                        <div className="relative" style={{ width: 80, height: 80 }}>
-                          <svg width={80} height={80} className="transform -rotate-90">
-                            <circle cx={40} cy={40} r={34} stroke="#e5e7eb" strokeWidth={5} fill="transparent" className="dark:stroke-gray-700" />
-                            <motion.circle
-                              cx={40}
-                              cy={40}
-                              r={34}
-                              stroke="#3776AB"
-                              strokeWidth={5}
-                              fill="transparent"
-                              strokeLinecap="round"
-                              initial={{ strokeDasharray: "0 214" }}
-                              animate={{ strokeDasharray: "182 214" }}
-                              transition={{ duration: 1.5, ease: "easeOut" }}
-                            />
-                          </svg>
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="text-lg font-bold text-[#3776AB]">85%</span>
-                          </div>
-                        </div>
-                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mt-3">Python</h3>
-                      </div>
-                      <p className="text-xs text-primary font-semibold mb-1">
-                        {language === "es" ? "Enfoque:" : "Focus:"}
-                      </p>
-                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
-                        {language === "es" 
-                          ? "IA, Automatizacion de Testing y Backend"
-                          : "AI, Testing Automation and Backend"}
-                      </p>
-                      <p className="text-xs text-primary font-semibold mb-1">
-                        {language === "es" ? "Valor:" : "Value:"}
-                      </p>
-                      <p className="text-xs text-gray-600 dark:text-gray-400">
-                        {language === "es" 
-                          ? "Manejo de datos, modelos de IA y servicios seguros"
-                          : "Data handling, AI models and secure services"}
-                      </p>
-                    </motion.div>
-
-                    {/* TypeScript Card */}
-                    <motion.div 
-                      className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-lg border border-gray-100 dark:border-gray-700"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.4 }}
-                    >
-                      <div className="flex flex-col items-center mb-4">
-                        <div className="relative" style={{ width: 80, height: 80 }}>
-                          <svg width={80} height={80} className="transform -rotate-90">
-                            <circle cx={40} cy={40} r={34} stroke="#e5e7eb" strokeWidth={5} fill="transparent" className="dark:stroke-gray-700" />
-                            <motion.circle
-                              cx={40}
-                              cy={40}
-                              r={34}
-                              stroke="#3178C6"
-                              strokeWidth={5}
-                              fill="transparent"
-                              strokeLinecap="round"
-                              initial={{ strokeDasharray: "0 214" }}
-                              animate={{ strokeDasharray: "192 214" }}
-                              transition={{ duration: 1.5, ease: "easeOut" }}
-                            />
-                          </svg>
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="text-lg font-bold text-[#3178C6]">90%</span>
-                          </div>
-                        </div>
-                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mt-3">TypeScript</h3>
-                      </div>
-                      <p className="text-xs text-primary font-semibold mb-1">
-                        {language === "es" ? "Enfoque:" : "Focus:"}
-                      </p>
-                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
-                        {language === "es" 
-                          ? "Desarrollo escalable y tipado seguro"
-                          : "Scalable development and safe typing"}
-                      </p>
-                      <p className="text-xs text-primary font-semibold mb-1">
-                        {language === "es" ? "Valor:" : "Value:"}
-                      </p>
-                      <p className="text-xs text-gray-600 dark:text-gray-400">
-                        {language === "es" 
-                          ? "Mantenibilidad y calidad en proyectos grandes"
-                          : "Maintainability and quality in large projects"}
-                      </p>
-                    </motion.div>
-
-                    {/* JavaScript Card */}
-                    <motion.div 
-                      className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-lg border border-gray-100 dark:border-gray-700"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.6 }}
-                    >
-                      <div className="flex flex-col items-center mb-4">
-                        <div className="relative" style={{ width: 80, height: 80 }}>
-                          <svg width={80} height={80} className="transform -rotate-90">
-                            <circle cx={40} cy={40} r={34} stroke="#e5e7eb" strokeWidth={5} fill="transparent" className="dark:stroke-gray-700" />
-                            <motion.circle
-                              cx={40}
-                              cy={40}
-                              r={34}
-                              stroke="#F7DF1E"
-                              strokeWidth={5}
-                              fill="transparent"
-                              strokeLinecap="round"
-                              initial={{ strokeDasharray: "0 214" }}
-                              animate={{ strokeDasharray: "192 214" }}
-                              transition={{ duration: 1.5, ease: "easeOut" }}
-                            />
-                          </svg>
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="text-lg font-bold text-[#F7DF1E] drop-shadow-sm">90%</span>
-                          </div>
-                        </div>
-                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mt-3">JavaScript</h3>
-                      </div>
-                      <p className="text-xs text-primary font-semibold mb-1">
-                        {language === "es" ? "Enfoque:" : "Focus:"}
-                      </p>
-                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
-                        {language === "es" 
-                          ? "Interactividad y ecosistemas modernos"
-                          : "Interactivity and modern ecosystems"}
-                      </p>
-                      <p className="text-xs text-primary font-semibold mb-1">
-                        {language === "es" ? "Valor:" : "Value:"}
-                      </p>
-                      <p className="text-xs text-gray-600 dark:text-gray-400">
-                        {language === "es" 
-                          ? "Experiencias de usuario fluidas e interactivas"
-                          : "Smooth and interactive user experiences"}
-                      </p>
-                    </motion.div>
-                  </div>
-                </motion.div>
+                <StackCarousel language={language} />
               )}
             </AnimatePresence>
 
@@ -392,31 +390,32 @@ export default function Home() {
 
             {/* CV Preview Modal */}
             {showCVPreview && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setShowCVPreview(false)}>
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={() => setShowCVPreview(false)}>
                 <motion.div 
-                  className="bg-white dark:bg-gray-900 rounded-xl p-4 max-w-4xl w-full mx-4 max-h-[90vh] overflow-hidden shadow-2xl"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="bg-white dark:bg-gray-900 rounded-lg p-3 md:p-4 max-w-2xl w-full max-h-[80vh] overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700"
+                  initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                  transition={{ duration: 0.2 }}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                      {language === "es" ? "Vista previa del CV" : "CV Preview"}
+                  <div className="flex justify-between items-center mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
+                    <h3 className="text-sm md:text-base font-semibold text-gray-900 dark:text-white">
+                      {language === "es" ? "Curriculum Vitae" : "Resume"}
                     </h3>
                     <div className="flex gap-2">
-                      <Button variant="default" size="sm" onClick={handleDownloadCV}>
+                      <Button variant="default" size="sm" onClick={handleDownloadCV} className="h-7 text-xs px-3">
                         {language === "es" ? "Descargar" : "Download"}
                       </Button>
-                      <Button variant="outline" size="sm" onClick={() => setShowCVPreview(false)}>
-                        {language === "es" ? "Cerrar" : "Close"}
+                      <Button variant="ghost" size="sm" onClick={() => setShowCVPreview(false)} className="h-7 w-7 p-0">
+                        <X className="h-4 w-4" />
                       </Button>
                     </div>
                   </div>
-                  <div className="w-full h-[70vh] overflow-auto">
+                  <div className="w-full h-[60vh] md:h-[65vh] overflow-auto rounded-md bg-gray-50 dark:bg-gray-800">
                     <iframe 
                       src="/cv/HARRY_FISHERT_DEV_2026.pdf" 
-                      className="w-full h-full border-0 rounded-lg"
+                      className="w-full h-full border-0"
                       title="CV Preview"
                     />
                   </div>

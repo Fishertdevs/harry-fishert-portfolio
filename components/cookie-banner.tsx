@@ -35,46 +35,35 @@ export default function CookieBanner() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 shadow-lg">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div className="flex items-start gap-3">
-            <div className="flex-shrink-0 mt-0.5">
-              <Cookie className="w-5 h-5 text-amber-500" />
-            </div>
-            <div>
-              <h3 className="text-sm font-semibold text-primary mb-1">
-                {language === "es" ? "Uso de Cookies" : "Cookie Usage"}
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                {language === "es" 
-                  ? "Utilizamos cookies para mejorar tu experiencia en nuestro sitio web. Al continuar navegando, aceptas nuestro uso de cookies. "
-                  : "We use cookies to improve your experience on our website. By continuing to browse, you accept our use of cookies. "}
-                <a href="#" className="text-primary hover:underline">
-                  {language === "es" ? "Politica de Cookies" : "Cookie Policy"}
-                </a>
-                {" "}{language === "es" ? "y" : "and"}{" "}
-                <a href="#" className="text-primary hover:underline">
-                  {language === "es" ? "Terminos y Condiciones" : "Terms and Conditions"}
-                </a>.
-              </p>
-            </div>
+      <div className="container mx-auto px-3 py-2 md:px-4 md:py-3">
+        <div className="flex flex-row items-center justify-between gap-2 md:gap-4">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <Cookie className="w-4 h-4 md:w-5 md:h-5 text-amber-500 flex-shrink-0" />
+            <p className="text-[10px] md:text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
+              {language === "es" 
+                ? "Usamos cookies para mejorar tu experiencia. "
+                : "We use cookies to improve your experience. "}
+              <a href="#" className="text-primary hover:underline">
+                {language === "es" ? "Politica" : "Policy"}
+              </a>
+            </p>
           </div>
           
-          <div className="flex items-center gap-3 flex-shrink-0 w-full md:w-auto">
+          <div className="flex items-center gap-2 flex-shrink-0">
             <Button 
               variant="outline" 
               size="sm"
               onClick={handleReject}
-              className="flex-1 md:flex-none border-gray-300 dark:border-gray-600"
+              className="h-7 px-2 md:px-3 text-[10px] md:text-xs border-gray-300 dark:border-gray-600"
             >
-              {language === "es" ? "Rechazar" : "Reject"}
+              {language === "es" ? "No" : "No"}
             </Button>
             <Button 
               size="sm"
               onClick={handleAccept}
-              className="flex-1 md:flex-none bg-primary hover:bg-primary/90 text-primary-foreground"
+              className="h-7 px-2 md:px-3 text-[10px] md:text-xs bg-primary hover:bg-primary/90 text-primary-foreground"
             >
-              {language === "es" ? "Aceptar" : "Accept"}
+              {language === "es" ? "Ok" : "Ok"}
             </Button>
           </div>
         </div>
