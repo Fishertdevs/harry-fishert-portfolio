@@ -24,7 +24,6 @@ function StackCarousel({ language }: { language: string }) {
       name: "Python",
       percentage: 85,
       color: "#3776AB",
-      dashArray: "182 214",
       focus: language === "es" ? "IA, Automatizacion de Testing y Backend" : "AI, Testing Automation and Backend",
       value: language === "es" ? "Manejo de datos, modelos de IA y servicios seguros" : "Data handling, AI models and secure services"
     },
@@ -32,7 +31,6 @@ function StackCarousel({ language }: { language: string }) {
       name: "TypeScript",
       percentage: 90,
       color: "#3178C6",
-      dashArray: "192 214",
       focus: language === "es" ? "Desarrollo escalable y tipado seguro" : "Scalable development and safe typing",
       value: language === "es" ? "Mantenibilidad y calidad en proyectos grandes" : "Maintainability and quality in large projects"
     },
@@ -40,7 +38,6 @@ function StackCarousel({ language }: { language: string }) {
       name: "JavaScript",
       percentage: 90,
       color: "#F7DF1E",
-      dashArray: "192 214",
       focus: language === "es" ? "Interactividad y ecosistemas modernos" : "Interactivity and modern ecosystems",
       value: language === "es" ? "Experiencias de usuario fluidas e interactivas" : "Smooth and interactive user experiences"
     }
@@ -49,11 +46,12 @@ function StackCarousel({ language }: { language: string }) {
   useEffect(() => {
     const interval = setInterval(() => {
       setStackSlide((prev) => (prev + 1) % totalStackSlides)
-    }, 4000)
+    }, 6000) // 6 seconds for each slide
     return () => clearInterval(interval)
   }, [])
 
   const currentStack = stackData[stackSlide]
+  const circumference = 52 * 2 * Math.PI
 
   return (
     <motion.div
@@ -75,7 +73,7 @@ function StackCarousel({ language }: { language: string }) {
       <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mb-6 md:mb-8"></div>
       
       {/* Stack Carousel */}
-      <div className="max-w-md mx-auto w-full">
+      <div className="max-w-2xl mx-auto w-full">
         <AnimatePresence mode="wait">
           <motion.div
             key={stackSlide}
@@ -83,76 +81,127 @@ function StackCarousel({ language }: { language: string }) {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -30 }}
             transition={{ duration: 0.4 }}
-            className="flex flex-col items-center"
+            className="grid grid-cols-1 md:grid-cols-2 items-center gap-4 md:gap-8"
           >
-            {/* Circular Progress */}
-            <div className="relative mb-4" style={{ width: 120, height: 120 }}>
-              <svg width={120} height={120} className="transform -rotate-90">
-                <circle cx={60} cy={60} r={52} stroke="#e5e7eb" strokeWidth={6} fill="transparent" className="dark:stroke-gray-700" />
-                <motion.circle
-                  cx={60}
-                  cy={60}
-                  r={52}
-                  stroke={currentStack.color}
-                  strokeWidth={6}
-                  fill="transparent"
-                  strokeLinecap="round"
-                  initial={{ strokeDasharray: "0 327" }}
-                  animate={{ strokeDasharray: currentStack.dashArray.replace("214", "327").replace("182", "278").replace("192", "294") }}
-                  transition={{ duration: 1.2, ease: "easeOut" }}
-                />
-              </svg>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <motion.span 
-                  className="text-2xl font-bold"
-                  style={{ color: currentStack.color, textShadow: currentStack.name === "JavaScript" ? "0 0 2px rgba(0,0,0,0.1)" : "none" }}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.3 }}
-                >
-                  {currentStack.percentage}%
-                </motion.span>
+            {/* Text content - LEFT on desktop, bottom on mobile (static) */}
+            <div className="text-center md:text-left order-2 md:order-1">
+              {/* Focus - Static */}
+              <div className="mb-3">
+                <p className="text-xs text-primary font-semibold mb-1">
+                  {language === "es" ? "Enfoque:" : "Focus:"}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {currentStack.focus}
+                </p>
+              </div>
+
+              {/* Value - Static */}
+              <div>
+                <p className="text-xs text-primary font-semibold mb-1">
+                  {language === "es" ? "Valor:" : "Value:"}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {currentStack.value}
+                </p>
               </div>
             </div>
 
-            {/* Name */}
-            <motion.h3 
-              className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-            >
-              {currentStack.name}
-            </motion.h3>
-
-            {/* Focus */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7 }}
-              className="mb-3"
-            >
-              <p className="text-xs text-primary font-semibold mb-1">
-                {language === "es" ? "Enfoque:" : "Focus:"}
-              </p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                {currentStack.focus}
-              </p>
-            </motion.div>
-
-            {/* Value */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9 }}
-            >
-              <p className="text-xs text-primary font-semibold mb-1">
-                {language === "es" ? "Valor:" : "Value:"}
-              </p>
-              <p className="text-sm text-gray-600 dark:text-gray-400 max-w-xs">
-                {currentStack.value}
-              </p>
-            </motion.div>
+            {/* Circular Progress - RIGHT on desktop, top on mobile */}
+            <div className="flex flex-col items-center gap-2 md:gap-3 order-1 md:order-2">
+              {/* Mobile size */}
+              <div className="block sm:hidden">
+                <div className="relative" style={{ width: 100, height: 100 }}>
+                  <svg width={100} height={100} className="transform -rotate-90">
+                    <circle cx={50} cy={50} r={42} stroke="#e5e7eb" strokeWidth={6} fill="transparent" className="dark:stroke-gray-700" />
+                    <motion.circle
+                      cx={50}
+                      cy={50}
+                      r={42}
+                      stroke={currentStack.color}
+                      strokeWidth={6}
+                      fill="transparent"
+                      strokeLinecap="round"
+                      initial={{ strokeDasharray: `0 ${42 * 2 * Math.PI}` }}
+                      animate={{ strokeDasharray: `${(currentStack.percentage / 100) * 42 * 2 * Math.PI} ${42 * 2 * Math.PI}` }}
+                      transition={{ duration: 1.5, ease: "easeOut" }}
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span 
+                      className="text-xl font-bold"
+                      style={{ color: currentStack.color, textShadow: currentStack.name === "JavaScript" ? "0 0 2px rgba(0,0,0,0.1)" : "none" }}
+                    >
+                      {currentStack.percentage}%
+                    </span>
+                  </div>
+                </div>
+              </div>
+              {/* Tablet size */}
+              <div className="hidden sm:block md:hidden">
+                <div className="relative" style={{ width: 120, height: 120 }}>
+                  <svg width={120} height={120} className="transform -rotate-90">
+                    <circle cx={60} cy={60} r={52} stroke="#e5e7eb" strokeWidth={6} fill="transparent" className="dark:stroke-gray-700" />
+                    <motion.circle
+                      cx={60}
+                      cy={60}
+                      r={52}
+                      stroke={currentStack.color}
+                      strokeWidth={6}
+                      fill="transparent"
+                      strokeLinecap="round"
+                      initial={{ strokeDasharray: `0 ${circumference}` }}
+                      animate={{ strokeDasharray: `${(currentStack.percentage / 100) * circumference} ${circumference}` }}
+                      transition={{ duration: 1.5, ease: "easeOut" }}
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span 
+                      className="text-2xl font-bold"
+                      style={{ color: currentStack.color, textShadow: currentStack.name === "JavaScript" ? "0 0 2px rgba(0,0,0,0.1)" : "none" }}
+                    >
+                      {currentStack.percentage}%
+                    </span>
+                  </div>
+                </div>
+              </div>
+              {/* Desktop size */}
+              <div className="hidden md:block">
+                <div className="relative" style={{ width: 140, height: 140 }}>
+                  <svg width={140} height={140} className="transform -rotate-90">
+                    <circle cx={70} cy={70} r={62} stroke="#e5e7eb" strokeWidth={8} fill="transparent" className="dark:stroke-gray-700" />
+                    <motion.circle
+                      cx={70}
+                      cy={70}
+                      r={62}
+                      stroke={currentStack.color}
+                      strokeWidth={8}
+                      fill="transparent"
+                      strokeLinecap="round"
+                      initial={{ strokeDasharray: `0 ${62 * 2 * Math.PI}` }}
+                      animate={{ strokeDasharray: `${(currentStack.percentage / 100) * 62 * 2 * Math.PI} ${62 * 2 * Math.PI}` }}
+                      transition={{ duration: 1.5, ease: "easeOut" }}
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span 
+                      className="text-3xl font-bold"
+                      style={{ color: currentStack.color, textShadow: currentStack.name === "JavaScript" ? "0 0 2px rgba(0,0,0,0.1)" : "none" }}
+                    >
+                      {currentStack.percentage}%
+                    </span>
+                  </div>
+                </div>
+              </div>
+              {/* Name with animation effect */}
+              <motion.h3 
+                className="text-lg md:text-xl font-bold text-gray-900 dark:text-white"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.2, duration: 0.5 }}
+              >
+                {currentStack.name}
+              </motion.h3>
+            </div>
           </motion.div>
         </AnimatePresence>
 

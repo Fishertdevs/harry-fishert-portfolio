@@ -12,12 +12,16 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Harry | Desarrollador Full Stack",
+  title: "Harry Fishert | Desarrollador Full Stack y Arquitecto de Software",
   description: "Desarrollador Full Stack y Arquitecto de Software especializado en Python, React, Next.js y Node.js. Diseño soluciones web escalables y sistemas en produccion.",
   keywords: ["Desarrollador Full Stack", "React", "Next.js", "Node.js", "Python", "Arquitecto de Software", "Desarrollo Web", "Sistemas SaaS", "E-commerce", "Colombia"],
   authors: [{ name: "Harry Fishert Lasso Hernandez" }],
   creator: "Harry Fishert Lasso Hernandez",
   publisher: "Harry Fishert Lasso Hernandez",
+  icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
   robots: {
     index: true,
     follow: true,
@@ -33,23 +37,23 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_CO",
     url: "https://harryfishert.dev",
-    siteName: "Harry | Desarrollador Full Stack",
-    title: "Harry | Desarrollador Full Stack",
+    siteName: "Harry Fishert | Desarrollador Full Stack y Arquitecto de Software",
+    title: "Harry Fishert | Desarrollador Full Stack y Arquitecto de Software",
     description: "Desarrollador Full Stack y Arquitecto de Software especializado en Python, React, Next.js y Node.js. Diseño soluciones web escalables y sistemas en produccion.",
     images: [
       {
-        url: "/images/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Harry Fishert - Desarrollador Full Stack",
+        url: "/icon.png",
+        width: 512,
+        height: 512,
+        alt: "Harry Fishert - Desarrollador Full Stack y Arquitecto de Software",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Harry | Desarrollador Full Stack",
+    title: "Harry Fishert | Desarrollador Full Stack y Arquitecto de Software",
     description: "Desarrollador Full Stack y Arquitecto de Software especializado en Python, React, Next.js y Node.js.",
-    images: ["/images/og-image.png"],
+    images: ["/icon.png"],
   },
   verification: {
     google: "google-site-verification-code",

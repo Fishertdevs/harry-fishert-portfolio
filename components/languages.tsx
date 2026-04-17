@@ -1,143 +1,150 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useLanguage } from "@/lib/language-context"
 import { motion, AnimatePresence } from "framer-motion"
 
 const Languages = () => {
   const { language } = useLanguage()
-  const [currentSlide, setCurrentSlide] = useState(0)
+  const [selectedLanguage, setSelectedLanguage] = useState<number | null>(null)
 
   const languages = language === "es"
     ? [
         {
-          title: "Español",
-          highlight: "Nativo",
-          percentage: 100,
+          title: "Espanol",
+          level: "Nativo",
+          percentage: 55,
+          color: "#ef4444",
           features: [
             "Lengua materna",
-            "Comunicación profesional fluida",
-            "Redacción técnica y creativa"
-          ],
-          color: "#ef4444",
-          context: "Dominio completo del idioma"
+            "Comunicacion profesional fluida",
+            "Redaccion tecnica y creativa"
+          ]
         },
         {
-          title: "Inglés",
-          highlight: "A2 → B1",
-          percentage: 45,
-          features: [
-            "Nivel actual: A2",
-            "Escalando activamente a B1",
-            "Enfoque en comunicación técnica"
-          ],
+          title: "Ingles",
+          level: "A2 - B1",
+          percentage: 25,
           color: "#3b82f6",
-          context: "En proceso de mejora continua"
-        },
-        {
-          title: "Portugués",
-          highlight: "A2 → B1",
-          percentage: 40,
           features: [
             "Nivel actual: A2",
             "Escalando activamente a B1",
-            "Comprensión de documentación"
-          ],
+            "Enfoque en comunicacion tecnica"
+          ]
+        },
+        {
+          title: "Portugues",
+          level: "A2 - B1",
+          percentage: 20,
           color: "#22c55e",
-          context: "En proceso de mejora continua"
+          features: [
+            "Nivel actual: A2",
+            "Escalando activamente a B1",
+            "Comprension de documentacion"
+          ]
         }
       ]
     : [
         {
           title: "Spanish",
-          highlight: "Native",
-          percentage: 100,
+          level: "Native",
+          percentage: 55,
+          color: "#ef4444",
           features: [
             "Mother tongue",
             "Fluent professional communication",
             "Technical and creative writing"
-          ],
-          color: "#ef4444",
-          context: "Complete language mastery"
+          ]
         },
         {
           title: "English",
-          highlight: "A2 → B1",
-          percentage: 45,
+          level: "A2 - B1",
+          percentage: 25,
+          color: "#3b82f6",
           features: [
             "Current level: A2",
             "Actively scaling to B1",
             "Focus on technical communication"
-          ],
-          color: "#3b82f6",
-          context: "Continuous improvement process"
+          ]
         },
         {
           title: "Portuguese",
-          highlight: "A2 → B1",
-          percentage: 40,
+          level: "A2 - B1",
+          percentage: 20,
+          color: "#22c55e",
           features: [
             "Current level: A2",
             "Actively scaling to B1",
             "Documentation comprehension"
-          ],
-          color: "#22c55e",
-          context: "Continuous improvement process"
+          ]
         }
       ]
 
-  // Auto-play carousel
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % languages.length)
-    }, 5000)
-    return () => clearInterval(interval)
-  }, [languages.length])
+  // Calculate pie chart paths
+  const createPieSlice = (startAngle: number, endAngle: number, color: string, index: number) => {
+    const cx = 100
+    const cy = 100
+    const r = 80
+    const innerR = 45
 
-  // Circular progress component
-  const CircularProgress = ({ percentage, color, size = 140 }: { percentage: number, color: string, size?: number }) => {
-    const strokeWidth = size < 120 ? 6 : 8
-    const radius = (size - strokeWidth) / 2
-    const circumference = radius * 2 * Math.PI
+    const startRad = (startAngle - 90) * Math.PI / 180
+    const endRad = (endAngle - 90) * Math.PI / 180
+
+    const x1 = cx + r * Math.cos(startRad)
+    const y1 = cy + r * Math.sin(startRad)
+    const x2 = cx + r * Math.cos(endRad)
+    const y2 = cy + r * Math.sin(endRad)
+
+    const x3 = cx + innerR * Math.cos(endRad)
+    const y3 = cy + innerR * Math.sin(endRad)
+    const x4 = cx + innerR * Math.cos(startRad)
+    const y4 = cy + innerR * Math.sin(startRad)
+
+    const largeArc = endAngle - startAngle > 180 ? 1 : 0
+
+    const d = `M ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} L ${x3} ${y3} A ${innerR} ${innerR} 0 ${largeArc} 0 ${x4} ${y4} Z`
 
     return (
-      <div className="relative" style={{ width: size, height: size }}>
-        <svg width={size} height={size} className="transform -rotate-90">
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            stroke="#e5e7eb"
-            strokeWidth={strokeWidth}
-            fill="transparent"
-            className="dark:stroke-gray-700"
-          />
-          <motion.circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            stroke={color}
-            strokeWidth={strokeWidth}
-            fill="transparent"
-            strokeLinecap="round"
-            initial={{ strokeDasharray: `0 ${circumference}` }}
-            animate={{ strokeDasharray: `${(percentage / 100) * circumference} ${circumference}` }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-          />
-        </svg>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <motion.span 
-            className="text-xl sm:text-2xl md:text-3xl font-bold"
-            style={{ color }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            {percentage}%
-          </motion.span>
-        </div>
-      </div>
+      <motion.path
+        key={index}
+        d={d}
+        fill={color}
+        stroke="white"
+        strokeWidth="2"
+        className="cursor-pointer transition-all duration-300 dark:stroke-gray-900"
+        style={{
+          filter: selectedLanguage === index ? "brightness(1.1)" : "brightness(1)",
+          transform: selectedLanguage === index ? "scale(1.03)" : "scale(1)",
+          transformOrigin: "100px 100px"
+        }}
+        whileHover={{ scale: 1.05 }}
+        onClick={() => setSelectedLanguage(selectedLanguage === index ? null : index)}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: selectedLanguage === index ? 1.03 : 1 }}
+        transition={{ duration: 0.5, delay: index * 0.2 }}
+      />
     )
+  }
+
+  // Calculate angles for each slice
+  let currentAngle = 0
+  const slices = languages.map((lang, index) => {
+    const startAngle = currentAngle
+    const endAngle = currentAngle + (lang.percentage / 100) * 360
+    currentAngle = endAngle
+    return { ...lang, startAngle, endAngle, index }
+  })
+
+  // Calculate label positions
+  const getLabelPosition = (startAngle: number, endAngle: number, isOutside: boolean) => {
+    const midAngle = (startAngle + endAngle) / 2
+    const rad = (midAngle - 90) * Math.PI / 180
+    const r = isOutside ? 130 : 65
+    return {
+      x: 100 + r * Math.cos(rad),
+      y: 100 + r * Math.sin(rad),
+      midAngle
+    }
   }
 
   return (
@@ -150,120 +157,162 @@ const Languages = () => {
                            radial-gradient(circle at 50% 10%, rgba(59, 130, 246, 0.2) 0%, transparent 40%),
                            radial-gradient(circle at 50% 90%, rgba(59, 130, 246, 0.2) 0%, transparent 40%)`
         }} />
-        <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="languages-dots" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-              <circle cx="50" cy="50" r="2" fill="rgba(59, 130, 246, 0.3)" />
-              <circle cx="15" cy="15" r="1.5" fill="rgba(59, 130, 246, 0.2)" />
-              <circle cx="85" cy="85" r="1.5" fill="rgba(59, 130, 246, 0.2)" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#languages-dots)" />
-        </svg>
       </div>
 
       <div className="relative z-10 container mx-auto px-4">
         {/* Header */}
         <motion.div 
-          className="text-center mb-6 md:mb-10"
+          className="text-center mb-8 md:mb-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
-            {language === "es" ? "Comunicación técnica" : "Technical Communication"}
+            {language === "es" ? "Comunicacion tecnica" : "Technical Communication"}
           </h2>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base">
             {language === "es"
-              ? "Comunicación efectiva aplicada al desarrollo de proyectos técnicos con equipos y clientes en múltiples idiomas."
+              ? "Comunicacion efectiva aplicada al desarrollo de proyectos tecnicos con equipos y clientes en multiples idiomas."
               : "Effective communication applied to technical project development with teams and clients in multiple languages."}
           </p>
           <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mt-3 md:mt-4"></div>
         </motion.div>
 
-        {/* Carousel */}
-        <div className="max-w-2xl mx-auto">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentSlide}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4 }}
-              className="grid grid-cols-1 md:grid-cols-2 items-center gap-4 md:gap-8 py-2 md:py-4"
+        {/* Pie Chart and Details */}
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 items-center">
+            {/* Pie Chart */}
+            <motion.div 
+              className="flex justify-center"
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
             >
-              {/* Text content */}
-              <div className="text-center order-2 md:order-1">
-                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
-                  {languages[currentSlide].title}{" "}
-                  <span style={{ color: languages[currentSlide].color }}>{languages[currentSlide].highlight}</span>
-                </h3>
+              <div className="relative">
+                <svg width="200" height="200" viewBox="0 0 200 200" className="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56">
+                  {slices.map((slice) => createPieSlice(slice.startAngle, slice.endAngle, slice.color, slice.index))}
+                  {/* Center circle */}
+                  <circle cx="100" cy="100" r="35" fill="white" className="dark:fill-gray-900" />
+                  <text x="100" y="105" textAnchor="middle" className="text-xs font-medium fill-gray-600 dark:fill-gray-400">
+                    {language === "es" ? "Idiomas" : "Languages"}
+                  </text>
+                </svg>
 
-                <ul className="space-y-1 md:space-y-2 mb-3 md:mb-6">
-                  {languages[currentSlide].features.map((feature, index) => (
-                    <motion.li
-                      key={index}
-                      className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm md:text-base"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 + 0.2 }}
-                    >
-                      {feature}
-                    </motion.li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Circular progress */}
-              <div className="flex flex-col items-center gap-2 md:gap-3 order-1 md:order-2">
-                <div className="block sm:hidden">
-                  <CircularProgress
-                    percentage={languages[currentSlide].percentage}
-                    color={languages[currentSlide].color}
-                    size={100}
-                  />
-                </div>
-                <div className="hidden sm:block md:hidden">
-                  <CircularProgress
-                    percentage={languages[currentSlide].percentage}
-                    color={languages[currentSlide].color}
-                    size={120}
-                  />
-                </div>
+                {/* Labels outside the chart - Desktop only */}
                 <div className="hidden md:block">
-                  <CircularProgress
-                    percentage={languages[currentSlide].percentage}
-                    color={languages[currentSlide].color}
-                    size={140}
-                  />
+                  {slices.map((slice) => {
+                    const pos = getLabelPosition(slice.startAngle, slice.endAngle, true)
+                    const isLeft = pos.x < 100
+                    return (
+                      <motion.div
+                        key={slice.index}
+                        className={`absolute whitespace-nowrap text-xs font-medium cursor-pointer transition-all duration-300 ${
+                          selectedLanguage === slice.index ? "scale-110" : ""
+                        }`}
+                        style={{
+                          left: `${(pos.x / 200) * 100}%`,
+                          top: `${(pos.y / 200) * 100}%`,
+                          transform: `translate(${isLeft ? "-100%" : "0"}, -50%)`,
+                          color: slice.color
+                        }}
+                        onClick={() => setSelectedLanguage(selectedLanguage === slice.index ? null : slice.index)}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.8 + slice.index * 0.2 }}
+                      >
+                        <span className="font-bold">{slice.title}</span>
+                        <span className="text-gray-500 dark:text-gray-400 ml-1">({slice.level})</span>
+                      </motion.div>
+                    )
+                  })}
                 </div>
-                <motion.p
-                  className="text-[10px] sm:text-xs md:text-sm font-medium text-center max-w-[100px] sm:max-w-[140px] md:max-w-[160px] leading-relaxed"
-                  style={{ color: languages[currentSlide].color }}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.8, duration: 0.5, ease: "easeOut" }}
-                >
-                  {languages[currentSlide].context}
-                </motion.p>
               </div>
             </motion.div>
-          </AnimatePresence>
 
-          {/* Progress bar indicator */}
-          <div className="flex justify-center gap-1.5 mt-4 md:mt-8">
-            {languages.map((_, index) => (
-              <div
-                key={index}
-                className={`h-1.5 rounded-full transition-all duration-500 ${
-                  index === currentSlide
-                    ? "w-8 bg-primary"
-                    : "w-2 bg-gray-300 dark:bg-gray-600"
-                }`}
-              />
-            ))}
+            {/* Legend and Details */}
+            <div className="space-y-3">
+              {/* Legend items - always visible */}
+              {languages.map((lang, index) => (
+                <motion.div
+                  key={index}
+                  className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all duration-300 ${
+                    selectedLanguage === index 
+                      ? "bg-gray-100 dark:bg-gray-800 shadow-md" 
+                      : "hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                  }`}
+                  onClick={() => setSelectedLanguage(selectedLanguage === index ? null : index)}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <div 
+                    className="w-4 h-4 rounded-full flex-shrink-0"
+                    style={{ backgroundColor: lang.color }}
+                  />
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-sm text-gray-900 dark:text-white">{lang.title}</span>
+                      <span className="text-xs font-medium px-2 py-0.5 rounded-full" style={{ backgroundColor: `${lang.color}20`, color: lang.color }}>
+                        {lang.level}
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+
+              {/* Details panel - shown when clicked */}
+              <AnimatePresence>
+                {selectedLanguage !== null && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div 
+                      className="p-4 rounded-lg border-l-4 bg-gray-50 dark:bg-gray-800"
+                      style={{ borderColor: languages[selectedLanguage].color }}
+                    >
+                      <h4 className="font-bold text-sm mb-2" style={{ color: languages[selectedLanguage].color }}>
+                        {languages[selectedLanguage].title}
+                      </h4>
+                      <ul className="space-y-1">
+                        {languages[selectedLanguage].features.map((feature, idx) => (
+                          <motion.li
+                            key={idx}
+                            className="text-xs text-gray-600 dark:text-gray-400 flex items-start gap-2"
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: idx * 0.1 }}
+                          >
+                            <span style={{ color: languages[selectedLanguage].color }}>•</span>
+                            {feature}
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
+
+          {/* Instruction text */}
+          <motion.p
+            className="text-center text-xs text-gray-500 dark:text-gray-400 mt-6"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 1 }}
+          >
+            {language === "es" 
+              ? "Haz clic en el grafico o en los idiomas para ver mas detalles"
+              : "Click on the chart or languages to see more details"}
+          </motion.p>
         </div>
       </div>
     </section>
