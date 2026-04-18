@@ -1,8 +1,67 @@
 "use client"
 
-import { useState, useEffect, useRef, useMemo } from "react"
+import { useState, useEffect, useRef, memo } from "react"
 import { useLanguage } from "@/lib/language-context"
 import { motion, AnimatePresence, useInView } from "framer-motion"
+
+// Circular progress component - MOVED OUTSIDE to prevent recreation on each render
+const CircularProgress = memo(({ 
+  percentage, 
+  color, 
+  size = 140, 
+  animate 
+}: { 
+  percentage: number
+  color: string
+  size?: number
+  animate: boolean 
+}) => {
+  const strokeWidth = size < 120 ? 6 : 8
+  const radius = (size - strokeWidth) / 2
+  const circumference = radius * 2 * Math.PI
+  const targetDash = (percentage / 100) * circumference
+
+  return (
+    <div className="relative" style={{ width: size, height: size }}>
+      <svg width={size} height={size} className="transform -rotate-90">
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke="#e5e7eb"
+          strokeWidth={strokeWidth}
+          fill="transparent"
+          className="dark:stroke-gray-700"
+        />
+        <motion.circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={color}
+          strokeWidth={strokeWidth}
+          fill="transparent"
+          strokeLinecap="round"
+          initial={{ strokeDasharray: `0 ${circumference}` }}
+          animate={animate ? { strokeDasharray: `${targetDash} ${circumference}` } : { strokeDasharray: `0 ${circumference}` }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+        />
+      </svg>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <motion.span 
+          className="text-xl sm:text-2xl md:text-3xl font-bold"
+          style={{ color }}
+          initial={{ opacity: 0 }}
+          animate={animate ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
+          {percentage}%
+        </motion.span>
+      </div>
+    </div>
+  )
+})
+
+CircularProgress.displayName = "CircularProgress"
 
 const Languages = () => {
   const { language } = useLanguage()
@@ -17,9 +76,6 @@ const Languages = () => {
       setHasAnimatedOnce(true)
     }
   }, [isDesktopInView, hasAnimatedOnce])
-
-  // Memoize animation state to prevent re-renders
-  const desktopAnimateState = useMemo(() => hasAnimatedOnce, [hasAnimatedOnce])
 
   const languages = language === "es"
     ? [
@@ -101,53 +157,6 @@ const Languages = () => {
     return () => clearInterval(interval)
   }, [languages.length])
 
-  // Circular progress component - uses controlled animation state
-  const CircularProgress = ({ percentage, color, size = 140, animate }: { percentage: number, color: string, size?: number, animate: boolean }) => {
-    const strokeWidth = size < 120 ? 6 : 8
-    const radius = (size - strokeWidth) / 2
-    const circumference = radius * 2 * Math.PI
-    const targetDash = (percentage / 100) * circumference
-
-    return (
-      <div className="relative" style={{ width: size, height: size }}>
-        <svg width={size} height={size} className="transform -rotate-90">
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            stroke="#e5e7eb"
-            strokeWidth={strokeWidth}
-            fill="transparent"
-            className="dark:stroke-gray-700"
-          />
-          <motion.circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            stroke={color}
-            strokeWidth={strokeWidth}
-            fill="transparent"
-            strokeLinecap="round"
-            initial={{ strokeDasharray: `0 ${circumference}` }}
-            animate={animate ? { strokeDasharray: `${targetDash} ${circumference}` } : { strokeDasharray: `0 ${circumference}` }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-          />
-        </svg>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <motion.span 
-            className="text-xl sm:text-2xl md:text-3xl font-bold"
-            style={{ color }}
-            initial={{ opacity: 0 }}
-            animate={animate ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
-          >
-            {percentage}%
-          </motion.span>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <section id="languages" className="relative flex flex-col justify-center py-12 md:py-16 bg-gray-50 dark:bg-gray-800 overflow-hidden">
       {/* Background pattern - same style as skills */}
@@ -195,7 +204,7 @@ const Languages = () => {
           <div className="grid grid-cols-3 gap-8 max-w-4xl mx-auto">
             {languages.map((lang, index) => (
               <motion.div
-                key={index}
+                key={`desktop-${lang.title}-${index}`}
                 className="flex flex-col items-center gap-4"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -215,7 +224,7 @@ const Languages = () => {
                   percentage={lang.percentage}
                   color={lang.color}
                   size={130}
-                  animate={desktopAnimateState}
+                  animate={hasAnimatedOnce}
                 />
 
                 {/* Features */}
