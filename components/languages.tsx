@@ -2,11 +2,10 @@
 
 import { useState, useEffect } from "react"
 import { useLanguage } from "@/lib/language-context"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 
 const Languages = () => {
   const { language } = useLanguage()
-  const [selectedLanguage, setSelectedLanguage] = useState<number | null>(null)
   const [isChartVisible, setIsChartVisible] = useState(false)
   const [animationProgress, setAnimationProgress] = useState(0)
 
@@ -126,14 +125,9 @@ const Languages = () => {
         fill={color}
         stroke="white"
         strokeWidth="2"
-        className="cursor-pointer transition-all duration-300 dark:stroke-gray-900"
-        style={{
-          filter: selectedLanguage === index ? "brightness(1.1)" : "brightness(1)",
-          transform: selectedLanguage === index ? "scale(1.03)" : "scale(1)",
-          transformOrigin: "100px 100px"
-        }}
-        whileHover={{ scale: 1.05 }}
-        onClick={() => setSelectedLanguage(selectedLanguage === index ? null : index)}
+        className="transition-all duration-300 dark:stroke-gray-900"
+        whileHover={{ scale: 1.02 }}
+        style={{ transformOrigin: "100px 100px" }}
       />
     )
   }
@@ -221,16 +215,13 @@ const Languages = () => {
                     return (
                       <motion.div
                         key={slice.index}
-                        className={`absolute whitespace-nowrap text-xs font-medium cursor-pointer transition-all duration-300 ${
-                          selectedLanguage === slice.index ? "scale-110" : ""
-                        }`}
+                        className="absolute whitespace-nowrap text-xs font-medium"
                         style={{
                           left: `${(pos.x / 200) * 100}%`,
                           top: `${(pos.y / 200) * 100}%`,
                           transform: `translate(${isLeft ? "-100%" : "0"}, -50%)`,
                           color: slice.color
                         }}
-                        onClick={() => setSelectedLanguage(selectedLanguage === slice.index ? null : slice.index)}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.8 + slice.index * 0.2 }}
@@ -244,18 +235,12 @@ const Languages = () => {
               </div>
             </motion.div>
 
-            {/* Legend and Details */}
+            {/* Legend */}
             <div className="space-y-3">
-              {/* Legend items - always visible */}
               {languages.map((lang, index) => (
                 <motion.div
                   key={index}
-                  className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all duration-300 ${
-                    selectedLanguage === index 
-                      ? "bg-gray-100 dark:bg-gray-800 shadow-md" 
-                      : "hover:bg-gray-50 dark:hover:bg-gray-800/50"
-                  }`}
-                  onClick={() => setSelectedLanguage(selectedLanguage === index ? null : index)}
+                  className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50"
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
@@ -275,42 +260,6 @@ const Languages = () => {
                   </div>
                 </motion.div>
               ))}
-
-              {/* Details panel - shown when clicked */}
-              <AnimatePresence>
-                {selectedLanguage !== null && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
-                  >
-                    <div 
-                      className="p-4 rounded-lg border-l-4 bg-gray-50 dark:bg-gray-800"
-                      style={{ borderColor: languages[selectedLanguage].color }}
-                    >
-                      <h4 className="font-bold text-sm mb-2" style={{ color: languages[selectedLanguage].color }}>
-                        {languages[selectedLanguage].title}
-                      </h4>
-                      <ul className="space-y-1">
-                        {languages[selectedLanguage].features.map((feature, idx) => (
-                          <motion.li
-                            key={idx}
-                            className="text-xs text-gray-600 dark:text-gray-400 flex items-start gap-2"
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: idx * 0.1 }}
-                          >
-                            <span style={{ color: languages[selectedLanguage].color }}>•</span>
-                            {feature}
-                          </motion.li>
-                        ))}
-                      </ul>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </div>
           </div>
 

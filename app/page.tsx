@@ -234,11 +234,11 @@ export default function Home() {
   const [heroSlide, setHeroSlide] = useState(0)
   const totalHeroSlides = 2
 
-  // Auto-rotate hero slides
+  // Auto-rotate hero slides - 35 seconds to allow all 3 stack languages to show (10s each + buffer)
   useEffect(() => {
     const interval = setInterval(() => {
       setHeroSlide((prev) => (prev + 1) % totalHeroSlides)
-    }, 6000)
+    }, 35000)
     return () => clearInterval(interval)
   }, [])
 
