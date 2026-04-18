@@ -24,7 +24,7 @@ function StackCarousel({ language }: { language: string }) {
       name: "Python",
       percentage: 85,
       color: "#3776AB",
-      focus: language === "es" ? "IA, Automatizacion de Testing y Backend" : "AI, Testing Automation and Backend",
+      focus: language === "es" ? "IA, Automatización de Testing y Backend" : "AI, Testing Automation and Backend",
       value: language === "es" ? "Manejo de datos, modelos de IA y servicios seguros" : "Data handling, AI models and secure services"
     },
     {
@@ -46,7 +46,7 @@ function StackCarousel({ language }: { language: string }) {
   useEffect(() => {
     const interval = setInterval(() => {
       setStackSlide((prev) => (prev + 1) % totalStackSlides)
-    }, 6000) // 6 seconds for each slide
+    }, 10000) // 10 seconds for each slide - more time to read
     return () => clearInterval(interval)
   }, [])
 
@@ -67,7 +67,7 @@ function StackCarousel({ language }: { language: string }) {
       </h2>
       <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base mb-6 md:mb-8">
         {language === "es" 
-          ? "Implementacion de arquitecturas modernas para el desarrollo de soluciones integrales, escalables y orientadas a resultados."
+          ? "Implementación de arquitecturas modernas para el desarrollo de soluciones integrales, escalables y orientadas a resultados."
           : "Implementation of modern architectures for the development of comprehensive, scalable and results-oriented solutions."}
       </p>
       <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mb-6 md:mb-8"></div>
@@ -398,9 +398,11 @@ export default function Home() {
                       <Button
                         size="sm"
                         className="bg-primary hover:bg-primary/90 text-white rounded-lg px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm"
-                        onClick={() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })}
+                        asChild
                       >
-                        {language === "es" ? "Ver proyectos" : "View projects"}
+                        <a href="/experience">
+                          {language === "es" ? "Ver proyectos" : "View projects"}
+                        </a>
                       </Button>
                     </div>
                   </div>

@@ -1,46 +1,48 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useLanguage } from "@/lib/language-context"
 import { motion, AnimatePresence } from "framer-motion"
 
 const Languages = () => {
   const { language } = useLanguage()
   const [selectedLanguage, setSelectedLanguage] = useState<number | null>(null)
+  const [isChartVisible, setIsChartVisible] = useState(false)
+  const [animationProgress, setAnimationProgress] = useState(0)
 
   const languages = language === "es"
     ? [
         {
-          title: "Espanol",
+          title: "Español",
           level: "Nativo",
           percentage: 55,
           color: "#ef4444",
           features: [
             "Lengua materna",
-            "Comunicacion profesional fluida",
-            "Redaccion tecnica y creativa"
+            "Comunicación profesional fluida",
+            "Redacción técnica y creativa"
           ]
         },
         {
-          title: "Ingles",
+          title: "Inglés",
           level: "A2 - B1",
           percentage: 25,
           color: "#3b82f6",
           features: [
             "Nivel actual: A2",
             "Escalando activamente a B1",
-            "Enfoque en comunicacion tecnica"
+            "Enfoque en comunicación técnica"
           ]
         },
         {
-          title: "Portugues",
+          title: "Portugués",
           level: "A2 - B1",
           percentage: 20,
           color: "#22c55e",
           features: [
             "Nivel actual: A2",
             "Escalando activamente a B1",
-            "Comprension de documentacion"
+            "Comprensión de documentación"
           ]
         }
       ]
@@ -80,15 +82,28 @@ const Languages = () => {
         }
       ]
 
-  // Calculate pie chart paths
+  // Animation effect for pie chart - trigger when in view
+  useEffect(() => {
+    if (isChartVisible && animationProgress < 100) {
+      const timer = setTimeout(() => {
+        setAnimationProgress(prev => Math.min(prev + 2, 100))
+      }, 20)
+      return () => clearTimeout(timer)
+    }
+  }, [isChartVisible, animationProgress])
+
+  // Calculate pie chart paths with animation
   const createPieSlice = (startAngle: number, endAngle: number, color: string, index: number) => {
     const cx = 100
     const cy = 100
     const r = 80
     const innerR = 45
 
+    // Apply animation progress to angles
+    const animatedEndAngle = startAngle + ((endAngle - startAngle) * animationProgress / 100)
+
     const startRad = (startAngle - 90) * Math.PI / 180
-    const endRad = (endAngle - 90) * Math.PI / 180
+    const endRad = (animatedEndAngle - 90) * Math.PI / 180
 
     const x1 = cx + r * Math.cos(startRad)
     const y1 = cy + r * Math.sin(startRad)
@@ -100,7 +115,7 @@ const Languages = () => {
     const x4 = cx + innerR * Math.cos(startRad)
     const y4 = cy + innerR * Math.sin(startRad)
 
-    const largeArc = endAngle - startAngle > 180 ? 1 : 0
+    const largeArc = animatedEndAngle - startAngle > 180 ? 1 : 0
 
     const d = `M ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} L ${x3} ${y3} A ${innerR} ${innerR} 0 ${largeArc} 0 ${x4} ${y4} Z`
 
@@ -119,9 +134,6 @@ const Languages = () => {
         }}
         whileHover={{ scale: 1.05 }}
         onClick={() => setSelectedLanguage(selectedLanguage === index ? null : index)}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: selectedLanguage === index ? 1.03 : 1 }}
-        transition={{ duration: 0.5, delay: index * 0.2 }}
       />
     )
   }
@@ -169,11 +181,11 @@ const Languages = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
-            {language === "es" ? "Comunicacion tecnica" : "Technical Communication"}
+            {language === "es" ? "Comunicación técnica" : "Technical Communication"}
           </h2>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base">
             {language === "es"
-              ? "Comunicacion efectiva aplicada al desarrollo de proyectos tecnicos con equipos y clientes en multiples idiomas."
+              ? "Comunicación efectiva aplicada al desarrollo de proyectos técnicos con equipos y clientes en múltiples idiomas."
               : "Effective communication applied to technical project development with teams and clients in multiple languages."}
           </p>
           <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mt-3 md:mt-4"></div>
@@ -189,6 +201,7 @@ const Languages = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
+              onViewportEnter={() => setIsChartVisible(true)}
             >
               <div className="relative">
                 <svg width="200" height="200" viewBox="0 0 200 200" className="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56">
@@ -301,18 +314,7 @@ const Languages = () => {
             </div>
           </div>
 
-          {/* Instruction text */}
-          <motion.p
-            className="text-center text-xs text-gray-500 dark:text-gray-400 mt-6"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 1 }}
-          >
-            {language === "es" 
-              ? "Haz clic en el grafico o en los idiomas para ver mas detalles"
-              : "Click on the chart or languages to see more details"}
-          </motion.p>
+
         </div>
       </div>
     </section>

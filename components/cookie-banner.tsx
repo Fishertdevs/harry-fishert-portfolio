@@ -35,35 +35,35 @@ export default function CookieBanner() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 shadow-lg">
-      <div className="container mx-auto px-3 py-2 md:px-4 md:py-3">
-        <div className="flex flex-row items-center justify-between gap-2 md:gap-4">
-          <div className="flex items-center gap-2 flex-1 min-w-0">
-            <Cookie className="w-4 h-4 md:w-5 md:h-5 text-amber-500 flex-shrink-0" />
-            <p className="text-[10px] md:text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
+      <div className="container mx-auto px-3 py-2 md:px-6 md:py-4">
+        <div className="flex flex-row items-center justify-between gap-2 md:gap-6">
+          <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
+            <Cookie className="w-4 h-4 md:w-6 md:h-6 text-amber-500 flex-shrink-0" />
+            <p className="text-[10px] md:text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
               {language === "es" 
-                ? "Usamos cookies para mejorar tu experiencia. "
-                : "We use cookies to improve your experience. "}
-              <a href="#" className="text-primary hover:underline">
-                {language === "es" ? "Politica" : "Policy"}
+                ? "Usamos cookies para mejorar tu experiencia y personalizar el contenido. Al continuar navegando, aceptas nuestra "
+                : "We use cookies to improve your experience and personalize content. By continuing to browse, you accept our "}
+              <a href="/cookies" className="text-primary hover:underline font-medium">
+                {language === "es" ? "Política de Cookies" : "Cookie Policy"}
               </a>
             </p>
           </div>
           
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
             <Button 
               variant="outline" 
               size="sm"
               onClick={handleReject}
-              className="h-7 px-2 md:px-3 text-[10px] md:text-xs border-gray-300 dark:border-gray-600"
+              className="h-7 md:h-9 px-2 md:px-4 text-[10px] md:text-sm border-gray-300 dark:border-gray-600"
             >
-              {language === "es" ? "No" : "No"}
+              {language === "es" ? "Cerrar" : "Close"}
             </Button>
             <Button 
               size="sm"
               onClick={handleAccept}
-              className="h-7 px-2 md:px-3 text-[10px] md:text-xs bg-primary hover:bg-primary/90 text-primary-foreground"
+              className="h-7 md:h-9 px-2 md:px-4 text-[10px] md:text-sm bg-primary hover:bg-primary/90 text-primary-foreground"
             >
-              {language === "es" ? "Ok" : "Ok"}
+              {language === "es" ? "Aceptar" : "Accept"}
             </Button>
           </div>
         </div>

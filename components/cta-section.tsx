@@ -15,7 +15,7 @@ export default function CTASection() {
   const { language } = useLanguage()
   
   const whatsappMessage = language === "es"
-    ? "Estimado Harry, me comunico contigo tras revisar tu portafolio profesional. Estoy interesado en conocer mas sobre tus servicios de desarrollo y me gustaria solicitar una cotizacion personalizada para un proyecto. Quedo atento a tu disponibilidad para coordinar una reunion. Saludos cordiales."
+    ? "Estimado Harry, me comunico contigo tras revisar tu portafolio profesional. Estoy interesado en conocer más sobre tus servicios de desarrollo y me gustaría solicitar una cotización personalizada para un proyecto. Quedo atento a tu disponibilidad para coordinar una reunión. Saludos cordiales."
     : "Dear Harry, I am reaching out after reviewing your professional portfolio. I am interested in learning more about your development services and would like to request a personalized quote for a project. I look forward to your availability to schedule a meeting. Best regards."
   
   const whatsappLink = `https://api.whatsapp.com/send?phone=573112512939&text=${encodeURIComponent(whatsappMessage)}`
@@ -35,7 +35,7 @@ export default function CTASection() {
           </h2>
           <p className="text-white/90 text-sm md:text-base mb-8 max-w-2xl mx-auto">
             {language === "es"
-              ? "Contactame hoy y descubre como puedo ayudarte a desarrollar tus ideas en soluciones a medida. Asesoria personalizada sin compromiso."
+              ? "Contáctame hoy y descubre cómo puedo ayudarte a desarrollar tus ideas en soluciones a medida. Asesoría personalizada sin compromiso."
               : "Contact me today and discover how I can help you develop your ideas into custom solutions. Personalized advice with no commitment."}
           </p>
           

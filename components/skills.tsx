@@ -64,7 +64,7 @@ const Skills = () => {
           ],
           color: "#f59e0b",
           context: "Integración avanzada de modelos de lenguaje",
-          whatsappMessage: "Hola Harry, estoy interesado en tus servicios de Automatizacion con IA. Me gustaria conocer mas sobre integracion de modelos de lenguaje y chatbots."
+          whatsappMessage: "Hola Harry, estoy interesado en tus servicios de Automatización con IA. Me gustaría conocer más sobre integración de modelos de lenguaje y chatbots."
         },
         {
           title: "Optimización",
@@ -77,7 +77,7 @@ const Skills = () => {
           ],
           color: "#ef4444",
           context: "Estrategias efectivas de posicionamiento web",
-          whatsappMessage: "Hola Harry, estoy interesado en tus servicios de Optimizacion SEO. Me gustaria conocer mas sobre estrategias de posicionamiento y rendimiento web."
+          whatsappMessage: "Hola Harry, estoy interesado en tus servicios de Optimización SEO. Me gustaría conocer más sobre estrategias de posicionamiento y rendimiento web."
         },
         {
           title: "DevOps",

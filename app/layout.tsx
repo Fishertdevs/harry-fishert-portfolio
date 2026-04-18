@@ -12,8 +12,8 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Harry Fishert | Desarrollador Full Stack y Arquitecto de Software",
-  description: "Desarrollador Full Stack y Arquitecto de Software especializado en Python, React, Next.js y Node.js. Diseño soluciones web escalables y sistemas en produccion.",
+  title: "Harry Fishert | Desarrollador Full Stack | Arquitecto de Software",
+  description: "Desarrollador Full Stack y Arquitecto de Software con experiencia en Python, React, Next.js y Node.js. Especializado en diseño de soluciones web escalables, arquitecturas modernas, automatización con IA y sistemas de alto rendimiento en producción.",
   keywords: ["Desarrollador Full Stack", "React", "Next.js", "Node.js", "Python", "Arquitecto de Software", "Desarrollo Web", "Sistemas SaaS", "E-commerce", "Colombia"],
   authors: [{ name: "Harry Fishert Lasso Hernandez" }],
   creator: "Harry Fishert Lasso Hernandez",
@@ -37,9 +37,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_CO",
     url: "https://harryfishert.dev",
-    siteName: "Harry Fishert | Desarrollador Full Stack y Arquitecto de Software",
-    title: "Harry Fishert | Desarrollador Full Stack y Arquitecto de Software",
-    description: "Desarrollador Full Stack y Arquitecto de Software especializado en Python, React, Next.js y Node.js. Diseño soluciones web escalables y sistemas en produccion.",
+    siteName: "Harry Fishert | Desarrollador Full Stack | Arquitecto de Software",
+    title: "Harry Fishert | Desarrollador Full Stack | Arquitecto de Software",
+    description: "Desarrollador Full Stack y Arquitecto de Software con experiencia en Python, React, Next.js y Node.js. Especializado en diseño de soluciones web escalables, arquitecturas modernas, automatización con IA y sistemas de alto rendimiento en producción.",
     images: [
       {
         url: "/icon.png",
@@ -51,8 +51,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Harry Fishert | Desarrollador Full Stack y Arquitecto de Software",
-    description: "Desarrollador Full Stack y Arquitecto de Software especializado en Python, React, Next.js y Node.js.",
+    title: "Harry Fishert | Desarrollador Full Stack | Arquitecto de Software",
+    description: "Desarrollador Full Stack y Arquitecto de Software con experiencia en Python, React, Next.js y Node.js. Soluciones escalables y de alto rendimiento.",
     images: ["/icon.png"],
   },
   verification: {
