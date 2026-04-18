@@ -1,12 +1,22 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useLanguage } from "@/lib/language-context"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, useInView } from "framer-motion"
 
 const Languages = () => {
   const { language } = useLanguage()
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [hasAnimatedOnce, setHasAnimatedOnce] = useState(false)
+  const desktopChartsRef = useRef<HTMLDivElement>(null)
+  const isDesktopInView = useInView(desktopChartsRef, { once: true, amount: 0.3 })
+  
+  // Trigger animation only once when desktop charts come into view
+  useEffect(() => {
+    if (isDesktopInView && !hasAnimatedOnce) {
+      setHasAnimatedOnce(true)
+    }
+  }, [isDesktopInView, hasAnimatedOnce])
 
   const languages = language === "es"
     ? [
@@ -88,8 +98,8 @@ const Languages = () => {
     return () => clearInterval(interval)
   }, [languages.length])
 
-  // Circular progress component - same style as skills, animates only once using whileInView with once:true
-  const CircularProgress = ({ percentage, color, size = 140 }: { percentage: number, color: string, size?: number }) => {
+  // Circular progress component - uses controlled animation state
+  const CircularProgress = ({ percentage, color, size = 140, animate }: { percentage: number, color: string, size?: number, animate: boolean }) => {
     const strokeWidth = size < 120 ? 6 : 8
     const radius = (size - strokeWidth) / 2
     const circumference = radius * 2 * Math.PI
@@ -116,8 +126,7 @@ const Languages = () => {
             fill="transparent"
             strokeLinecap="round"
             initial={{ strokeDasharray: `0 ${circumference}` }}
-            whileInView={{ strokeDasharray: `${targetDash} ${circumference}` }}
-            viewport={{ once: true, amount: 0.8 }}
+            animate={animate ? { strokeDasharray: `${targetDash} ${circumference}` } : { strokeDasharray: `0 ${circumference}` }}
             transition={{ duration: 1.5, ease: "easeOut" }}
           />
         </svg>
@@ -126,8 +135,7 @@ const Languages = () => {
             className="text-xl sm:text-2xl md:text-3xl font-bold"
             style={{ color }}
             initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, amount: 0.8 }}
+            animate={animate ? { opacity: 1 } : { opacity: 0 }}
             transition={{ delay: 0.5, duration: 0.5 }}
           >
             {percentage}%
@@ -180,7 +188,7 @@ const Languages = () => {
         </motion.div>
 
         {/* Desktop View - 3 charts side by side */}
-        <div className="hidden md:block">
+        <div className="hidden md:block" ref={desktopChartsRef}>
           <div className="grid grid-cols-3 gap-8 max-w-4xl mx-auto">
             {languages.map((lang, index) => (
               <motion.div
@@ -204,6 +212,7 @@ const Languages = () => {
                   percentage={lang.percentage}
                   color={lang.color}
                   size={130}
+                  animate={hasAnimatedOnce}
                 />
 
                 {/* Features */}
@@ -239,6 +248,7 @@ const Languages = () => {
                 percentage={languages[currentSlide].percentage}
                 color={languages[currentSlide].color}
                 size={110}
+                animate={true}
               />
 
               {/* Features */}

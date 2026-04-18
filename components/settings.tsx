@@ -9,74 +9,25 @@ import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { AlertCircle, Save, Lock, Unlock, RefreshCw, CheckCircle } from "lucide-react"
+import { Save, RefreshCw, CheckCircle } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 import { usePortfolio } from "@/lib/portfolio-context"
 import { useToast } from "@/hooks/use-toast"
 import { motion } from "framer-motion"
 
-// Código de acceso (en una aplicación real, esto estaría en el servidor)
-const ACCESS_CODE = "harry2025"
-
 const Settings = () => {
   const { t } = useLanguage()
   const { portfolioData, updatePortfolioData, resetPortfolioData } = usePortfolio()
   const { toast } = useToast()
-  const [accessCode, setAccessCode] = useState("")
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [activeTab, setActiveTab] = useState("personal")
   const [formData, setFormData] = useState(portfolioData)
-  const [errorMessage, setErrorMessage] = useState("")
   const [successMessage, setSuccessMessage] = useState("")
 
   // Sincronizar formData con portfolioData cuando cambie
   useEffect(() => {
     setFormData(portfolioData)
   }, [portfolioData])
-
-  // Verificar si hay una sesión guardada
-  useEffect(() => {
-    const savedAuth = localStorage.getItem("portfolio-auth")
-    if (savedAuth === "true") {
-      setIsAuthenticated(true)
-    }
-  }, [])
-
-  const handleAccessSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setErrorMessage("")
-
-    // Simular verificación
-    setTimeout(() => {
-      if (accessCode === ACCESS_CODE) {
-        setIsAuthenticated(true)
-        localStorage.setItem("portfolio-auth", "true")
-        toast({
-          title: "Acceso concedido",
-          description: "Bienvenido al panel de ajustes",
-        })
-      } else {
-        setErrorMessage("Código de acceso incorrecto")
-        toast({
-          title: "Acceso denegado",
-          description: "El código ingresado no es válido",
-          variant: "destructive",
-        })
-      }
-      setIsLoading(false)
-    }, 1000)
-  }
-
-  const handleLogout = () => {
-    setIsAuthenticated(false)
-    localStorage.removeItem("portfolio-auth")
-    toast({
-      title: "Sesión cerrada",
-      description: "Has salido del panel de ajustes",
-    })
-  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -119,78 +70,14 @@ const Settings = () => {
     })
   }
 
-  if (!isAuthenticated) {
-    return (
-      <section id="settings" className="py-20 bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">Panel de Ajustes</h2>
-            <div className="h-1 w-20 bg-primary mx-auto"></div>
-            <p className="text-gray-700 dark:text-gray-300 mt-6 max-w-2xl mx-auto">Acceso único del propietario.</p>
-          </div>
-
-          <div className="max-w-md mx-auto">
-            <Card className="border-2 border-gray-200 dark:border-gray-700">
-              <CardHeader className="text-center">
-                <CardTitle className="text-2xl flex items-center justify-center gap-2">
-                  <Lock className="h-5 w-5 text-primary" />
-                  Acceso Restringido
-                </CardTitle>
-                <CardDescription>Ingresa el código de acceso para continuar</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleAccessSubmit}>
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="accessCode">Código de acceso</Label>
-                      <Input
-                        id="accessCode"
-                        type="password"
-                        placeholder="Ingresa el código de acceso"
-                        value={accessCode}
-                        onChange={(e) => setAccessCode(e.target.value)}
-                        required
-                      />
-                      {errorMessage && (
-                        <p className="text-sm text-red-500 flex items-center mt-1">
-                          <AlertCircle className="h-3 w-3 mr-1" /> {errorMessage}
-                        </p>
-                      )}
-                    </div>
-                    <Button type="submit" className="w-full" disabled={isLoading}>
-                      {isLoading ? (
-                        <>
-                          <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                          Verificando...
-                        </>
-                      ) : (
-                        "Acceder"
-                      )}
-                    </Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-    )
-  }
-
   return (
     <section id="settings" className="py-20 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h2 className="text-3xl font-bold gradient-text">Panel de Ajustes</h2>
-            <p className="text-gray-600 dark:text-gray-400">
-              Panel exclusivo del propietario - Los cambios se reflejan en tiempo real
-            </p>
-          </div>
-          <Button variant="outline" onClick={handleLogout}>
-            <Unlock className="h-4 w-4 mr-2" />
-            Cerrar sesión
-          </Button>
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold gradient-text">Panel de Ajustes</h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            Panel exclusivo del propietario - Los cambios se reflejan en tiempo real
+          </p>
         </div>
 
         <Card className="border-2 border-gray-200 dark:border-gray-700">
