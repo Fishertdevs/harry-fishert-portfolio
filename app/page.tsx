@@ -14,44 +14,94 @@ import WhatsAppFloatingButton from "@/components/whatsapp-floating-button"
 import CTASection from "@/components/cta-section"
 import CookieBanner from "@/components/cookie-banner"
 
-// Stack Carousel Component
+// Circular Progress Component - reusable
+function CircularProgress({ percentage, color, size = 100 }: { percentage: number, color: string, size?: number }) {
+  const strokeWidth = size < 80 ? 4 : size < 120 ? 5 : 6
+  const radius = (size - strokeWidth * 2) / 2
+  const circumference = radius * 2 * Math.PI
+
+  return (
+    <div className="relative" style={{ width: size, height: size }}>
+      <svg width={size} height={size} className="transform -rotate-90">
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke="#e5e7eb"
+          strokeWidth={strokeWidth}
+          fill="transparent"
+          className="dark:stroke-gray-700"
+        />
+        <motion.circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={color}
+          strokeWidth={strokeWidth}
+          fill="transparent"
+          strokeLinecap="round"
+          initial={{ strokeDasharray: `0 ${circumference}` }}
+          animate={{ strokeDasharray: `${(percentage / 100) * circumference} ${circumference}` }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+        />
+      </svg>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <motion.span 
+          className="font-bold"
+          style={{ 
+            color, 
+            fontSize: size < 80 ? '0.875rem' : size < 120 ? '1.125rem' : '1.5rem',
+            textShadow: color === "#F7DF1E" ? "0 0 2px rgba(0,0,0,0.2)" : "none"
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
+          {percentage}%
+        </motion.span>
+      </div>
+    </div>
+  )
+}
+
+// Stack Carousel Component - 3 charts side by side on PC, carousel on mobile
 function StackCarousel({ language }: { language: string }) {
-  const [stackSlide, setStackSlide] = useState(0)
-  const totalStackSlides = 3
+  const [mobileSlide, setMobileSlide] = useState(0)
   
   const stackData = [
     {
       name: "Python",
       percentage: 85,
       color: "#3776AB",
-      focus: language === "es" ? "IA, Automatización de Testing y Backend" : "AI, Testing Automation and Backend",
-      value: language === "es" ? "Manejo de datos, modelos de IA y servicios seguros" : "Data handling, AI models and secure services"
+      tags: language === "es" 
+        ? ["IA", "Automatización", "Testing", "Backend"] 
+        : ["AI", "Automation", "Testing", "Backend"]
     },
     {
       name: "TypeScript",
       percentage: 90,
       color: "#3178C6",
-      focus: language === "es" ? "Desarrollo escalable y tipado seguro" : "Scalable development and safe typing",
-      value: language === "es" ? "Mantenibilidad y calidad en proyectos grandes" : "Maintainability and quality in large projects"
+      tags: language === "es" 
+        ? ["Tipado", "Escalable", "Seguro", "Moderno"] 
+        : ["Typed", "Scalable", "Safe", "Modern"]
     },
     {
       name: "JavaScript",
       percentage: 90,
       color: "#F7DF1E",
-      focus: language === "es" ? "Interactividad y ecosistemas modernos" : "Interactivity and modern ecosystems",
-      value: language === "es" ? "Experiencias de usuario fluidas e interactivas" : "Smooth and interactive user experiences"
+      tags: language === "es" 
+        ? ["Frontend", "APIs", "Interactivo", "Dinámico"] 
+        : ["Frontend", "APIs", "Interactive", "Dynamic"]
     }
   ]
 
+  // Auto-rotate mobile carousel
   useEffect(() => {
     const interval = setInterval(() => {
-      setStackSlide((prev) => (prev + 1) % totalStackSlides)
-    }, 12000) // 12 seconds for each slide - more time to read all languages
+      setMobileSlide((prev) => (prev + 1) % stackData.length)
+    }, 4000)
     return () => clearInterval(interval)
-  }, [])
-
-  const currentStack = stackData[stackSlide]
-  const circumference = 52 * 2 * Math.PI
+  }, [stackData.length])
 
   return (
     <motion.div
@@ -65,154 +115,114 @@ function StackCarousel({ language }: { language: string }) {
       <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4 text-gray-900 dark:text-white">
         {language === "es" ? "Mi Stack de Trabajo" : "My Work Stack"}
       </h2>
-      <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base mb-6 md:mb-8">
+      <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base mb-4 md:mb-6">
         {language === "es" 
           ? "Implementación de arquitecturas modernas para el desarrollo de soluciones integrales, escalables y orientadas a resultados."
           : "Implementation of modern architectures for the development of comprehensive, scalable and results-oriented solutions."}
       </p>
       <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mb-6 md:mb-8"></div>
       
-      {/* Stack Carousel */}
-      <div className="max-w-2xl mx-auto w-full">
+      {/* Desktop: 3 charts side by side */}
+      <div className="hidden md:flex justify-center items-start gap-8 lg:gap-12 w-full max-w-4xl">
+        {stackData.map((stack, index) => (
+          <motion.div
+            key={stack.name}
+            className="flex flex-col items-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.2 }}
+          >
+            {/* Title above chart */}
+            <h3 
+              className="text-lg lg:text-xl font-bold mb-3"
+              style={{ color: stack.color, textShadow: stack.name === "JavaScript" ? "0 0 1px rgba(0,0,0,0.15)" : "none" }}
+            >
+              {stack.name}
+            </h3>
+            
+            {/* Circular Progress */}
+            <CircularProgress 
+              percentage={stack.percentage} 
+              color={stack.color} 
+              size={120}
+            />
+            
+            {/* Tags below chart */}
+            <div className="flex flex-wrap justify-center gap-1 mt-3 max-w-[140px]">
+              {stack.tags.map((tag, tagIndex) => (
+                <span
+                  key={tagIndex}
+                  className="text-[10px] font-medium px-2 py-0.5 rounded-full"
+                  style={{ 
+                    backgroundColor: `${stack.color}15`,
+                    color: stack.color,
+                    textShadow: stack.name === "JavaScript" ? "0 0 1px rgba(0,0,0,0.1)" : "none"
+                  }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Mobile: Carousel */}
+      <div className="md:hidden w-full max-w-xs">
         <AnimatePresence mode="wait">
           <motion.div
-            key={stackSlide}
+            key={mobileSlide}
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -30 }}
-            transition={{ duration: 0.4 }}
-            className="grid grid-cols-1 md:grid-cols-2 items-center gap-4 md:gap-8"
+            transition={{ duration: 0.3 }}
+            className="flex flex-col items-center"
           >
-            {/* Text content - LEFT on desktop, bottom on mobile (static) */}
-            <div className="text-center md:text-left order-2 md:order-1">
-              {/* Focus - Static */}
-              <div className="mb-3">
-                <p className="text-xs text-primary font-semibold mb-1">
-                  {language === "es" ? "Enfoque:" : "Focus:"}
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {currentStack.focus}
-                </p>
-              </div>
-
-              {/* Value - Static */}
-              <div>
-                <p className="text-xs text-primary font-semibold mb-1">
-                  {language === "es" ? "Valor:" : "Value:"}
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {currentStack.value}
-                </p>
-              </div>
-            </div>
-
-            {/* Circular Progress - RIGHT on desktop, top on mobile */}
-            <div className="flex flex-col items-center gap-2 md:gap-3 order-1 md:order-2">
-              {/* Mobile size */}
-              <div className="block sm:hidden">
-                <div className="relative" style={{ width: 100, height: 100 }}>
-                  <svg width={100} height={100} className="transform -rotate-90">
-                    <circle cx={50} cy={50} r={42} stroke="#e5e7eb" strokeWidth={6} fill="transparent" className="dark:stroke-gray-700" />
-                    <motion.circle
-                      cx={50}
-                      cy={50}
-                      r={42}
-                      stroke={currentStack.color}
-                      strokeWidth={6}
-                      fill="transparent"
-                      strokeLinecap="round"
-                      initial={{ strokeDasharray: `0 ${42 * 2 * Math.PI}` }}
-                      animate={{ strokeDasharray: `${(currentStack.percentage / 100) * 42 * 2 * Math.PI} ${42 * 2 * Math.PI}` }}
-                      transition={{ duration: 1.5, ease: "easeOut" }}
-                    />
-                  </svg>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span 
-                      className="text-xl font-bold"
-                      style={{ color: currentStack.color, textShadow: currentStack.name === "JavaScript" ? "0 0 2px rgba(0,0,0,0.1)" : "none" }}
-                    >
-                      {currentStack.percentage}%
-                    </span>
-                  </div>
-                </div>
-              </div>
-              {/* Tablet size */}
-              <div className="hidden sm:block md:hidden">
-                <div className="relative" style={{ width: 120, height: 120 }}>
-                  <svg width={120} height={120} className="transform -rotate-90">
-                    <circle cx={60} cy={60} r={52} stroke="#e5e7eb" strokeWidth={6} fill="transparent" className="dark:stroke-gray-700" />
-                    <motion.circle
-                      cx={60}
-                      cy={60}
-                      r={52}
-                      stroke={currentStack.color}
-                      strokeWidth={6}
-                      fill="transparent"
-                      strokeLinecap="round"
-                      initial={{ strokeDasharray: `0 ${circumference}` }}
-                      animate={{ strokeDasharray: `${(currentStack.percentage / 100) * circumference} ${circumference}` }}
-                      transition={{ duration: 1.5, ease: "easeOut" }}
-                    />
-                  </svg>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span 
-                      className="text-2xl font-bold"
-                      style={{ color: currentStack.color, textShadow: currentStack.name === "JavaScript" ? "0 0 2px rgba(0,0,0,0.1)" : "none" }}
-                    >
-                      {currentStack.percentage}%
-                    </span>
-                  </div>
-                </div>
-              </div>
-              {/* Desktop size */}
-              <div className="hidden md:block">
-                <div className="relative" style={{ width: 140, height: 140 }}>
-                  <svg width={140} height={140} className="transform -rotate-90">
-                    <circle cx={70} cy={70} r={62} stroke="#e5e7eb" strokeWidth={8} fill="transparent" className="dark:stroke-gray-700" />
-                    <motion.circle
-                      cx={70}
-                      cy={70}
-                      r={62}
-                      stroke={currentStack.color}
-                      strokeWidth={8}
-                      fill="transparent"
-                      strokeLinecap="round"
-                      initial={{ strokeDasharray: `0 ${62 * 2 * Math.PI}` }}
-                      animate={{ strokeDasharray: `${(currentStack.percentage / 100) * 62 * 2 * Math.PI} ${62 * 2 * Math.PI}` }}
-                      transition={{ duration: 1.5, ease: "easeOut" }}
-                    />
-                  </svg>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span 
-                      className="text-3xl font-bold"
-                      style={{ color: currentStack.color, textShadow: currentStack.name === "JavaScript" ? "0 0 2px rgba(0,0,0,0.1)" : "none" }}
-                    >
-                      {currentStack.percentage}%
-                    </span>
-                  </div>
-                </div>
-              </div>
-              {/* Name with animation effect */}
-              <motion.h3 
-                className="text-lg md:text-xl font-bold text-gray-900 dark:text-white"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.2, duration: 0.5 }}
-              >
-                {currentStack.name}
-              </motion.h3>
+            {/* Title above chart */}
+            <h3 
+              className="text-lg font-bold mb-3"
+              style={{ 
+                color: stackData[mobileSlide].color,
+                textShadow: stackData[mobileSlide].name === "JavaScript" ? "0 0 1px rgba(0,0,0,0.15)" : "none"
+              }}
+            >
+              {stackData[mobileSlide].name}
+            </h3>
+            
+            {/* Circular Progress */}
+            <CircularProgress 
+              percentage={stackData[mobileSlide].percentage} 
+              color={stackData[mobileSlide].color} 
+              size={100}
+            />
+            
+            {/* Tags below chart */}
+            <div className="flex flex-wrap justify-center gap-1 mt-3 max-w-[200px]">
+              {stackData[mobileSlide].tags.map((tag, tagIndex) => (
+                <span
+                  key={tagIndex}
+                  className="text-[10px] font-medium px-2 py-0.5 rounded-full"
+                  style={{ 
+                    backgroundColor: `${stackData[mobileSlide].color}15`,
+                    color: stackData[mobileSlide].color,
+                    textShadow: stackData[mobileSlide].name === "JavaScript" ? "0 0 1px rgba(0,0,0,0.1)" : "none"
+                  }}
+                >
+                  {tag}
+                </span>
+              ))}
             </div>
           </motion.div>
         </AnimatePresence>
 
-        {/* Stack Indicators */}
-        <div className="flex justify-center gap-2 mt-6">
+        {/* Mobile Indicators */}
+        <div className="flex justify-center gap-2 mt-4">
           {stackData.map((_, index) => (
             <button
               key={index}
-              onClick={() => setStackSlide(index)}
+              onClick={() => setMobileSlide(index)}
               className={`h-1.5 rounded-full transition-all duration-300 ${
-                index === stackSlide
+                index === mobileSlide
                   ? "w-6 bg-primary"
                   : "w-1.5 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400"
               }`}
@@ -234,11 +244,11 @@ export default function Home() {
   const [heroSlide, setHeroSlide] = useState(0)
   const totalHeroSlides = 2
 
-  // Auto-rotate hero slides - 40 seconds to allow all 3 stack languages to show (12s each + buffer)
+  // Auto-rotate hero slides
   useEffect(() => {
     const interval = setInterval(() => {
       setHeroSlide((prev) => (prev + 1) % totalHeroSlides)
-    }, 40000)
+    }, 15000)
     return () => clearInterval(interval)
   }, [])
 
@@ -418,7 +428,7 @@ export default function Home() {
                 </motion.div>
               )}
 
-              {/* Slide 2: Mi Stack de Trabajo - Carrusel */}
+              {/* Slide 2: Mi Stack de Trabajo */}
               {heroSlide === 1 && (
                 <StackCarousel language={language} />
               )}
@@ -466,7 +476,7 @@ export default function Home() {
                   <div className="w-full h-[60vh] md:h-[65vh] overflow-auto rounded-md bg-gray-50 dark:bg-gray-800">
                     <iframe 
                       src="/cv/HARRY_FISHERT_DEV_2026.pdf" 
-                      className="w-full h-full border-0"
+                      className="w-full h-full"
                       title="CV Preview"
                     />
                   </div>
@@ -484,8 +494,8 @@ export default function Home() {
 
         {/* CTA Section */}
         <CTASection />
-
       </main>
+
       <Footer />
       <WhatsAppFloatingButton />
       <CookieBanner />
