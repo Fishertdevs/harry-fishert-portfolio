@@ -94,11 +94,11 @@ const Languages = () => {
     }
   }, [isChartVisible, animationProgress])
 
-  // Desktop chart dimensions - LARGER
+  // Desktop chart dimensions - Centered in viewBox 500x360
   const cxDesktop = 200
   const cyDesktop = 160
-  const outerRDesktop = 140
-  const innerRDesktop = 95
+  const outerRDesktop = 120
+  const innerRDesktop = 80
 
   // Mobile chart dimensions
   const cxMobile = 150
@@ -204,111 +204,176 @@ const Languages = () => {
           <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mt-3 md:mt-4"></div>
         </motion.div>
 
-        {/* Desktop View - Large clean donut + legend below */}
+        {/* Desktop View - Donut with lines, text labels + info icons */}
         <motion.div 
-          className="hidden md:flex flex-col items-center justify-center"
+          className="hidden md:flex flex-col items-center justify-center relative"
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
           onViewportEnter={() => setIsChartVisible(true)}
         >
-          {/* Clean donut — no labels inside or outside */}
-          <svg 
-            viewBox="0 0 400 320" 
-            className="w-full max-w-2xl"
-            style={{ minHeight: '340px', maxHeight: '460px' }}
-          >
-            {desktopSlices.map((slice) => (
-              <motion.path
-                key={slice.index}
-                d={slice.path}
-                fill={slice.color}
-                stroke="white"
-                strokeWidth="3"
-                className="dark:stroke-gray-900"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.4, delay: slice.index * 0.12 }}
-              />
-            ))}
-          </svg>
-
-          {/* Legend — color dot, then title + info icon, then level */}
-          <div className="mt-2 flex flex-wrap justify-center gap-12">
-            {languages.map((lang, index) => (
-              <div key={index} className="relative flex flex-col items-center gap-1.5">
-                {/* Color dot */}
-                <div
-                  className="w-4 h-4 rounded-full"
-                  style={{ backgroundColor: lang.color }}
+          <div className="relative">
+            <svg 
+              viewBox="0 0 500 360" 
+              className="w-full max-w-2xl"
+              style={{ minHeight: '380px', maxHeight: '480px' }}
+            >
+              {/* Donut slices */}
+              {desktopSlices.map((slice) => (
+                <motion.path
+                  key={slice.index}
+                  d={slice.path}
+                  fill={slice.color}
+                  stroke="white"
+                  strokeWidth="3"
+                  className="dark:stroke-gray-900"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4, delay: slice.index * 0.12 }}
                 />
+              ))}
 
-                {/* Line 1: Title + info icon */}
-                <div className="flex items-center gap-1.5">
-                  <span className="font-bold text-base text-gray-900 dark:text-white">
-                    {lang.title}
-                  </span>
-                  <button
-                    onClick={() => setActiveTooltip(activeTooltip === index ? null : index)}
-                    className="flex items-center justify-center w-4 h-4 rounded-full bg-gray-900 dark:bg-white hover:bg-gray-700 dark:hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-1"
-                    aria-label={`Ver información sobre ${lang.title}`}
+              {/* Label lines and text with info icon */}
+              {animationProgress >= 100 && desktopSlices.map((slice) => (
+                <g key={`label-${slice.index}`}>
+                  {/* Line from segment to label */}
+                  <motion.line
+                    x1={slice.lineStartX + 50}
+                    y1={slice.lineStartY + 20}
+                    x2={slice.lineEndX + 50}
+                    y2={slice.lineEndY + 20}
+                    stroke={slice.color}
+                    strokeWidth="1.5"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 0.3, delay: 0.1 + slice.index * 0.1 }}
+                  />
+                  <motion.line
+                    x1={slice.lineEndX + 50}
+                    y1={slice.lineEndY + 20}
+                    x2={slice.horizontalEndX + 50}
+                    y2={slice.lineEndY + 20}
+                    stroke={slice.color}
+                    strokeWidth="1.5"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 0.2, delay: 0.2 + slice.index * 0.1 }}
+                  />
+                  
+                  {/* Title text */}
+                  <motion.text
+                    x={slice.textX + 50}
+                    y={slice.textY + 12}
+                    textAnchor={slice.textAnchor}
+                    dominantBaseline="middle"
+                    className="text-sm font-bold"
+                    style={{ fill: slice.color }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3, delay: 0.3 + slice.index * 0.1 }}
                   >
-                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true">
-                      <circle cx="4" cy="4" r="4" fill="currentColor" className="text-gray-900 dark:text-white" />
-                      <text x="4" y="6" textAnchor="middle" fontSize="5.5" fontWeight="bold" fill="white" fontFamily="sans-serif">i</text>
-                    </svg>
-                  </button>
-                </div>
+                    {slice.title}
+                  </motion.text>
+                  
+                  {/* Level text below title */}
+                  <motion.text
+                    x={slice.textX + 50}
+                    y={slice.textY + 28}
+                    textAnchor={slice.textAnchor}
+                    dominantBaseline="middle"
+                    className="text-xs fill-gray-500 dark:fill-gray-400"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3, delay: 0.35 + slice.index * 0.1 }}
+                  >
+                    {slice.level}
+                  </motion.text>
+                </g>
+              ))}
+            </svg>
 
-                {/* Line 2: Level badge */}
-                <span
-                  className="text-xs font-semibold px-2.5 py-0.5 rounded-full"
-                  style={{ backgroundColor: `${lang.color}20`, color: lang.color }}
+            {/* Info icons positioned next to labels - rendered as HTML for interactivity */}
+            {animationProgress >= 100 && desktopSlices.map((slice) => {
+              // Calculate position for info icon based on slice position
+              const svgWidth = 500
+              const svgHeight = 360
+              const containerWidth = 672 // max-w-2xl = 42rem = 672px
+              const containerHeight = 400
+              
+              // Convert SVG coordinates to percentage positions
+              const xPercent = ((slice.textX + 50) / svgWidth) * 100
+              const yPercent = ((slice.textY + 12) / svgHeight) * 100
+              
+              // Offset for icon position (after title text)
+              const iconOffsetX = slice.isRight ? 65 : -15
+              
+              return (
+                <div 
+                  key={`info-${slice.index}`}
+                  className="absolute"
+                  style={{
+                    left: `calc(${xPercent}% + ${iconOffsetX}px)`,
+                    top: `calc(${yPercent}% - 8px)`,
+                  }}
                 >
-                  {lang.level}
-                </span>
+                  <motion.button
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.2, delay: 0.4 + slice.index * 0.1 }}
+                    onClick={() => setActiveTooltip(activeTooltip === slice.index ? null : slice.index)}
+                    className="flex items-center justify-center w-4 h-4 rounded-full bg-gray-900 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-500 transition-colors focus:outline-none"
+                    aria-label={`Ver información sobre ${slice.title}`}
+                  >
+                    <span className="text-white text-[10px] font-bold leading-none">i</span>
+                  </motion.button>
 
-                {/* Tooltip on info icon click */}
-                <AnimatePresence>
-                  {activeTooltip === index && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                      transition={{ duration: 0.18, ease: "easeOut" }}
-                      className="absolute z-50 w-56 p-4 rounded-xl shadow-2xl bottom-full mb-3 left-1/2 -translate-x-1/2"
-                      style={{
-                        backgroundColor: '#1f2937',
-                        border: `1.5px solid ${lang.color}60`
-                      }}
-                    >
-                      {/* Arrow pointing down */}
-                      <div
-                        className="absolute -bottom-[7px] left-1/2 -translate-x-1/2 w-3.5 h-3.5 rotate-45"
+                  {/* Tooltip */}
+                  <AnimatePresence>
+                    {activeTooltip === slice.index && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                        transition={{ duration: 0.18, ease: "easeOut" }}
+                        className="absolute z-50 w-52 p-3 rounded-xl shadow-2xl"
                         style={{
                           backgroundColor: '#1f2937',
-                          borderRight: `1.5px solid ${lang.color}60`,
-                          borderBottom: `1.5px solid ${lang.color}60`
+                          border: `1.5px solid ${slice.color}60`,
+                          top: '24px',
+                          left: slice.isRight ? '0' : 'auto',
+                          right: slice.isRight ? 'auto' : '0',
                         }}
-                      />
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: lang.color }} />
-                        <span className="text-white font-semibold text-sm">{lang.title}</span>
-                      </div>
-                      <ul className="space-y-1">
-                        {lang.description.map((desc, i) => (
-                          <li key={i} className="flex items-start gap-2 text-xs text-gray-300 leading-relaxed">
-                            <span className="flex-shrink-0" style={{ color: lang.color }}>•</span>
-                            <span>{desc}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
+                      >
+                        {/* Arrow pointing up */}
+                        <div
+                          className="absolute -top-[7px] w-3 h-3 rotate-45"
+                          style={{
+                            backgroundColor: '#1f2937',
+                            borderTop: `1.5px solid ${slice.color}60`,
+                            borderLeft: `1.5px solid ${slice.color}60`,
+                            left: slice.isRight ? '12px' : 'auto',
+                            right: slice.isRight ? 'auto' : '12px',
+                          }}
+                        />
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: slice.color }} />
+                          <span className="text-white font-semibold text-sm">{slice.title}</span>
+                        </div>
+                        <ul className="space-y-1">
+                          {slice.description.map((desc, i) => (
+                            <li key={i} className="flex items-start gap-2 text-xs text-gray-300 leading-relaxed">
+                              <span className="flex-shrink-0" style={{ color: slice.color }}>•</span>
+                              <span>{desc}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )
+            })}
           </div>
         </motion.div>
 
