@@ -329,7 +329,6 @@ const Languages = () => {
             ))}
           </div>
         </motion.div>
-        </motion.div>
 
         {/* Mobile View - Smaller Chart + Simple Legend (no details table) */}
         <motion.div 
