@@ -11,127 +11,108 @@ const Languages = () => {
 
   const languages = language === "es"
     ? [
-        {
-          title: "Español",
-          level: "Nativo",
-          percentage: 55,
-          color: "#ef4444"
-        },
-        {
-          title: "Inglés",
-          level: "A2 - B1",
-          percentage: 25,
-          color: "#3b82f6"
-        },
-        {
-          title: "Portugués",
-          level: "A2 - B1",
-          percentage: 20,
-          color: "#22c55e"
-        }
+        { title: "Español", level: "Nativo", percentage: 55, color: "#ef4444" },
+        { title: "Inglés", level: "A2 - B1", percentage: 25, color: "#3b82f6" },
+        { title: "Portugués", level: "A2 - B1", percentage: 20, color: "#22c55e" }
       ]
     : [
-        {
-          title: "Spanish",
-          level: "Native",
-          percentage: 55,
-          color: "#ef4444"
-        },
-        {
-          title: "English",
-          level: "A2 - B1",
-          percentage: 25,
-          color: "#3b82f6"
-        },
-        {
-          title: "Portuguese",
-          level: "A2 - B1",
-          percentage: 20,
-          color: "#22c55e"
-        }
+        { title: "Spanish", level: "Native", percentage: 55, color: "#ef4444" },
+        { title: "English", level: "A2 - B1", percentage: 25, color: "#3b82f6" },
+        { title: "Portuguese", level: "A2 - B1", percentage: 20, color: "#22c55e" }
       ]
 
-  // Animation effect for pie chart - trigger when in view
+  // Animation effect for chart
   useEffect(() => {
     if (isChartVisible && animationProgress < 100) {
       const timer = setTimeout(() => {
         setAnimationProgress(prev => Math.min(prev + 2, 100))
-      }, 20)
+      }, 15)
       return () => clearTimeout(timer)
     }
   }, [isChartVisible, animationProgress])
 
-  // Calculate pie chart paths with animation
-  const createPieSlice = (startAngle: number, endAngle: number, color: string, index: number) => {
-    const cx = 100
-    const cy = 100
-    const r = 80
-    const innerR = 45
+  // Chart dimensions
+  const cx = 150
+  const cy = 150
+  const outerR = 100
+  const innerR = 60
 
-    // Apply animation progress to angles
-    const animatedEndAngle = startAngle + ((endAngle - startAngle) * animationProgress / 100)
-
-    const startRad = (startAngle - 90) * Math.PI / 180
-    const endRad = (animatedEndAngle - 90) * Math.PI / 180
-
-    const x1 = cx + r * Math.cos(startRad)
-    const y1 = cy + r * Math.sin(startRad)
-    const x2 = cx + r * Math.cos(endRad)
-    const y2 = cy + r * Math.sin(endRad)
-
+  // Calculate slice data
+  let currentAngle = -90 // Start from top
+  const slices = languages.map((lang, index) => {
+    const startAngle = currentAngle
+    const sweepAngle = (lang.percentage / 100) * 360
+    const endAngle = startAngle + sweepAngle
+    currentAngle = endAngle
+    
+    // Animated end angle
+    const animatedSweep = sweepAngle * (animationProgress / 100)
+    const animatedEnd = startAngle + animatedSweep
+    
+    // Mid angle for label positioning
+    const midAngle = startAngle + sweepAngle / 2
+    const midRad = (midAngle * Math.PI) / 180
+    
+    // Points for the donut slice
+    const startRad = (startAngle * Math.PI) / 180
+    const endRad = (animatedEnd * Math.PI) / 180
+    
+    const x1 = cx + outerR * Math.cos(startRad)
+    const y1 = cy + outerR * Math.sin(startRad)
+    const x2 = cx + outerR * Math.cos(endRad)
+    const y2 = cy + outerR * Math.sin(endRad)
     const x3 = cx + innerR * Math.cos(endRad)
     const y3 = cy + innerR * Math.sin(endRad)
     const x4 = cx + innerR * Math.cos(startRad)
     const y4 = cy + innerR * Math.sin(startRad)
-
-    const largeArc = animatedEndAngle - startAngle > 180 ? 1 : 0
-
-    const d = `M ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} L ${x3} ${y3} A ${innerR} ${innerR} 0 ${largeArc} 0 ${x4} ${y4} Z`
-
-    return (
-      <motion.path
-        key={index}
-        d={d}
-        fill={color}
-        stroke="white"
-        strokeWidth="2"
-        className="transition-all duration-300 dark:stroke-gray-900"
-        whileHover={{ scale: 1.02 }}
-        style={{ transformOrigin: "100px 100px" }}
-      />
-    )
-  }
-
-  // Calculate angles for each slice
-  let currentAngle = 0
-  const slices = languages.map((lang, index) => {
-    const startAngle = currentAngle
-    const endAngle = currentAngle + (lang.percentage / 100) * 360
-    currentAngle = endAngle
-    return { ...lang, startAngle, endAngle, index }
-  })
-
-  // Calculate label positions
-  const getLabelPosition = (startAngle: number, endAngle: number, isOutside: boolean) => {
-    const midAngle = (startAngle + endAngle) / 2
-    const rad = (midAngle - 90) * Math.PI / 180
-    const r = isOutside ? 130 : 65
+    
+    const largeArc = animatedSweep > 180 ? 1 : 0
+    
+    const path = `M ${x1} ${y1} A ${outerR} ${outerR} 0 ${largeArc} 1 ${x2} ${y2} L ${x3} ${y3} A ${innerR} ${innerR} 0 ${largeArc} 0 ${x4} ${y4} Z`
+    
+    // Label line points
+    const labelRadius = outerR + 15
+    const labelLineEnd = outerR + 35
+    const labelTextOffset = outerR + 40
+    
+    const lineStartX = cx + labelRadius * Math.cos(midRad)
+    const lineStartY = cy + labelRadius * Math.sin(midRad)
+    const lineEndX = cx + labelLineEnd * Math.cos(midRad)
+    const lineEndY = cy + labelLineEnd * Math.sin(midRad)
+    
+    // Horizontal line extension
+    const isRight = midAngle > -90 && midAngle < 90
+    const horizontalEndX = isRight ? lineEndX + 25 : lineEndX - 25
+    
+    // Text position
+    const textX = isRight ? horizontalEndX + 5 : horizontalEndX - 5
+    const textY = lineEndY
+    const textAnchor = isRight ? "start" : "end"
+    
     return {
-      x: 100 + r * Math.cos(rad),
-      y: 100 + r * Math.sin(rad),
-      midAngle
+      ...lang,
+      index,
+      path,
+      midAngle,
+      lineStartX,
+      lineStartY,
+      lineEndX,
+      lineEndY,
+      horizontalEndX,
+      textX,
+      textY,
+      textAnchor,
+      isRight
     }
-  }
+  })
 
   return (
     <section id="languages" className="relative flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden">
-      {/* Tech background pattern */}
+      {/* Background pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
           backgroundImage: `radial-gradient(circle at 5% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 40%),
-                           radial-gradient(circle at 95% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 40%),
-                           radial-gradient(circle at 50% 10%, rgba(59, 130, 246, 0.2) 0%, transparent 40%),
-                           radial-gradient(circle at 50% 90%, rgba(59, 130, 246, 0.2) 0%, transparent 40%)`
+                           radial-gradient(circle at 95% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 40%)`
         }} />
       </div>
 
@@ -155,85 +136,105 @@ const Languages = () => {
           <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mt-3 md:mt-4"></div>
         </motion.div>
 
-        {/* Pie Chart and Details */}
-        <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 items-center">
-            {/* Pie Chart */}
-            <motion.div 
-              className="flex justify-center"
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              onViewportEnter={() => setIsChartVisible(true)}
-            >
-              <div className="relative">
-                <svg width="200" height="200" viewBox="0 0 200 200" className="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56">
-                  {slices.map((slice) => createPieSlice(slice.startAngle, slice.endAngle, slice.color, slice.index))}
-                  {/* Center circle */}
-                  <circle cx="100" cy="100" r="35" fill="white" className="dark:fill-gray-900" />
-                  <text x="100" y="105" textAnchor="middle" className="text-xs font-medium fill-gray-600 dark:fill-gray-400">
-                    {language === "es" ? "Idiomas" : "Languages"}
-                  </text>
-                </svg>
+        {/* Donut Chart with Labels */}
+        <motion.div 
+          className="flex justify-center"
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          onViewportEnter={() => setIsChartVisible(true)}
+        >
+          <svg 
+            viewBox="0 0 400 300" 
+            className="w-full max-w-md md:max-w-lg lg:max-w-xl"
+            style={{ minHeight: '250px' }}
+          >
+            {/* Donut slices */}
+            {slices.map((slice) => (
+              <motion.path
+                key={slice.index}
+                d={slice.path}
+                fill={slice.color}
+                stroke="white"
+                strokeWidth="2"
+                className="dark:stroke-gray-900"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3, delay: slice.index * 0.1 }}
+              />
+            ))}
 
-                {/* Labels outside the chart - Desktop only */}
-                <div className="hidden md:block">
-                  {slices.map((slice) => {
-                    const pos = getLabelPosition(slice.startAngle, slice.endAngle, true)
-                    const isLeft = pos.x < 100
-                    return (
-                      <motion.div
-                        key={slice.index}
-                        className="absolute whitespace-nowrap text-xs font-medium"
-                        style={{
-                          left: `${(pos.x / 200) * 100}%`,
-                          top: `${(pos.y / 200) * 100}%`,
-                          transform: `translate(${isLeft ? "-100%" : "0"}, -50%)`,
-                          color: slice.color
-                        }}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.8 + slice.index * 0.2 }}
-                      >
-                        <span className="font-bold">{slice.title}</span>
-                        <span className="text-gray-500 dark:text-gray-400 ml-1">({slice.level})</span>
-                      </motion.div>
-                    )
-                  })}
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Legend */}
-            <div className="space-y-3">
-              {languages.map((lang, index) => (
-                <motion.div
-                  key={index}
-                  className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50"
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
+            {/* Label lines and text */}
+            {animationProgress >= 100 && slices.map((slice) => (
+              <g key={`label-${slice.index}`}>
+                {/* Line from slice to label */}
+                <motion.line
+                  x1={slice.lineStartX}
+                  y1={slice.lineStartY}
+                  x2={slice.lineEndX}
+                  y2={slice.lineEndY}
+                  stroke={slice.color}
+                  strokeWidth="1.5"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.3, delay: 0.1 + slice.index * 0.1 }}
+                />
+                {/* Horizontal line */}
+                <motion.line
+                  x1={slice.lineEndX}
+                  y1={slice.lineEndY}
+                  x2={slice.horizontalEndX}
+                  y2={slice.lineEndY}
+                  stroke={slice.color}
+                  strokeWidth="1.5"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.2, delay: 0.2 + slice.index * 0.1 }}
+                />
+                {/* Label text */}
+                <motion.text
+                  x={slice.textX}
+                  y={slice.textY}
+                  textAnchor={slice.textAnchor}
+                  dominantBaseline="middle"
+                  className="text-xs md:text-sm font-medium fill-gray-800 dark:fill-gray-200"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3, delay: 0.3 + slice.index * 0.1 }}
                 >
-                  <div 
-                    className="w-4 h-4 rounded-full flex-shrink-0"
-                    style={{ backgroundColor: lang.color }}
-                  />
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold text-sm text-gray-900 dark:text-white">{lang.title}</span>
-                      <span className="text-xs font-medium px-2 py-0.5 rounded-full" style={{ backgroundColor: `${lang.color}20`, color: lang.color }}>
-                        {lang.level}
-                      </span>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
+                  <tspan style={{ fill: slice.color }} className="font-bold">{slice.title}</tspan>
+                  <tspan className="fill-gray-500 dark:fill-gray-400"> {slice.level}</tspan>
+                </motion.text>
+              </g>
+            ))}
+          </svg>
+        </motion.div>
 
-
+        {/* Mobile Legend */}
+        <div className="md:hidden mt-6 space-y-2 max-w-xs mx-auto">
+          {languages.map((lang, index) => (
+            <motion.div
+              key={index}
+              className="flex items-center gap-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-800/50"
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+            >
+              <div 
+                className="w-3 h-3 rounded-full flex-shrink-0"
+                style={{ backgroundColor: lang.color }}
+              />
+              <span className="font-medium text-sm text-gray-900 dark:text-white">{lang.title}</span>
+              <span 
+                className="ml-auto text-xs font-medium px-2 py-0.5 rounded-full" 
+                style={{ backgroundColor: `${lang.color}20`, color: lang.color }}
+              >
+                {lang.level}
+              </span>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
