@@ -2,23 +2,84 @@
 
 import { useState, useEffect } from "react"
 import { useLanguage } from "@/lib/language-context"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 
 const Languages = () => {
   const { language } = useLanguage()
   const [isChartVisible, setIsChartVisible] = useState(false)
   const [animationProgress, setAnimationProgress] = useState(0)
+  const [selectedLanguage, setSelectedLanguage] = useState<number | null>(null)
 
   const languages = language === "es"
     ? [
-        { title: "Español", level: "Nativo", percentage: 55, color: "#ef4444" },
-        { title: "Inglés", level: "A2 - B1", percentage: 25, color: "#3b82f6" },
-        { title: "Portugués", level: "A2 - B1", percentage: 20, color: "#22c55e" }
+        { 
+          title: "Español", 
+          level: "Nativo", 
+          percentage: 55, 
+          color: "#ef4444",
+          description: [
+            "Lengua materna",
+            "Comunicación profesional fluida",
+            "Redacción técnica y creativa"
+          ]
+        },
+        { 
+          title: "Inglés", 
+          level: "A2 - B1", 
+          percentage: 25, 
+          color: "#3b82f6",
+          description: [
+            "Nivel actual: A2",
+            "Escalando activamente a B1",
+            "Enfoque en comunicación técnica"
+          ]
+        },
+        { 
+          title: "Portugués", 
+          level: "A2 - B1", 
+          percentage: 20, 
+          color: "#22c55e",
+          description: [
+            "Nivel actual: A2",
+            "Escalando activamente a B1",
+            "Comprensión de documentación"
+          ]
+        }
       ]
     : [
-        { title: "Spanish", level: "Native", percentage: 55, color: "#ef4444" },
-        { title: "English", level: "A2 - B1", percentage: 25, color: "#3b82f6" },
-        { title: "Portuguese", level: "A2 - B1", percentage: 20, color: "#22c55e" }
+        { 
+          title: "Spanish", 
+          level: "Native", 
+          percentage: 55, 
+          color: "#ef4444",
+          description: [
+            "Mother tongue",
+            "Fluent professional communication",
+            "Technical and creative writing"
+          ]
+        },
+        { 
+          title: "English", 
+          level: "A2 - B1", 
+          percentage: 25, 
+          color: "#3b82f6",
+          description: [
+            "Current level: A2",
+            "Actively scaling to B1",
+            "Focus on technical communication"
+          ]
+        },
+        { 
+          title: "Portuguese", 
+          level: "A2 - B1", 
+          percentage: 20, 
+          color: "#22c55e",
+          description: [
+            "Current level: A2",
+            "Actively scaling to B1",
+            "Documentation comprehension"
+          ]
+        }
       ]
 
   // Animation effect for chart
@@ -31,11 +92,11 @@ const Languages = () => {
     }
   }, [isChartVisible, animationProgress])
 
-  // Chart dimensions
-  const cx = 150
+  // Chart dimensions - smaller and thinner donut
+  const cx = 200
   const cy = 150
-  const outerR = 100
-  const innerR = 60
+  const outerR = 70
+  const innerR = 50 // Thinner donut (smaller difference between outer and inner)
 
   // Calculate slice data
   let currentAngle = -90 // Start from top
@@ -71,9 +132,8 @@ const Languages = () => {
     const path = `M ${x1} ${y1} A ${outerR} ${outerR} 0 ${largeArc} 1 ${x2} ${y2} L ${x3} ${y3} A ${innerR} ${innerR} 0 ${largeArc} 0 ${x4} ${y4} Z`
     
     // Label line points
-    const labelRadius = outerR + 15
-    const labelLineEnd = outerR + 35
-    const labelTextOffset = outerR + 40
+    const labelRadius = outerR + 10
+    const labelLineEnd = outerR + 25
     
     const lineStartX = cx + labelRadius * Math.cos(midRad)
     const lineStartY = cy + labelRadius * Math.sin(midRad)
@@ -82,7 +142,7 @@ const Languages = () => {
     
     // Horizontal line extension
     const isRight = midAngle > -90 && midAngle < 90
-    const horizontalEndX = isRight ? lineEndX + 25 : lineEndX - 25
+    const horizontalEndX = isRight ? lineEndX + 30 : lineEndX - 30
     
     // Text position
     const textX = isRight ? horizontalEndX + 5 : horizontalEndX - 5
@@ -105,6 +165,10 @@ const Languages = () => {
       isRight
     }
   })
+
+  const handleLabelClick = (index: number) => {
+    setSelectedLanguage(selectedLanguage === index ? null : index)
+  }
 
   return (
     <section id="languages" className="relative flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden">
@@ -136,9 +200,9 @@ const Languages = () => {
           <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mt-3 md:mt-4"></div>
         </motion.div>
 
-        {/* Donut Chart with Labels */}
+        {/* Donut Chart with Labels - Centered */}
         <motion.div 
-          className="flex justify-center"
+          className="flex flex-col items-center justify-center"
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
@@ -147,8 +211,8 @@ const Languages = () => {
         >
           <svg 
             viewBox="0 0 400 300" 
-            className="w-full max-w-md md:max-w-lg lg:max-w-xl"
-            style={{ minHeight: '250px' }}
+            className="w-full max-w-sm md:max-w-md"
+            style={{ minHeight: '200px', maxHeight: '280px' }}
           >
             {/* Donut slices */}
             {slices.map((slice) => (
@@ -192,13 +256,14 @@ const Languages = () => {
                   animate={{ pathLength: 1 }}
                   transition={{ duration: 0.2, delay: 0.2 + slice.index * 0.1 }}
                 />
-                {/* Label text */}
+                {/* Label text - clickable */}
                 <motion.text
                   x={slice.textX}
                   y={slice.textY}
                   textAnchor={slice.textAnchor}
                   dominantBaseline="middle"
-                  className="text-xs md:text-sm font-medium fill-gray-800 dark:fill-gray-200"
+                  className="text-[10px] md:text-xs font-medium cursor-pointer hover:opacity-80 transition-opacity"
+                  onClick={() => handleLabelClick(slice.index)}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.3, delay: 0.3 + slice.index * 0.1 }}
@@ -209,33 +274,78 @@ const Languages = () => {
               </g>
             ))}
           </svg>
+
+          {/* Description popup when clicking on label */}
+          <AnimatePresence>
+            {selectedLanguage !== null && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+                className="mt-4 p-4 rounded-xl shadow-lg border max-w-xs mx-auto"
+                style={{ 
+                  borderColor: languages[selectedLanguage].color,
+                  borderLeftWidth: '4px',
+                  backgroundColor: 'var(--background, white)'
+                }}
+              >
+                <h4 
+                  className="font-bold text-sm mb-2"
+                  style={{ color: languages[selectedLanguage].color }}
+                >
+                  {languages[selectedLanguage].title}
+                </h4>
+                <ul className="space-y-1">
+                  {languages[selectedLanguage].description.map((item, idx) => (
+                    <li 
+                      key={idx}
+                      className="text-xs text-gray-600 dark:text-gray-400 flex items-start gap-2"
+                    >
+                      <span style={{ color: languages[selectedLanguage].color }}>•</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  onClick={() => setSelectedLanguage(null)}
+                  className="mt-3 text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                >
+                  {language === "es" ? "Cerrar" : "Close"}
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
 
-        {/* Mobile Legend */}
-        <div className="md:hidden mt-6 space-y-2 max-w-xs mx-auto">
-          {languages.map((lang, index) => (
-            <motion.div
-              key={index}
-              className="flex items-center gap-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-800/50"
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <div 
-                className="w-3 h-3 rounded-full flex-shrink-0"
-                style={{ backgroundColor: lang.color }}
-              />
-              <span className="font-medium text-sm text-gray-900 dark:text-white">{lang.title}</span>
-              <span 
-                className="ml-auto text-xs font-medium px-2 py-0.5 rounded-full" 
-                style={{ backgroundColor: `${lang.color}20`, color: lang.color }}
+        {/* Mobile Legend - only show if no popup */}
+        {selectedLanguage === null && (
+          <div className="md:hidden mt-6 space-y-2 max-w-xs mx-auto">
+            {languages.map((lang, index) => (
+              <motion.div
+                key={index}
+                className="flex items-center gap-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-800/50 cursor-pointer"
+                onClick={() => handleLabelClick(index)}
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
               >
-                {lang.level}
-              </span>
-            </motion.div>
-          ))}
-        </div>
+                <div 
+                  className="w-3 h-3 rounded-full flex-shrink-0"
+                  style={{ backgroundColor: lang.color }}
+                />
+                <span className="font-medium text-sm text-gray-900 dark:text-white">{lang.title}</span>
+                <span 
+                  className="ml-auto text-xs font-medium px-2 py-0.5 rounded-full" 
+                  style={{ backgroundColor: `${lang.color}20`, color: lang.color }}
+                >
+                  {lang.level}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )
