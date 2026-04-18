@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
 import { useLanguage } from "@/lib/language-context"
 import { motion, AnimatePresence, useInView } from "framer-motion"
 
@@ -17,6 +17,9 @@ const Languages = () => {
       setHasAnimatedOnce(true)
     }
   }, [isDesktopInView, hasAnimatedOnce])
+
+  // Memoize animation state to prevent re-renders
+  const desktopAnimateState = useMemo(() => hasAnimatedOnce, [hasAnimatedOnce])
 
   const languages = language === "es"
     ? [
@@ -212,7 +215,7 @@ const Languages = () => {
                   percentage={lang.percentage}
                   color={lang.color}
                   size={130}
-                  animate={hasAnimatedOnce}
+                  animate={desktopAnimateState}
                 />
 
                 {/* Features */}
