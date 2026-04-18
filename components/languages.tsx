@@ -96,9 +96,9 @@ const Languages = () => {
 
   // Desktop chart dimensions - LARGER
   const cxDesktop = 200
-  const cyDesktop = 150
-  const outerRDesktop = 90
-  const innerRDesktop = 65
+  const cyDesktop = 160
+  const outerRDesktop = 110
+  const innerRDesktop = 80
 
   // Mobile chart dimensions
   const cxMobile = 150
@@ -215,9 +215,9 @@ const Languages = () => {
         >
           <div className="relative">
             <svg 
-              viewBox="0 0 400 300" 
-              className="w-full max-w-lg"
-              style={{ minHeight: '280px', maxHeight: '350px' }}
+              viewBox="0 0 400 320" 
+              className="w-full max-w-xl"
+              style={{ minHeight: '320px', maxHeight: '400px' }}
             >
               {/* Donut slices */}
               {desktopSlices.map((slice) => (
@@ -277,64 +277,58 @@ const Languages = () => {
               ))}
             </svg>
 
-            {/* Info icons positioned near labels - Desktop only */}
-            {animationProgress >= 100 && desktopSlices.map((slice) => {
-              // Calculate position for info icon
-              const iconOffsetX = slice.isRight ? 12 : -24
-              const baseX = (slice.textX / 400) * 100
-              const baseY = (slice.textY / 300) * 100
-              
-              return (
-                <div
-                  key={`info-${slice.index}`}
-                  className="absolute"
-                  style={{
-                    left: `calc(${baseX}% + ${slice.isRight ? '70px' : '-30px'})`,
-                    top: `${baseY}%`,
-                    transform: 'translateY(-50%)'
+          </div>
+
+          {/* Legend with Info Icons - Desktop only */}
+          <div className="mt-8 flex flex-wrap justify-center gap-6">
+            {languages.map((lang, index) => (
+              <div key={index} className="relative flex items-center gap-2">
+                <div 
+                  className="w-3 h-3 rounded-full"
+                  style={{ backgroundColor: lang.color }}
+                />
+                <span className="font-semibold text-sm text-gray-900 dark:text-white">{lang.title}</span>
+                <span 
+                  className="text-xs font-medium px-2 py-0.5 rounded-full" 
+                  style={{ backgroundColor: `${lang.color}20`, color: lang.color }}
+                >
+                  {lang.level}
+                </span>
+                
+                {/* Info Icon */}
+                <button
+                  onClick={() => setActiveTooltip(activeTooltip === index ? null : index)}
+                  className="w-4 h-4 rounded-full flex items-center justify-center transition-all hover:scale-110 ml-1"
+                  style={{ 
+                    backgroundColor: `${lang.color}15`,
+                    border: `1px solid ${lang.color}40`
                   }}
                 >
-                  <button
-                    onClick={() => setActiveTooltip(activeTooltip === slice.index ? null : slice.index)}
-                    className="w-5 h-5 rounded-full flex items-center justify-center transition-all hover:scale-110"
-                    style={{ 
-                      backgroundColor: `${slice.color}20`,
-                      border: `1px solid ${slice.color}`
-                    }}
-                  >
-                    <Info className="w-3 h-3" style={{ color: slice.color }} />
-                  </button>
+                  <Info className="w-2.5 h-2.5" style={{ color: lang.color }} />
+                </button>
 
-                  {/* Tooltip */}
-                  <AnimatePresence>
-                    {activeTooltip === slice.index && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 5, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 5, scale: 0.95 }}
-                        transition={{ duration: 0.15 }}
-                        className="absolute z-50 w-56 p-3 rounded-lg shadow-xl"
-                        style={{
-                          backgroundColor: '#1f2937',
-                          top: '100%',
-                          left: slice.isRight ? '0' : 'auto',
-                          right: slice.isRight ? 'auto' : '0',
-                          marginTop: '8px'
-                        }}
-                      >
-                        <div className="absolute -top-2 w-3 h-3 bg-gray-800 transform rotate-45"
-                          style={{ left: slice.isRight ? '10px' : 'auto', right: slice.isRight ? 'auto' : '10px' }}
-                        />
-                        <p className="text-white text-xs leading-relaxed">
-                          {slice.description.join('. ')}.
-                        </p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              )
-            })}
+                {/* Tooltip */}
+                <AnimatePresence>
+                  {activeTooltip === index && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute z-50 w-52 p-3 rounded-lg shadow-xl left-0 top-full mt-2"
+                      style={{ backgroundColor: '#1f2937' }}
+                    >
+                      <div className="absolute -top-1.5 left-4 w-3 h-3 bg-gray-800 transform rotate-45" />
+                      <p className="text-white text-xs leading-relaxed relative z-10">
+                        {lang.description.join('. ')}.
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
           </div>
+        </motion.div>
         </motion.div>
 
         {/* Mobile View - Smaller Chart + Simple Legend (no details table) */}
@@ -408,31 +402,6 @@ const Languages = () => {
             ))}
           </svg>
 
-          {/* Mobile Legend - Simple, no expandable details */}
-          <div className="mt-4 space-y-2 w-full max-w-xs">
-            {languages.map((lang, index) => (
-              <motion.div
-                key={index}
-                className="flex items-center gap-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-800/50"
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <div 
-                  className="w-3 h-3 rounded-full flex-shrink-0"
-                  style={{ backgroundColor: lang.color }}
-                />
-                <span className="font-medium text-sm text-gray-900 dark:text-white">{lang.title}</span>
-                <span 
-                  className="ml-auto text-xs font-medium px-2 py-0.5 rounded-full" 
-                  style={{ backgroundColor: `${lang.color}20`, color: lang.color }}
-                >
-                  {lang.level}
-                </span>
-              </motion.div>
-            ))}
-          </div>
         </motion.div>
       </div>
     </section>

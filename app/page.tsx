@@ -72,7 +72,7 @@ function StackCarousel({ language }: { language: string }) {
     {
       name: "Python",
       percentage: 85,
-      color: "#3776AB",
+      color: "#F97316",
       tags: language === "es" 
         ? ["IA", "Automatización", "Testing", "Backend"] 
         : ["AI", "Automation", "Testing", "Backend"]
@@ -147,22 +147,10 @@ function StackCarousel({ language }: { language: string }) {
               size={120}
             />
             
-            {/* Tags below chart */}
-            <div className="flex flex-wrap justify-center gap-1 mt-3 max-w-[140px]">
-              {stack.tags.map((tag, tagIndex) => (
-                <span
-                  key={tagIndex}
-                  className="text-[10px] font-medium px-2 py-0.5 rounded-full"
-                  style={{ 
-                    backgroundColor: `${stack.color}15`,
-                    color: stack.color,
-                    textShadow: stack.name === "JavaScript" ? "0 0 1px rgba(0,0,0,0.1)" : "none"
-                  }}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+            {/* Tags below chart - black text with pipes */}
+            <p className="text-xs text-gray-700 dark:text-gray-300 text-center mt-3 max-w-[180px]">
+              {stack.tags.join(" | ")}
+            </p>
           </motion.div>
         ))}
       </div>
@@ -196,22 +184,10 @@ function StackCarousel({ language }: { language: string }) {
               size={100}
             />
             
-            {/* Tags below chart */}
-            <div className="flex flex-wrap justify-center gap-1 mt-3 max-w-[200px]">
-              {stackData[mobileSlide].tags.map((tag, tagIndex) => (
-                <span
-                  key={tagIndex}
-                  className="text-[10px] font-medium px-2 py-0.5 rounded-full"
-                  style={{ 
-                    backgroundColor: `${stackData[mobileSlide].color}15`,
-                    color: stackData[mobileSlide].color,
-                    textShadow: stackData[mobileSlide].name === "JavaScript" ? "0 0 1px rgba(0,0,0,0.1)" : "none"
-                  }}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+            {/* Tags below chart - black text with pipes */}
+            <p className="text-xs text-gray-700 dark:text-gray-300 text-center mt-3 max-w-[200px]">
+              {stackData[mobileSlide].tags.join(" | ")}
+            </p>
           </motion.div>
         </AnimatePresence>
 
