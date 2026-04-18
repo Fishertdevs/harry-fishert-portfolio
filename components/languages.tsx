@@ -1,15 +1,12 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { useLanguage } from "@/lib/language-context"
-import { motion, AnimatePresence, useInView } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 
 const Languages = () => {
   const { language } = useLanguage()
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [hasAnimated, setHasAnimated] = useState(false)
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(sectionRef, { once: true, amount: 0.3 })
 
   const languages = language === "es"
     ? [
@@ -91,15 +88,8 @@ const Languages = () => {
     return () => clearInterval(interval)
   }, [languages.length])
 
-  // Trigger animation only once when section comes into view
-  useEffect(() => {
-    if (isInView && !hasAnimated) {
-      setHasAnimated(true)
-    }
-  }, [isInView, hasAnimated])
-
-  // Circular progress component - same style as skills, animates only once
-  const CircularProgress = ({ percentage, color, size = 140, shouldAnimate }: { percentage: number, color: string, size?: number, shouldAnimate: boolean }) => {
+  // Circular progress component - same style as skills, animates only once using whileInView with once:true
+  const CircularProgress = ({ percentage, color, size = 140 }: { percentage: number, color: string, size?: number }) => {
     const strokeWidth = size < 120 ? 6 : 8
     const radius = (size - strokeWidth) / 2
     const circumference = radius * 2 * Math.PI
@@ -126,7 +116,8 @@ const Languages = () => {
             fill="transparent"
             strokeLinecap="round"
             initial={{ strokeDasharray: `0 ${circumference}` }}
-            animate={shouldAnimate ? { strokeDasharray: `${targetDash} ${circumference}` } : { strokeDasharray: `0 ${circumference}` }}
+            whileInView={{ strokeDasharray: `${targetDash} ${circumference}` }}
+            viewport={{ once: true, amount: 0.8 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
           />
         </svg>
@@ -135,7 +126,8 @@ const Languages = () => {
             className="text-xl sm:text-2xl md:text-3xl font-bold"
             style={{ color }}
             initial={{ opacity: 0 }}
-            animate={shouldAnimate ? { opacity: 1 } : { opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.8 }}
             transition={{ delay: 0.5, duration: 0.5 }}
           >
             {percentage}%
@@ -146,7 +138,7 @@ const Languages = () => {
   }
 
   return (
-    <section ref={sectionRef} id="languages" className="relative flex flex-col justify-center py-12 md:py-16 bg-gray-50 dark:bg-gray-800 overflow-hidden">
+    <section id="languages" className="relative flex flex-col justify-center py-12 md:py-16 bg-gray-50 dark:bg-gray-800 overflow-hidden">
       {/* Background pattern - same style as skills */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -212,7 +204,6 @@ const Languages = () => {
                   percentage={lang.percentage}
                   color={lang.color}
                   size={130}
-                  shouldAnimate={hasAnimated}
                 />
 
                 {/* Features */}
@@ -248,7 +239,6 @@ const Languages = () => {
                 percentage={languages[currentSlide].percentage}
                 color={languages[currentSlide].color}
                 size={110}
-                shouldAnimate={true}
               />
 
               {/* Features */}
