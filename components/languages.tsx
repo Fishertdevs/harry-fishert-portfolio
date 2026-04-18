@@ -15,34 +15,19 @@ const Languages = () => {
           title: "Español",
           level: "Nativo",
           percentage: 55,
-          color: "#ef4444",
-          features: [
-            "Lengua materna",
-            "Comunicación profesional fluida",
-            "Redacción técnica y creativa"
-          ]
+          color: "#ef4444"
         },
         {
           title: "Inglés",
           level: "A2 - B1",
           percentage: 25,
-          color: "#3b82f6",
-          features: [
-            "Nivel actual: A2",
-            "Escalando activamente a B1",
-            "Enfoque en comunicación técnica"
-          ]
+          color: "#3b82f6"
         },
         {
           title: "Portugués",
           level: "A2 - B1",
           percentage: 20,
-          color: "#22c55e",
-          features: [
-            "Nivel actual: A2",
-            "Escalando activamente a B1",
-            "Comprensión de documentación"
-          ]
+          color: "#22c55e"
         }
       ]
     : [
@@ -50,34 +35,19 @@ const Languages = () => {
           title: "Spanish",
           level: "Native",
           percentage: 55,
-          color: "#ef4444",
-          features: [
-            "Mother tongue",
-            "Fluent professional communication",
-            "Technical and creative writing"
-          ]
+          color: "#ef4444"
         },
         {
           title: "English",
           level: "A2 - B1",
           percentage: 25,
-          color: "#3b82f6",
-          features: [
-            "Current level: A2",
-            "Actively scaling to B1",
-            "Focus on technical communication"
-          ]
+          color: "#3b82f6"
         },
         {
           title: "Portuguese",
           level: "A2 - B1",
           percentage: 20,
-          color: "#22c55e",
-          features: [
-            "Current level: A2",
-            "Actively scaling to B1",
-            "Documentation comprehension"
-          ]
+          color: "#22c55e"
         }
       ]
 

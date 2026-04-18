@@ -46,7 +46,7 @@ function StackCarousel({ language }: { language: string }) {
   useEffect(() => {
     const interval = setInterval(() => {
       setStackSlide((prev) => (prev + 1) % totalStackSlides)
-    }, 10000) // 10 seconds for each slide - more time to read
+    }, 12000) // 12 seconds for each slide - more time to read all languages
     return () => clearInterval(interval)
   }, [])
 
@@ -234,11 +234,11 @@ export default function Home() {
   const [heroSlide, setHeroSlide] = useState(0)
   const totalHeroSlides = 2
 
-  // Auto-rotate hero slides - 35 seconds to allow all 3 stack languages to show (10s each + buffer)
+  // Auto-rotate hero slides - 40 seconds to allow all 3 stack languages to show (12s each + buffer)
   useEffect(() => {
     const interval = setInterval(() => {
       setHeroSlide((prev) => (prev + 1) % totalHeroSlides)
-    }, 35000)
+    }, 40000)
     return () => clearInterval(interval)
   }, [])
 
