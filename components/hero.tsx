@@ -177,7 +177,26 @@ const Hero = () => {
                 </Button>
               </motion.div>
 
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              {/* Mobile: Direct download button */}
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="md:hidden">
+                <Button 
+                  variant="secondary" 
+                  size="lg" 
+                  className="group"
+                  onClick={() =>
+                    window.open(
+                      "https://drive.google.com/file/d/1AkywFwEI7V0WQwshUHyGuJmnydpFcXNW/view?usp=drivesdk",
+                      "_blank",
+                    )
+                  }
+                >
+                  <FileDown className="mr-2 h-4 w-4" />
+                  Descargar CV
+                </Button>
+              </motion.div>
+
+              {/* Desktop: Dropdown with preview option */}
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="hidden md:block">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="secondary" size="lg" className="group">
