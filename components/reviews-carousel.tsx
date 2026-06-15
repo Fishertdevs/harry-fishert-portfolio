@@ -41,8 +41,8 @@ const ReviewsCarousel = () => {
     try {
       setIsLoading(true)
       const allReviews = await reviewsStorage.getAllReviews()
-      // Solo reseñas reales enviadas por usuarios, sin reseñas simuladas
-      setReviews(allReviews)
+      // Solo reseñas reales aprobadas por el admin; sin reseñas simuladas
+      setReviews(allReviews.filter((r) => r.approved === true))
     } catch (error) {
       console.error("Error loading reviews:", error)
       setReviews([])

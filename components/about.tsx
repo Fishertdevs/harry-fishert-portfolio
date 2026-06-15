@@ -65,13 +65,8 @@ const About = () => {
                 Harry Fishert
               </h3>
 
-              {/* Subtitle - Student */}
-              <p className="text-primary font-medium mb-1 md:mb-2 text-center text-xs sm:text-sm md:text-base">
-                {language === "es" ? "Estudiante de Ingeniería de Sistemas" : "Systems Engineering Student"}
-              </p>
-
               {/* Role badge - without icon */}
-              <p className="text-[10px] sm:text-xs md:text-sm text-primary tracking-wider uppercase font-medium mb-3 md:mb-6 text-center">
+              <p className="text-[10px] sm:text-xs md:text-sm text-primary tracking-wider uppercase font-medium mb-3 md:mb-6 mt-1 text-center">
                 {language === "es"
                   ? "DESARROLLADOR FULL STACK · ARQUITECTO DE SOFTWARE"
                   : "FULL STACK DEVELOPER · SOFTWARE ARCHITECT"}

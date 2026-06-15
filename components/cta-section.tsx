@@ -39,22 +39,22 @@ export default function CTASection() {
               : "Contact me today and discover how I can help you develop your ideas into custom solutions. Personalized advice with no commitment."}
           </p>
           
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-nowrap items-center justify-center gap-4 sm:gap-8">
             <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
               <Button 
-                size="lg" 
-                className="bg-gray-900 text-white hover:bg-gray-800 gap-2 font-semibold"
+                variant="link"
+                className="text-white hover:text-white/80 gap-1.5 sm:gap-2 font-semibold p-0 h-auto whitespace-nowrap no-underline hover:no-underline text-sm sm:text-base"
               >
-                <WhatsAppIcon className="w-5 h-5" />
+                <WhatsAppIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                 {language === "es" ? "Cotizar" : "Get Quote"}
               </Button>
             </a>
             <Button 
-              size="lg" 
-              className="bg-gray-900 text-white hover:bg-gray-800 gap-2 font-semibold"
+              variant="link"
+              className="text-white hover:text-white/80 gap-1.5 sm:gap-2 font-semibold p-0 h-auto whitespace-nowrap no-underline hover:no-underline text-sm sm:text-base"
               onClick={handleCall}
             >
-              <Phone className="w-5 h-5" />
+              <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
               {language === "es" ? "Llamar Ahora" : "Call Now"}
             </Button>
           </div>
