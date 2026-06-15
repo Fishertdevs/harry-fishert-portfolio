@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Github, ExternalLink, ArrowRight, Star } from "lucide-react"
+import Image from "next/image"
+import { Github, Star } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/lib/language-context"
@@ -9,298 +10,233 @@ import { usePortfolio } from "@/lib/portfolio-context"
 import { motion, AnimatePresence } from "framer-motion"
 
 // Colores para cada proyecto
-const projectColors = [
-  "#ef0000", // Rojo puro - Picapastos
-  "#722f37", // Vinotinto - AlterEgo
-  "#7c3aed", // Morado semioscuro - Mi Kaza
-  "#1e3a5f", // Azul oscuro - Tender Go
-  "#3b82f6", // Azul - MC-Arquitectos
-  "#991b1b", // Rojo oscuro - Club Sacrifice Powerlifting
-]
-
-// Circular progress component - same style as Skills section
-const CircularProgress = ({ percentage, color, size = 140 }: { percentage: number, color: string, size?: number }) => {
-  const strokeWidth = size < 120 ? 6 : 8
-  const radius = (size - strokeWidth) / 2
-  const circumference = radius * 2 * Math.PI
-
-  return (
-    <div className="relative" style={{ width: size, height: size }}>
-      <svg width={size} height={size} className="transform -rotate-90">
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          stroke="#e5e7eb"
-          strokeWidth={strokeWidth}
-          fill="transparent"
-          className="dark:stroke-gray-700"
-        />
-        <motion.circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          stroke={color}
-          strokeWidth={strokeWidth}
-          fill="transparent"
-          strokeLinecap="round"
-          initial={{ strokeDasharray: `0 ${circumference}` }}
-          animate={{ strokeDasharray: `${(percentage / 100) * circumference} ${circumference}` }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-        />
-      </svg>
-      <div className="absolute inset-0 flex items-center justify-center">
-        <motion.span 
-          className="text-xl sm:text-2xl md:text-3xl font-bold"
-          style={{ color }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-        >
-          {percentage}%
-        </motion.span>
-      </div>
-    </div>
-  )
+const projectColors = {
+  sgc: "#1e3a5f", // Azul oscuro elegante - SG&C Abogados
+  noosfera: "#7c3aed", // Morado - Noosfera IA
+  picapastos: "#ef0000", // Rojo puro - Picapastos
+  alterego: "#722f37", // Vinotinto - AlterEgo
+  mitiendago: "#16a34a", // Verde - MiTiendaGo
+  mikaza: "#9333ea", // Morado semioscuro - Mi Kaza
+  mc: "#3b82f6", // Azul - MC-Arquitectos
+  club: "#991b1b", // Rojo oscuro - Club Sacrifice
 }
 
 const Experience = () => {
   const { language } = useLanguage()
   const { portfolioData } = usePortfolio()
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [currentMetricIndex, setCurrentMetricIndex] = useState(0)
 
   const projects = language === "es"
     ? [
+        {
+          title: "SG&C",
+          highlight: "Abogados",
+          role: "Web Developer",
+          period: "Jun 2026",
+          description: "Desarrollo de sitio web para una firma de abogados, enfocado en presentar sus principales servicios jurídicos y facilitar el contacto con nuevos clientes.",
+          technologies: ["Next.js", "React", "Tailwind CSS", "Vercel"],
+          image: "/projects/sgcabogados.png",
+          hasGithub: false,
+          demo: "https://sgcabogados.com.co",
+          featured: true,
+          color: projectColors.sgc,
+        },
+        {
+          title: "Noosfera",
+          highlight: "IA",
+          role: "Full Stack Developer",
+          period: "2025",
+          description: "Proyecto académico desarrollado a medida para generar imágenes con inteligencia artificial a partir de los pulsos únicos de cada persona, transformando datos biométricos en arte digital.",
+          technologies: ["Next.js", "Python", "IA Generativa", "PostgreSQL"],
+          image: "/projects/noosfera.png",
+          hasGithub: false,
+          demo: "https://noosfera.cloud",
+          featured: true,
+          color: projectColors.noosfera,
+        },
         {
           title: "Picapastos",
           highlight: "y Molinos Vilar",
           role: "Web Developer",
           period: "Dic 2025 – Feb 2026",
-          duration: "3 meses",
           description: "Desarrollo de sitio web corporativo con catálogo de productos y sistema administrativo interno, logrando un mayor posicionamiento de la marca y la optimización de la gestión de su catálogo.",
-          metrics: [
-            { label: "Posicionamiento de marca", value: 95 },
-            { label: "Optimización de catálogo", value: 90 },
-            { label: "Usabilidad del sistema", value: 100 },
-          ],
           technologies: ["Next.js", "React", "Tailwind CSS", "Vercel"],
-          scope: "Sitio web corporativo con catálogo de productos dinámico y panel administrativo para gestión de contenido.",
+          image: "/projects/picapastos.png",
           hasGithub: false,
           demo: "https://www.picapastosymolinosvilar.com.co",
           featured: true,
-          color: projectColors[0],
+          color: projectColors.picapastos,
         },
         {
           title: "AlterEgo",
           highlight: "Store",
           role: "Web Developer & UX/UI",
           period: "Sep 2025 – Nov 2025",
-          duration: "2 meses",
           description: "Desarrollo de e-commerce con panel de administración y flujo de ventas integrado a WhatsApp, mejorando la gestión de pedidos y la experiencia de usuario.",
-          metrics: [
-            { label: "Conversión de ventas", value: 85 },
-            { label: "Experiencia de usuario", value: 92 },
-            { label: "Satisfacción cliente", value: 95 },
-          ],
           technologies: ["Next.js", "React", "Supabase", "WhatsApp API"],
-          scope: "E-commerce completo con carrito de compras, panel admin y flujo de ventas automatizado via WhatsApp.",
+          image: "/projects/alterego.png",
           hasGithub: false,
           demo: "https://www.alterego-store.com.co",
           featured: true,
-          color: projectColors[1],
+          color: projectColors.alterego,
+        },
+        {
+          title: "MiTiendaGo",
+          highlight: "",
+          role: "Desarrollador SaaS",
+          period: "Mar 2025 – May 2025",
+          description: "Diseño e implementación de sistema SaaS para la gestión de ingresos de caja, adaptable a múltiples tipos de negocio, facilitando el control financiero y la toma de decisiones.",
+          technologies: ["React", "Node.js", "PostgreSQL", "Stripe"],
+          image: "/projects/mitiendago.png",
+          hasGithub: false,
+          demo: "https://app.mitiendago.co",
+          featured: true,
+          color: projectColors.mitiendago,
         },
         {
           title: "Mi Kaza",
           highlight: "Rental",
           role: "Full Stack Developer",
           period: "May 2025 – Jun 2025",
-          duration: "2 meses",
           description: "Implementación de plataforma de alojamiento universitario utilizando Next.js, React y Supabase, con gestión de datos en tiempo real y una base sólida para futuras versiones del producto.",
-          metrics: [
-            { label: "Datos en tiempo real", value: 100 },
-            { label: "Escalabilidad", value: 88 },
-            { label: "Performance", value: 90 },
-          ],
           technologies: ["Next.js", "React", "Supabase", "PostgreSQL"],
-          scope: "Plataforma de alojamiento con búsqueda avanzada, sistema de reservas y gestión de propiedades en tiempo real.",
+          image: "/projects/mikaza.png",
           hasGithub: false,
           demo: "https://mi-kaza-rental.vercel.app",
           featured: false,
-          color: projectColors[2],
-        },
-        {
-          title: "Tender",
-          highlight: "Go",
-          role: "Desarrollador SaaS",
-          period: "Mar 2025 – May 2025",
-          duration: "3 meses",
-          description: "Diseño e implementación de sistema SaaS para la gestión de ingresos de caja, adaptable a múltiples tipos de negocio, facilitando el control financiero y la toma de decisiones.",
-          metrics: [
-            { label: "Eficiencia operativa", value: 92 },
-            { label: "Adaptabilidad", value: 95 },
-            { label: "Control financiero", value: 88 },
-          ],
-          technologies: ["React", "Node.js", "PostgreSQL", "Stripe"],
-          scope: "Sistema SaaS multi-tenant para gestión financiera con reportes automáticos y dashboard analítico.",
-          hasGithub: false,
-          demo: "https://tender-go.vercel.app",
-          featured: false,
-          color: projectColors[3],
+          color: projectColors.mikaza,
         },
         {
           title: "MC",
           highlight: "Arquitectos",
           role: "Arquitecto de Software & Backend",
           period: "Sep 2024 – Dic 2024",
-          duration: "4 meses",
           description: "Definición de arquitectura backend con FastAPI e implementación de sistema de geolocalización por coordenadas para predios en Bogotá, integrando bases de datos relacionales y preparando la estructura para modelos de machine learning.",
-          metrics: [
-            { label: "Arquitectura robusta", value: 95 },
-            { label: "Geolocalización", value: 90 },
-            { label: "Preparación ML", value: 85 },
-          ],
           technologies: ["FastAPI", "Python", "PostgreSQL", "GIS"],
-          scope: "Backend escalable con sistema de geolocalización, API REST y preparación para integración de modelos ML.",
+          image: "/projects/mcarquitectos.png",
           hasGithub: true,
           demo: "#",
           featured: false,
-          color: projectColors[4],
+          color: projectColors.mc,
         },
         {
           title: "Club Sacrifice",
           highlight: "Powerlifting",
           role: "Frontend Developer",
           period: "Ene 2024",
-          duration: "1 mes",
           description: "Desarrollo de interfaz web optimizada para el fortalecimiento de la presencia digital de la marca y mejora de la interacción con la comunidad.",
-          metrics: [
-            { label: "Engagement", value: 88 },
-            { label: "Diseño visual", value: 92 },
-            { label: "Velocidad de carga", value: 95 },
-          ],
           technologies: ["React", "Tailwind CSS", "Framer Motion"],
-          scope: "Landing page interactiva con diseño moderno y optimización para redes sociales.",
+          image: "/projects/clubsacrifice.png",
           hasGithub: false,
           demo: "https://club-sacrifice-powerlifting.vercel.app",
           featured: false,
-          color: projectColors[5],
+          color: projectColors.club,
         },
       ]
     : [
+        {
+          title: "SG&C",
+          highlight: "Abogados",
+          role: "Web Developer",
+          period: "Jun 2026",
+          description: "Development of a website for a law firm, focused on presenting their main legal services and facilitating contact with new clients.",
+          technologies: ["Next.js", "React", "Tailwind CSS", "Vercel"],
+          image: "/projects/sgcabogados.png",
+          hasGithub: false,
+          demo: "https://sgcabogados.com.co",
+          featured: true,
+          color: projectColors.sgc,
+        },
+        {
+          title: "Noosfera",
+          highlight: "IA",
+          role: "Full Stack Developer",
+          period: "2025",
+          description: "Academic project built to generate images with artificial intelligence from each person's unique pulses, transforming biometric data into digital art.",
+          technologies: ["Next.js", "Python", "Generative AI", "PostgreSQL"],
+          image: "/projects/noosfera.png",
+          hasGithub: false,
+          demo: "https://noosfera.cloud",
+          featured: true,
+          color: projectColors.noosfera,
+        },
         {
           title: "Picapastos",
           highlight: "y Molinos Vilar",
           role: "Web Developer",
           period: "Dec 2025 – Feb 2026",
-          duration: "3 months",
           description: "Development of corporate website with product catalog and internal administrative system, achieving greater brand positioning and optimization of catalog management.",
-          metrics: [
-            { label: "Brand positioning", value: 95 },
-            { label: "Catalog optimization", value: 90 },
-            { label: "System usability", value: 100 },
-          ],
           technologies: ["Next.js", "React", "Tailwind CSS", "Vercel"],
-          scope: "Corporate website with dynamic product catalog and admin panel for content management.",
+          image: "/projects/picapastos.png",
           hasGithub: false,
           demo: "https://www.picapastosymolinosvilar.com.co",
           featured: true,
-          color: projectColors[0],
+          color: projectColors.picapastos,
         },
         {
           title: "AlterEgo",
           highlight: "Store",
           role: "Web Developer & UX/UI",
           period: "Sep 2025 – Nov 2025",
-          duration: "2 months",
           description: "E-commerce development with admin panel and sales flow integrated with WhatsApp, improving order management and user experience.",
-          metrics: [
-            { label: "Sales conversion", value: 85 },
-            { label: "User experience", value: 92 },
-            { label: "Client satisfaction", value: 95 },
-          ],
           technologies: ["Next.js", "React", "Supabase", "WhatsApp API"],
-          scope: "Complete e-commerce with shopping cart, admin panel and automated sales flow via WhatsApp.",
+          image: "/projects/alterego.png",
           hasGithub: false,
           demo: "https://www.alterego-store.com.co",
           featured: true,
-          color: projectColors[1],
+          color: projectColors.alterego,
+        },
+        {
+          title: "MiTiendaGo",
+          highlight: "",
+          role: "SaaS Developer",
+          period: "Mar 2025 – May 2025",
+          description: "Design and implementation of SaaS system for cash income management, adaptable to multiple types of business, facilitating financial control and decision making.",
+          technologies: ["React", "Node.js", "PostgreSQL", "Stripe"],
+          image: "/projects/mitiendago.png",
+          hasGithub: false,
+          demo: "https://app.mitiendago.co",
+          featured: true,
+          color: projectColors.mitiendago,
         },
         {
           title: "Mi Kaza",
           highlight: "Rental",
           role: "Full Stack Developer",
           period: "May 2025 – Jun 2025",
-          duration: "2 months",
           description: "Implementation of university housing platform using Next.js, React and Supabase, with real-time data management and a solid foundation for future product versions.",
-          metrics: [
-            { label: "Real-time data", value: 100 },
-            { label: "Scalability", value: 88 },
-            { label: "Performance", value: 90 },
-          ],
           technologies: ["Next.js", "React", "Supabase", "PostgreSQL"],
-          scope: "Housing platform with advanced search, booking system and real-time property management.",
+          image: "/projects/mikaza.png",
           hasGithub: false,
           demo: "https://mi-kaza-rental.vercel.app",
           featured: false,
-          color: projectColors[2],
-        },
-        {
-          title: "Tender",
-          highlight: "Go",
-          role: "SaaS Developer",
-          period: "Mar 2025 – May 2025",
-          duration: "3 months",
-          description: "Design and implementation of SaaS system for cash income management, adaptable to multiple types of business, facilitating financial control and decision making.",
-          metrics: [
-            { label: "Operational efficiency", value: 92 },
-            { label: "Adaptability", value: 95 },
-            { label: "Financial control", value: 88 },
-          ],
-          technologies: ["React", "Node.js", "PostgreSQL", "Stripe"],
-          scope: "Multi-tenant SaaS system for financial management with automatic reports and analytical dashboard.",
-          hasGithub: false,
-          demo: "https://tender-go.vercel.app",
-          featured: false,
-          color: projectColors[3],
+          color: projectColors.mikaza,
         },
         {
           title: "MC",
           highlight: "Arquitectos",
           role: "Software Architect & Backend",
           period: "Sep 2024 – Dec 2024",
-          duration: "4 months",
           description: "Backend architecture definition with FastAPI and implementation of geolocation system by coordinates for properties in Bogota, integrating relational databases and preparing the structure for machine learning models.",
-          metrics: [
-            { label: "Robust architecture", value: 95 },
-            { label: "Geolocation", value: 90 },
-            { label: "ML preparation", value: 85 },
-          ],
           technologies: ["FastAPI", "Python", "PostgreSQL", "GIS"],
-          scope: "Scalable backend with geolocation system, REST API and preparation for ML model integration.",
+          image: "/projects/mcarquitectos.png",
           hasGithub: true,
           demo: "#",
           featured: false,
-          color: projectColors[4],
+          color: projectColors.mc,
         },
         {
           title: "Club Sacrifice",
           highlight: "Powerlifting",
           role: "Frontend Developer",
           period: "Jan 2024",
-          duration: "1 month",
           description: "Development of optimized web interface for strengthening the brand's digital presence and improving interaction with the community.",
-          metrics: [
-            { label: "Engagement", value: 88 },
-            { label: "Visual design", value: 92 },
-            { label: "Load speed", value: 95 },
-          ],
           technologies: ["React", "Tailwind CSS", "Framer Motion"],
-          scope: "Interactive landing page with modern design and optimization for social networks.",
+          image: "/projects/clubsacrifice.png",
           hasGithub: false,
           demo: "https://club-sacrifice-powerlifting.vercel.app",
           featured: false,
-          color: projectColors[5],
+          color: projectColors.club,
         },
       ]
 
@@ -308,21 +244,11 @@ const Experience = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % projects.length)
-      setCurrentMetricIndex(0) // Reset metric index when project changes
     }, 7000)
     return () => clearInterval(interval)
   }, [projects.length])
 
-  // Auto-play carousel for metrics (one at a time) - slower for better visualization
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentMetricIndex((prev) => (prev + 1) % 3)
-    }, 4000)
-    return () => clearInterval(interval)
-  }, [])
-
   const currentProject = projects[currentSlide]
-  const currentMetric = currentProject.metrics[currentMetricIndex]
 
   return (
     <section id="experience" className="relative flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden">
@@ -368,8 +294,8 @@ const Experience = () => {
           <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mt-3 md:mt-4"></div>
         </motion.div>
 
-        {/* Carousel - same layout as Skills */}
-        <div className="max-w-2xl mx-auto">
+        {/* Carousel */}
+        <div className="max-w-5xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlide}
@@ -377,35 +303,25 @@ const Experience = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
-              className="grid grid-cols-1 md:grid-cols-2 items-center gap-4 md:gap-8 py-2 md:py-4"
+              className="grid grid-cols-1 md:grid-cols-2 items-center gap-6 md:gap-10 py-2 md:py-4"
             >
-              {/* Text content - centered */}
-              <div className="text-center order-2 md:order-1">
+              {/* Text content */}
+              <div className="text-center md:text-left order-2 md:order-1">
                 {/* Title with star for featured */}
-                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-1 md:mb-2 text-center">
-                  {["Mi Kaza", "Tender", "AlterEgo", "MC"].includes(currentProject.title) ? (
-                    <span className="inline-flex items-center justify-center gap-1 flex-wrap">
-                      <span>{currentProject.title}</span>
+                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-1 md:mb-2">
+                  <span className="inline-flex items-center justify-center md:justify-start gap-1.5 flex-wrap">
+                    <span>{currentProject.title}</span>
+                    {currentProject.highlight && (
                       <span style={{ color: currentProject.color }}>{currentProject.highlight}</span>
-                      {currentProject.featured && (
-                        <Star className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500 fill-amber-500" />
-                      )}
-                    </span>
-                  ) : (
-                    <>
-                      <span className="block">{currentProject.title}</span>
-                      <span className="inline-flex items-center gap-1">
-                        <span style={{ color: currentProject.color }}>{currentProject.highlight}</span>
-                        {currentProject.featured && (
-                          <Star className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500 fill-amber-500" />
-                        )}
-                      </span>
-                    </>
-                  )}
+                    )}
+                    {currentProject.featured && (
+                      <Star className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500 fill-amber-500" />
+                    )}
+                  </span>
                 </h3>
 
-                {/* Role and period */}
-                <div className="flex flex-wrap justify-center items-center gap-2 mb-2 md:mb-3">
+                {/* Role and period (no duration) */}
+                <div className="flex flex-wrap justify-center md:justify-start items-center gap-2 mb-2 md:mb-3">
                   <span 
                     className="text-xs sm:text-sm font-semibold"
                     style={{ color: currentProject.color }}
@@ -414,17 +330,17 @@ const Experience = () => {
                   </span>
                   <span className="text-gray-400">|</span>
                   <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                    {currentProject.period} ({currentProject.duration})
+                    {currentProject.period}
                   </span>
                 </div>
 
                 {/* Description */}
-                <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm md:text-base mb-2 md:mb-4 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm md:text-base mb-3 md:mb-4 leading-relaxed">
                   {currentProject.description}
                 </p>
 
                 {/* Technologies */}
-                <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
+                <div className="flex flex-wrap justify-center md:justify-start gap-1.5 sm:gap-2 mb-4">
                   {currentProject.technologies.map((tech, index) => (
                     <span
                       key={index}
@@ -438,19 +354,15 @@ const Experience = () => {
                     </span>
                   ))}
                 </div>
-              </div>
 
-              {/* Circular progress - ONE at a time with carousel effect */}
-              <div className="flex flex-col items-center gap-2 md:gap-3 order-1 md:order-2">
-                {/* Buttons - above the graph */}
-                <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-2">
-                  {/* GitHub button - only for MC-Arquitectos */}
+                {/* Buttons */}
+                <div className="flex flex-wrap justify-center md:justify-start gap-2 md:gap-3">
                   {currentProject.hasGithub && (
                     <Button
                       asChild
                       variant="ghost"
                       size="sm"
-                      className="rounded-lg px-3 sm:px-4 md:px-5 py-1 md:py-1.5 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-700 dark:text-gray-300 hover:bg-transparent"
+                      className="rounded-lg px-3 sm:px-4 py-1 md:py-1.5 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-700 dark:text-gray-300 hover:bg-transparent"
                     >
                       <a href={portfolioData.github} target="_blank" rel="noopener noreferrer">
                         <Github className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -458,16 +370,13 @@ const Experience = () => {
                       </a>
                     </Button>
                   )}
-                  {/* Ver proyecto button - for all projects with demo link */}
                   {currentProject.demo !== "#" && (
                     <Button
                       asChild
                       variant="ghost"
                       size="sm"
-                      className="rounded-lg px-3 sm:px-4 md:px-5 py-1 md:py-1.5 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm hover:bg-transparent"
-                      style={{ 
-                        color: currentProject.color
-                      }}
+                      className="rounded-lg px-3 sm:px-4 py-1 md:py-1.5 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm hover:bg-transparent"
+                      style={{ color: currentProject.color }}
                     >
                       <a href={currentProject.demo} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">
                         {language === "es" ? "Ver proyecto" : "View project"}
@@ -475,78 +384,41 @@ const Experience = () => {
                     </Button>
                   )}
                 </div>
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={`${currentSlide}-${currentMetricIndex}`}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className="block sm:hidden">
-                      <CircularProgress
-                        percentage={currentMetric.value}
-                        color={currentProject.color}
-                        size={100}
-                      />
-                    </div>
-                    <div className="hidden sm:block md:hidden">
-                      <CircularProgress
-                        percentage={currentMetric.value}
-                        color={currentProject.color}
-                        size={120}
-                      />
-                    </div>
-                    <div className="hidden md:block">
-                      <CircularProgress
-                        percentage={currentMetric.value}
-                        color={currentProject.color}
-                        size={140}
-                      />
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-                <motion.p
-                  key={`label-${currentSlide}-${currentMetricIndex}`}
-                  className="text-[10px] sm:text-xs md:text-sm font-medium text-center max-w-[100px] sm:max-w-[140px] md:max-w-[160px] leading-relaxed"
-                  style={{ color: currentProject.color }}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.3 }}
+              </div>
+
+              {/* Project screenshot preview */}
+              <div className="order-1 md:order-2">
+                <div
+                  className="rounded-xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800"
+                  style={{ boxShadow: `0 10px 40px -12px ${currentProject.color}40` }}
                 >
-                  {currentMetric.label}
-                </motion.p>
-                
-                {/* Metric indicators */}
-                <div className="flex justify-center gap-1.5 mt-2">
-                  {currentProject.metrics.map((_, index) => (
-                    <div
-                      key={index}
-                      className={`h-1 rounded-full transition-all duration-300 ${
-                        index === currentMetricIndex
-                          ? "w-4"
-                          : "w-1.5 bg-gray-300 dark:bg-gray-600"
-                      }`}
-                      style={{
-                        backgroundColor: index === currentMetricIndex ? currentProject.color : undefined
-                      }}
+                  {/* Browser-like top bar */}
+                  <div className="flex items-center gap-1.5 px-3 py-2 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-green-400" />
+                  </div>
+                  <div className="relative aspect-[16/10] bg-white dark:bg-gray-900">
+                    <Image
+                      src={currentProject.image || "/placeholder.svg"}
+                      alt={`${language === "es" ? "Vista previa de" : "Preview of"} ${currentProject.title} ${currentProject.highlight}`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover object-top"
+                      priority={currentSlide === 0}
                     />
-                  ))}
+                  </div>
                 </div>
               </div>
             </motion.div>
           </AnimatePresence>
 
           {/* Progress bar indicator with colors */}
-          <div className="flex justify-center gap-1.5 mt-4 md:mt-8">
+          <div className="flex flex-wrap justify-center gap-1.5 mt-6 md:mt-8">
             {projects.map((project, index) => (
               <button
                 key={index}
-                onClick={() => {
-                  setCurrentSlide(index)
-                  setCurrentMetricIndex(0)
-                }}
+                onClick={() => setCurrentSlide(index)}
                 className={`h-1 md:h-1.5 rounded-full transition-all duration-500 ${
                   index === currentSlide
                     ? "w-6 md:w-8"
