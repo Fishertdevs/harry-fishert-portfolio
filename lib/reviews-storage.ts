@@ -16,6 +16,7 @@ export interface Review {
   avatar?: string
   ipAddress?: string
   userAgent?: string
+  approved?: boolean
 }
 
 // Sistema completamente limpio - sin reseñas de ejemplo
@@ -103,6 +104,7 @@ class ReviewsStorage {
       time: now.toTimeString().split(" ")[0].slice(0, 5),
       helpful: 0,
       verified: Math.random() > 0.7, // 30% de probabilidad de ser verificado
+      approved: true, // Visible por defecto; el admin puede ocultarla/editarla/eliminarla
     }
 
     this.reviews.unshift(newReview) // Agregar al inicio
@@ -152,6 +154,33 @@ class ReviewsStorage {
     return new Promise((resolve) => {
       setTimeout(resolve, 200)
     })
+  }
+
+  public async updateReview(
+    reviewId: number,
+    data: Partial<Pick<Review, "name" | "company" | "position" | "rating" | "review" | "approved">>,
+  ): Promise<void> {
+    this.ensureInitialized()
+    const review = this.reviews.find((r) => r.id === reviewId)
+    if (review) {
+      Object.assign(review, data)
+      this.saveToLocalStorage()
+    }
+  }
+
+  public async deleteReview(reviewId: number): Promise<void> {
+    this.ensureInitialized()
+    this.reviews = this.reviews.filter((r) => r.id !== reviewId)
+    this.saveToLocalStorage()
+  }
+
+  public async setApproved(reviewId: number, approved: boolean): Promise<void> {
+    this.ensureInitialized()
+    const review = this.reviews.find((r) => r.id === reviewId)
+    if (review) {
+      review.approved = approved
+      this.saveToLocalStorage()
+    }
   }
 
   public getReviewStats() {

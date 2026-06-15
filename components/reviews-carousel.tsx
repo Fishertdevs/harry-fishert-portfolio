@@ -10,19 +10,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { reviewsStorage, type Review } from "@/lib/reviews-storage"
 
-// Default simulated review
-const defaultReview: Review = {
-  id: "default-1",
-  name: "María González",
-  email: "maria@example.com",
-  position: "CEO",
-  company: "TechStartup",
-  rating: 5,
-  review: "Trabajar con Harry fue una experiencia increíble. Su profesionalismo, atención al detalle y capacidad para entender nuestras necesidades superaron todas nuestras expectativas. El proyecto se entregó a tiempo y con una calidad excepcional. Definitivamente lo recomiendo para cualquier proyecto de desarrollo web.",
-  date: "2026-03-15",
-  approved: true
-}
-
 const ReviewsCarousel = () => {
   const { language } = useLanguage()
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -54,15 +41,11 @@ const ReviewsCarousel = () => {
     try {
       setIsLoading(true)
       const allReviews = await reviewsStorage.getAllReviews()
-      // Add default review if no reviews exist
-      if (allReviews.length === 0) {
-        setReviews([defaultReview])
-      } else {
-        setReviews([defaultReview, ...allReviews])
-      }
+      // Solo reseñas reales aprobadas por el admin; sin reseñas simuladas
+      setReviews(allReviews.filter((r) => r.approved === true))
     } catch (error) {
       console.error("Error loading reviews:", error)
-      setReviews([defaultReview])
+      setReviews([])
     } finally {
       setIsLoading(false)
     }
@@ -354,7 +337,23 @@ const ReviewsCarousel = () => {
           <div className="h-1 w-12 md:w-20 bg-primary mx-auto"></div>
         </motion.div>
 
-        {/* Reviews Content - Text style like professional profile */}
+        {/* Empty state - shown until a real review is submitted */}
+        {reviews.length === 0 ? (
+          <div className="max-w-md mx-auto text-center py-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+              <MessageSquare className="h-8 w-8 text-primary" />
+            </div>
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              {language === "es" ? "Aún no hay reseñas" : "No reviews yet"}
+            </h3>
+            <p className="text-gray-500 dark:text-gray-400 text-sm">
+              {language === "es"
+                ? "Sé el primero en compartir tu experiencia trabajando conmigo."
+                : "Be the first to share your experience working with me."}
+            </p>
+          </div>
+        ) : (
+        /* Reviews Content - Text style like professional profile */
         <div className="max-w-3xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
@@ -418,6 +417,7 @@ const ReviewsCarousel = () => {
             </motion.div>
           </AnimatePresence>
         </div>
+        )}
 
         {/* Add Review Button and Dialog */}
         <div className="text-center mt-8">

@@ -37,7 +37,7 @@ const Skills = () => {
             "Interfaces modernas y responsivas"
           ],
           color: "#10b981",
-          context: "Alto nivel en interfaces de usuario modernas",
+          context: "Dominio en interfaces de usuario modernas",
           whatsappMessage: "Hola Harry, estoy interesado en tus servicios de Desarrollo Frontend. Me gustaria conocer mas sobre como puedes ayudarme con interfaces modernas en React o Next.js."
         },
         {
@@ -50,7 +50,7 @@ const Skills = () => {
             "Websites y aplicaciones web"
           ],
           color: "#8b5cf6",
-          context: "Sólida capacidad en diseño de sistemas escalables",
+          context: "Capacidad sólida en diseño de sistemas escalables",
           whatsappMessage: "Hola Harry, estoy interesado en tus servicios de Arquitectura de Software. Me gustaria conocer mas sobre diseño de sistemas SaaS y plataformas escalables."
         },
         {
@@ -63,7 +63,7 @@ const Skills = () => {
             "Chatbots y asistentes virtuales"
           ],
           color: "#f59e0b",
-          context: "Integración avanzada de modelos de lenguaje",
+          context: "Dominio en integración de modelos de lenguaje",
           whatsappMessage: "Hola Harry, estoy interesado en tus servicios de Automatización con IA. Me gustaría conocer más sobre integración de modelos de lenguaje y chatbots."
         },
         {
@@ -76,7 +76,7 @@ const Skills = () => {
             "Estrategias de posicionamiento"
           ],
           color: "#ef4444",
-          context: "Estrategias efectivas de posicionamiento web",
+          context: "Capacidad en estrategias de posicionamiento web",
           whatsappMessage: "Hola Harry, estoy interesado en tus servicios de Optimización SEO. Me gustaría conocer más sobre estrategias de posicionamiento y rendimiento web."
         },
         {
@@ -89,7 +89,7 @@ const Skills = () => {
             "AWS, GCP y despliegue en la nube"
           ],
           color: "#06b6d4",
-          context: "Competencia en infraestructura y despliegue cloud",
+          context: "Dominio en infraestructura y despliegue cloud",
           whatsappMessage: "Hola Harry, estoy interesado en tus servicios de DevOps y Cloud. Me gustaria conocer mas sobre Docker, CI/CD y despliegue en la nube."
         }
       ]
@@ -104,7 +104,7 @@ const Skills = () => {
             "SQL and NoSQL databases"
           ],
           color: "#0ea5e9",
-          context: "Technical mastery in server-side architectures",
+          context: "Mastery in server-side architectures",
           whatsappMessage: "Hi Harry, I'm interested in your Backend Development services. I would like to know more about how you can help me with APIs, databases and server architectures."
         },
         {
@@ -117,7 +117,7 @@ const Skills = () => {
             "Modern and responsive interfaces"
           ],
           color: "#10b981",
-          context: "High proficiency in modern user interfaces",
+          context: "Mastery in modern user interfaces",
           whatsappMessage: "Hi Harry, I'm interested in your Frontend Development services. I would like to know more about how you can help me with modern interfaces in React or Next.js."
         },
         {
@@ -130,7 +130,7 @@ const Skills = () => {
             "Websites and web applications"
           ],
           color: "#8b5cf6",
-          context: "Strong capability in scalable system design",
+          context: "Capability in scalable system design",
           whatsappMessage: "Hi Harry, I'm interested in your Software Architecture services. I would like to know more about SaaS system design and scalable platforms."
         },
         {
@@ -143,7 +143,7 @@ const Skills = () => {
             "Chatbots and virtual assistants"
           ],
           color: "#f59e0b",
-          context: "Advanced integration of language models",
+          context: "Mastery in language model integration",
           whatsappMessage: "Hi Harry, I'm interested in your AI Automation services. I would like to know more about language model integration and chatbots."
         },
         {
@@ -156,7 +156,7 @@ const Skills = () => {
             "Positioning strategies"
           ],
           color: "#ef4444",
-          context: "Effective web positioning strategies",
+          context: "Capability in web positioning strategies",
           whatsappMessage: "Hi Harry, I'm interested in your SEO Optimization services. I would like to know more about positioning strategies and web performance."
         },
         {
@@ -169,7 +169,7 @@ const Skills = () => {
             "AWS, GCP and cloud deployment"
           ],
           color: "#06b6d4",
-          context: "Competence in infrastructure and cloud deployment",
+          context: "Mastery in infrastructure and cloud deployment",
           whatsappMessage: "Hi Harry, I'm interested in your DevOps and Cloud services. I would like to know more about Docker, CI/CD and cloud deployment."
         }
       ]
