@@ -81,7 +81,6 @@ const Languages = () => {
     ? [
         { 
           title: "Español", 
-          level: "Nativo", 
           percentage: 100, 
           color: "#ef4444",
           features: [
@@ -92,23 +91,21 @@ const Languages = () => {
         },
         { 
           title: "Inglés", 
-          level: "A2 - B1", 
           percentage: 45, 
           color: "#3b82f6",
           features: [
-            "Nivel actual: A2",
-            "Escalando a B1",
+            "Comprensión técnica",
+            "Lectura de documentación",
             "Comunicación técnica"
           ]
         },
         { 
           title: "Portugués", 
-          level: "A2 - B1", 
           percentage: 40, 
           color: "#22c55e",
           features: [
-            "Nivel actual: A2",
-            "Escalando a B1",
+            "Comprensión técnica",
+            "Lectura de documentación",
             "Documentación técnica"
           ]
         }
@@ -116,7 +113,6 @@ const Languages = () => {
     : [
         { 
           title: "Spanish", 
-          level: "Native", 
           percentage: 100, 
           color: "#ef4444",
           features: [
@@ -127,23 +123,21 @@ const Languages = () => {
         },
         { 
           title: "English", 
-          level: "A2 - B1", 
           percentage: 45, 
           color: "#3b82f6",
           features: [
-            "Current level: A2",
-            "Scaling to B1",
+            "Technical comprehension",
+            "Documentation reading",
             "Technical communication"
           ]
         },
         { 
           title: "Portuguese", 
-          level: "A2 - B1", 
           percentage: 40, 
           color: "#22c55e",
           features: [
-            "Current level: A2",
-            "Scaling to B1",
+            "Technical comprehension",
+            "Documentation reading",
             "Technical documentation"
           ]
         }

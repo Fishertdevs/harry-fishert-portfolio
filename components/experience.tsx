@@ -330,16 +330,16 @@ const Experience = () => {
                   </span>
                 </h3>
 
-                {/* Role and period (no duration) */}
-                <div className="flex flex-wrap justify-center items-center gap-2 mb-2 md:mb-3">
+                {/* Role and period (no duration) - single line, no wrap */}
+                <div className="flex flex-nowrap justify-center items-center gap-1.5 sm:gap-2 mb-2 md:mb-3 whitespace-nowrap">
                   <span 
-                    className="text-xs sm:text-sm font-semibold"
+                    className="text-[11px] sm:text-sm font-semibold"
                     style={{ color: currentProject.color }}
                   >
                     {currentProject.role}
                   </span>
-                  <span className="text-gray-400">|</span>
-                  <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                  <span className="text-gray-400 text-[11px] sm:text-sm">|</span>
+                  <span className="text-[11px] sm:text-sm text-gray-500 dark:text-gray-400">
                     {currentProject.period}
                   </span>
                 </div>
