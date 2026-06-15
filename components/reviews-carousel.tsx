@@ -12,8 +12,6 @@ import { reviewsStorage, type Review } from "@/lib/reviews-storage"
 
 const ReviewsCarousel = () => {
   const { language } = useLanguage()
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const [reviews, setReviews] = useState<Review[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -50,16 +48,6 @@ const ReviewsCarousel = () => {
       setIsLoading(false)
     }
   }
-
-  useEffect(() => {
-    if (!isAutoPlaying || reviews.length === 0) return
-
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % reviews.length)
-    }, 8000)
-
-    return () => clearInterval(interval)
-  }, [isAutoPlaying, reviews.length])
 
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -151,7 +139,25 @@ const ReviewsCarousel = () => {
     )
   }
 
-  const currentReview = reviews[currentSlide]
+  // Obtiene las iniciales del nombre para el avatar
+  const getInitials = (name: string) => {
+    return name
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((n) => n[0]?.toUpperCase() || "")
+      .join("")
+  }
+
+  // Paletas de degradado para los avatares (rotan por índice)
+  const avatarGradients = [
+    "from-slate-700 to-slate-900",
+    "from-blue-700 to-slate-900",
+    "from-emerald-700 to-slate-900",
+    "from-rose-700 to-slate-900",
+    "from-amber-700 to-slate-900",
+    "from-cyan-700 to-slate-900",
+  ]
 
   // Step content for multi-step form
   const renderStepContent = () => {
@@ -353,69 +359,72 @@ const ReviewsCarousel = () => {
             </p>
           </div>
         ) : (
-        /* Reviews Content - Text style like professional profile */
-        <div className="max-w-3xl mx-auto">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentSlide}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-              className="text-center"
+        /* Reviews Content - Professional testimonial cards */
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto justify-items-center">
+          {reviews.map((review, index) => (
+            <motion.article
+              key={review.id}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.5, delay: (index % 3) * 0.1 }}
+              className="w-full max-w-sm rounded-2xl overflow-hidden bg-gray-900 text-white shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col"
             >
-              {/* Name */}
-              <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-1">
-                {currentReview?.name}
-              </h3>
-
-              {/* Position & Company */}
-              <p className="text-primary font-medium mb-2 md:mb-3 text-xs sm:text-sm md:text-base">
-                {currentReview?.position && currentReview?.company
-                  ? `${currentReview.position} - ${currentReview.company}`
-                  : currentReview?.company || currentReview?.position || ""}
-              </p>
-
-              {/* Role badge style */}
-              <div className="flex justify-center gap-1 mb-4 md:mb-6">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star
-                    key={star}
-                    className={`h-4 w-4 sm:h-5 sm:w-5 ${
-                      star <= (currentReview?.rating || 5)
-                        ? "text-amber-400 fill-amber-400"
-                        : "text-gray-300 dark:text-gray-600"
-                    }`}
+              {/* Photo / initials avatar area */}
+              <div className={`relative h-44 sm:h-48 bg-gradient-to-br ${avatarGradients[index % avatarGradients.length]} flex items-center justify-center`}>
+                {review.avatar ? (
+                  <img
+                    src={review.avatar || "/placeholder.svg"}
+                    alt={review.name}
+                    className="w-full h-full object-cover"
+                    crossOrigin="anonymous"
                   />
-                ))}
+                ) : (
+                  <span className="text-5xl sm:text-6xl font-bold text-white/90 tracking-wide">
+                    {getInitials(review.name)}
+                  </span>
+                )}
+                {/* Dark gradient to blend into the card body */}
+                <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-gray-900 to-transparent" />
               </div>
 
-              {/* Review Text - styled like the about description */}
-              <div className="relative min-h-[100px] sm:min-h-[120px] md:min-h-[140px]">
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-sm sm:text-base md:text-lg text-center max-w-2xl mx-auto">
-                  &ldquo;{currentReview?.review}&rdquo;
+              {/* Content */}
+              <div className="flex flex-col flex-1 p-5 sm:p-6">
+                {/* Quote */}
+                <p className="text-sm sm:text-[15px] leading-relaxed text-gray-200 mb-5 flex-1">
+                  &ldquo;{review.review}&rdquo;
                 </p>
-              </div>
 
-              {/* Progress bar indicator */}
-              <div className="flex items-center gap-1.5 mt-6 md:mt-8 justify-center">
-                {reviews.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      setCurrentSlide(index)
-                      setIsAutoPlaying(false)
-                    }}
-                    className={`h-1 rounded-full transition-all duration-500 ${
-                      index === currentSlide
-                        ? "w-6 md:w-8 bg-primary"
-                        : "w-1.5 md:w-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400"
-                    }`}
-                  />
-                ))}
+                {/* Name */}
+                <h3 className="font-bold text-white text-base">
+                  {review.name}
+                </h3>
+
+                {/* Company / position - uppercase mono */}
+                {(review.company || review.position) && (
+                  <p className="font-mono text-[11px] uppercase tracking-wider text-gray-400 mt-0.5">
+                    {review.company && review.position
+                      ? `${review.company} — ${review.position}`
+                      : review.company || review.position}
+                  </p>
+                )}
+
+                {/* Stars */}
+                <div className="flex gap-0.5 mt-3">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={`h-4 w-4 ${
+                        star <= (review.rating || 5)
+                          ? "text-amber-400 fill-amber-400"
+                          : "text-gray-600"
+                      }`}
+                    />
+                  ))}
+                </div>
               </div>
-            </motion.div>
-          </AnimatePresence>
+            </motion.article>
+          ))}
         </div>
         )}
 
