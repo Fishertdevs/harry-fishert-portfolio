@@ -24,18 +24,6 @@ const Education = () => {
           progressContext: "Progreso del programa"
         },
         {
-          title: "Bachiller",
-          highlight: "Académico",
-          percentage: 100,
-          features: [
-            "I.E. La Merced – Mosquera",
-            "Formación con énfasis en pensamiento lógico y matemático.",
-            "Base sólida para el desarrollo en áreas tecnológicas."
-          ],
-          color: "#10b981",
-          progressContext: "Programa finalizado"
-        },
-        {
           title: "Desarrollo de",
           highlight: "Software",
           percentage: 90,
@@ -96,18 +84,6 @@ const Education = () => {
           ],
           color: "#3b82f6",
           progressContext: "Program progress"
-        },
-        {
-          title: "Academic",
-          highlight: "High School",
-          percentage: 100,
-          features: [
-            "I.E. La Merced – Mosquera",
-            "Training with emphasis on logical and mathematical thinking.",
-            "Solid foundation for development in technological areas."
-          ],
-          color: "#10b981",
-          progressContext: "Program completed"
         },
         {
           title: "Software",

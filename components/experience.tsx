@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import { Github, Star } from "lucide-react"
+import { Github, Star, Lock } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/lib/language-context"
@@ -19,6 +19,16 @@ const projectColors = {
   mikaza: "#9333ea", // Morado semioscuro - Mi Kaza
   mc: "#3b82f6", // Azul - MC-Arquitectos
   club: "#991b1b", // Rojo oscuro - Club Sacrifice
+}
+
+// Extrae el dominio limpio de la URL del proyecto para mostrarlo en la barra del navegador
+const getDomain = (url: string) => {
+  if (!url || url === "#") return ""
+  try {
+    return new URL(url).hostname.replace(/^www\./, "")
+  } catch {
+    return url.replace(/^https?:\/\//, "").replace(/^www\./, "")
+  }
 }
 
 const Experience = () => {
@@ -306,10 +316,10 @@ const Experience = () => {
               className="grid grid-cols-1 md:grid-cols-2 items-center gap-6 md:gap-10 py-2 md:py-4"
             >
               {/* Text content */}
-              <div className="text-center md:text-left order-2 md:order-1">
+              <div className="text-center order-2 md:order-1">
                 {/* Title with star for featured */}
                 <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-1 md:mb-2">
-                  <span className="inline-flex items-center justify-center md:justify-start gap-1.5 flex-wrap">
+                  <span className="inline-flex items-center justify-center gap-1.5 flex-wrap">
                     <span>{currentProject.title}</span>
                     {currentProject.highlight && (
                       <span style={{ color: currentProject.color }}>{currentProject.highlight}</span>
@@ -321,7 +331,7 @@ const Experience = () => {
                 </h3>
 
                 {/* Role and period (no duration) */}
-                <div className="flex flex-wrap justify-center md:justify-start items-center gap-2 mb-2 md:mb-3">
+                <div className="flex flex-wrap justify-center items-center gap-2 mb-2 md:mb-3">
                   <span 
                     className="text-xs sm:text-sm font-semibold"
                     style={{ color: currentProject.color }}
@@ -340,7 +350,7 @@ const Experience = () => {
                 </p>
 
                 {/* Technologies */}
-                <div className="flex flex-wrap justify-center md:justify-start gap-1.5 sm:gap-2 mb-4">
+                <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2 mb-4">
                   {currentProject.technologies.map((tech, index) => (
                     <span
                       key={index}
@@ -356,7 +366,7 @@ const Experience = () => {
                 </div>
 
                 {/* Buttons */}
-                <div className="flex flex-wrap justify-center md:justify-start gap-2 md:gap-3">
+                <div className="flex flex-wrap justify-center gap-2 md:gap-3">
                   {currentProject.hasGithub && (
                     <Button
                       asChild
@@ -392,11 +402,14 @@ const Experience = () => {
                   className="rounded-xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800"
                   style={{ boxShadow: `0 10px 40px -12px ${currentProject.color}40` }}
                 >
-                  {/* Browser-like top bar */}
-                  <div className="flex items-center gap-1.5 px-3 py-2 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-400" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-green-400" />
+                  {/* Browser-like top bar with URL search field */}
+                  <div className="flex items-center px-3 py-2 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                    <div className="flex items-center gap-1.5 w-full px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 shadow-inner">
+                      <Lock className="w-3 h-3 text-gray-400 flex-shrink-0" />
+                      <span className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 truncate">
+                        {getDomain(currentProject.demo) || `${currentProject.title.toLowerCase().replace(/[^a-z0-9]/g, "")}.dev`}
+                      </span>
+                    </div>
                   </div>
                   <div className="relative aspect-[16/10] bg-white dark:bg-gray-900">
                     <Image
