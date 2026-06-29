@@ -237,55 +237,138 @@ const TECH_ICONS: Record<string, { path: string; color: string; viewBox?: string
     viewBox: "0 0 24 24",
     path: "M0 12.176v5.844l5.143 2.968 5.142-2.968v-5.844L5.143 9.208 0 12.176zm8.498 4.768-3.355 1.937-3.355-1.937v-3.874l3.355-1.937 3.355 1.937v3.874zm5.216-4.768v5.844l5.143 2.968L24 17.988v-5.844l-5.143-2.968-5.143 2.968zm8.498 4.768-3.355 1.937-3.356-1.937v-3.874l3.356-1.937 3.355 1.937v3.874zM5.143 0 0 2.968v5.844l5.143 2.968 5.142-2.968V2.968L5.143 0zm3.355 7.736-3.355 1.937-3.355-1.937V3.862l3.355-1.937 3.355 1.937v3.874z",
   },
+  shopify: {
+    color: "#7AB55C",
+    viewBox: "0 0 24 24",
+    path: "M15.337 23.979l7.216-1.561S19.449 9.3 19.432 9.144a.307.307 0 00-.307-.272s-2.85-.204-2.85-.204-.68-.68-1.904-.68c0 0-.272-.886-.541-1.545C13.54 5.838 12.49 5.5 11.644 5.5c-.032 0-.064.002-.095.005C11.285 5.165 10.97 5.015 10.7 5.015c-2.09 0-3.097 2.614-3.412 3.947-.818.253-1.396.431-1.461.454-.455.144-.469.156-.527.583C5.246 10.315 4 19.81 4 19.81l11.337 4.169zM12.197 17.24c-.913 0-.956.572-.956.715 0 .785.804 1.088 1.526 1.088.63 0 1.222-.26 1.585-.71l-.43-.896c-.001-.001-.447.073-.63.073s-.497-.258-1.095-.27zm1.704-10.778v-.07c0-.575-.08-1.036-.197-1.4.487.062.81.628.812.628.42.083.728.1.728.1v.017c-.005.02-.61.19-1.343.725z",
+  },
+  wordpress: {
+    color: "#21759B",
+    viewBox: "0 0 24 24",
+    path: "M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 .857c5.047 0 9.143 4.096 9.143 9.143S17.047 21.143 12 21.143 2.857 17.047 2.857 12 6.953 2.857 12 2.857zM3.53 12a8.46 8.46 0 003.428 6.755L4.079 10.56A8.446 8.446 0 003.53 12zm9.355 2.583l-2.43 7.07A8.468 8.468 0 0012 21.87a8.508 8.508 0 001.139-.077l-.056-.104-2.198-7.106zm5.7-3.375c.22-1.147.22-2.085.22-2.852 0-.36-.014-.694-.04-1.003a5.95 5.95 0 00-.912-3.078 8.46 8.46 0 011.395 4.725c0 .82-.104 1.613-.3 2.37l-.362-.162zm-8.41 1.437l1.295 3.885.785-2.354-.559-1.533c-.427-.023-.844-.058-1.249-.105l-.273.107zm2.52-.308c.38.02.743.03 1.09.03.327 0 .662-.016.987-.046l-.046-.08-1.057-2.89-1.052 2.889.078.097z",
+  },
+  netlify: {
+    color: "#00C7B7",
+    viewBox: "0 0 24 24",
+    path: "M16.934 8.519a1.044 1.044 0 01.303.23l2.349-1.045-2.652-.881zm-4.408 7.974l-1.64 1.867 2.759-.665zm5.552-6.531L24 9.656v8.312l-3.733-1.243-2.259-4.765zM0 9.656l3.733-1.242 2.259 4.79L0 17.968zm3.68-4.721v8.207L1.618 19.09 0 15.842 0 9.656zm7.194-4.635L7.502 2.93l-3.822.869 5.523 2.591-.33-.31zm10.626.869l-3.822-.87-2.373 2.372-.329.31zM5.34 22.93l3.534-1.536L5.34 14.208zM12 12.21l2.624 5.254-2.36 1.815-2.358-1.815L12 12.21zM9.83 5.612L12 .07l2.17 5.542L12 7.842 9.83 5.612zm9.028 3.25l-3.624 7.276 3.624 1.572V8.862zM5.34 1.07L3.68.248v8.207l5.614-2.633zm13.32 0L14.706 5.822l5.614 2.633V.248z",
+  },
+  digitalocean: {
+    color: "#0080FF",
+    viewBox: "0 0 24 24",
+    path: "M12.04 0C5.408-.02.005 5.37.005 11.992h4.638c0-4.923 4.882-8.731 10.064-6.855a6.95 6.95 0 014.147 4.148c1.889 5.177-1.924 10.055-6.84 10.064v-4.61H7.391v4.623h.001v3.753H12.04v-3.753c7.43 0 13.474-7.93 10.08-15.594C20.482 1.92 16.482-.013 12.039 0zm-4.638 21.52H3.768v3.645h3.634zm-3.58-3.634H.186v3.634h3.634z",
+  },
+  firebase: {
+    color: "#FFCA28",
+    viewBox: "0 0 24 24",
+    path: "M3.89 15.672L6.255.461A.542.542 0 017.27.288l2.543 4.771zm16.794 3.692l-2.25-14a.54.54 0 00-.919-.295L3.316 19.365l7.856 4.427a1.621 1.621 0 001.588 0zM14.3 6.443l-1.658-3.196a.542.542 0 00-.963 0L3.316 19.365z",
+  },
+  railway: {
+    color: "#0B0D0E",
+    viewBox: "0 0 24 24",
+    path: "M3.217 15.006C2.422 13.585 2 11.94 2 10.2 2 4.56 6.56 0 12.2 0c5.64 0 10.2 4.56 10.2 10.2 0 1.74-.422 3.385-1.217 4.806L12.2 5.538 3.217 15.006zM2.73 16.263L12.2 7.03l9.47 9.233A10.159 10.159 0 0112.2 20.4a10.159 10.159 0 01-9.47-4.137zM8.88 21.938C9.937 22.613 11.025 23 12.2 23c1.175 0 2.263-.387 3.32-1.062L12.2 17.8l-3.32 4.138z",
+  },
+  render: {
+    color: "#46E3B7",
+    viewBox: "0 0 24 24",
+    path: "M0 24V0h6.705c1.747 0 3.317.29 4.71.87 1.392.582 2.487 1.45 3.284 2.606.798 1.155 1.197 2.568 1.197 4.238 0 1.625-.387 3.02-1.16 4.183-.773 1.163-1.86 2.046-3.262 2.65l5.11 9.453H12.2l-4.69-8.79H3.857V24H0zm3.857 12.086h2.658c1.468 0 2.57-.33 3.305-.99.734-.659 1.101-1.568 1.101-2.727 0-1.168-.364-2.063-1.09-2.686-.728-.623-1.77-.934-3.126-.934H3.857v7.337z",
+  },
+  html5: {
+    color: "#E34F26",
+    viewBox: "0 0 24 24",
+    path: "M1.5 0h21l-1.91 21.563L11.977 24l-8.565-2.438L1.5 0zm7.031 9.75l-.232-2.718 10.059.003.23-2.622L5.412 4.41l.698 8.01h9.126l-.326 3.426-2.91.804-2.955-.81-.188-2.11H6.248l.33 4.171L12 19.351l5.379-1.443.744-8.157H8.531z",
+  },
+  css3: {
+    color: "#1572B6",
+    viewBox: "0 0 24 24",
+    path: "M1.5 0h21l-1.91 21.563L11.977 24l-8.564-2.438L1.5 0zm17.09 4.413L5.41 4.41l.213 2.622 10.125.002-.255 2.716h-6.64l.24 2.573h6.182l-.366 3.523-2.91.804-2.956-.81-.188-2.11h-2.61l.29 3.855L12 19.288l5.373-1.53L18.59 4.414z",
+  },
+  elasticsearch: {
+    color: "#005571",
+    viewBox: "0 0 24 24",
+    path: "M13.394 0C9.649 0 6.255 1.707 3.975 4.268h12.085c.743 0 1.351.61 1.351 1.353v1.565c0 .743-.608 1.351-1.351 1.351H2.336A13.28 13.28 0 001.5 12c0 1.045.124 2.061.346 3.042H16.06c.743 0 1.351.61 1.351 1.353v1.566c0 .743-.608 1.351-1.351 1.351H3.881C6.149 21.867 9.574 24 13.394 24 19.807 24 25 18.627 25 12S19.807 0 13.394 0z",
+  },
+  planetscale: {
+    color: "#000000",
+    viewBox: "0 0 24 24",
+    path: "M11.962 0C5.352 0 0 5.352 0 11.962c0 6.61 5.352 11.962 11.962 11.962 6.61 0 11.962-5.352 11.962-11.962C23.924 5.352 18.572 0 11.962 0zm0 1.56a10.4 10.4 0 017.355 3.048L3.049 19.317A10.4 10.4 0 011.56 11.962 10.4 10.4 0 0111.962 1.56zm0 20.804a10.4 10.4 0 01-7.355-3.048l16.268-16.27a10.4 10.4 0 013.049 7.356 10.4 10.4 0 01-10.402 10.402H11.962z",
+  },
 }
 
-// Icon sets per service (9 icons → 3×3 grid)
+// Icon sets per service (16 icons → 4×4 grid)
 const SERVICE_ICONS: Record<number, Array<{ key: string; label: string }>> = {
   0: [ // Backend — lenguajes, frameworks y bases de datos
-    { key: "python",     label: "Python" },
-    { key: "javascript", label: "JavaScript" },
-    { key: "nodejs",     label: "Node.js" },
-    { key: "fastapi",    label: "FastAPI" },
-    { key: "django",     label: "Django" },
-    { key: "graphql",    label: "GraphQL" },
-    { key: "postgresql", label: "PostgreSQL" },
-    { key: "mongodb",    label: "MongoDB" },
-    { key: "redis",      label: "Redis" },
+    { key: "python",       label: "Python" },
+    { key: "javascript",   label: "JavaScript" },
+    { key: "nodejs",       label: "Node.js" },
+    { key: "typescript",   label: "TypeScript" },
+    { key: "fastapi",      label: "FastAPI" },
+    { key: "django",       label: "Django" },
+    { key: "graphql",      label: "GraphQL" },
+    { key: "nginx",        label: "Nginx" },
+    { key: "postgresql",   label: "PostgreSQL" },
+    { key: "mysql",        label: "MySQL" },
+    { key: "mongodb",      label: "MongoDB" },
+    { key: "redis",        label: "Redis" },
+    { key: "elasticsearch",label: "Elastic" },
+    { key: "rabbitmq",     label: "RabbitMQ" },
+    { key: "prisma",       label: "Prisma" },
+    { key: "supabase",     label: "Supabase" },
   ],
-  1: [ // Frontend — frameworks, lenguajes y herramientas UI/UX
-    { key: "javascript", label: "JavaScript" },
-    { key: "typescript", label: "TypeScript" },
-    { key: "react",      label: "React.js" },
-    { key: "nextjs",     label: "Next.js" },
-    { key: "vuejs",      label: "Vue.js" },
-    { key: "tailwind",   label: "Tailwind" },
-    { key: "figma",      label: "Figma" },
-    { key: "vercel",     label: "Vercel" },
-    { key: "github",     label: "GitHub" },
+  1: [ // Frontend — frameworks, lenguajes, UI/UX y deploy
+    { key: "javascript",   label: "JavaScript" },
+    { key: "typescript",   label: "TypeScript" },
+    { key: "html5",        label: "HTML5" },
+    { key: "css3",         label: "CSS3" },
+    { key: "react",        label: "React.js" },
+    { key: "nextjs",       label: "Next.js" },
+    { key: "vuejs",        label: "Vue.js" },
+    { key: "tailwind",     label: "Tailwind" },
+    { key: "figma",        label: "Figma" },
+    { key: "vercel",       label: "Vercel" },
+    { key: "netlify",      label: "Netlify" },
+    { key: "render",       label: "Render" },
+    { key: "railway",      label: "Railway" },
+    { key: "shopify",      label: "Shopify" },
+    { key: "wordpress",    label: "WordPress" },
+    { key: "github",       label: "GitHub" },
   ],
-  2: [ // Arquitectura de Software — BaaS, DB modernas, pagos, emails
-    { key: "supabase",   label: "Supabase" },
-    { key: "neon",       label: "Neon DB" },
-    { key: "postgresql", label: "PostgreSQL" },
-    { key: "mysql",      label: "MySQL" },
-    { key: "prisma",     label: "Prisma" },
-    { key: "stripe",     label: "Stripe" },
-    { key: "resend",     label: "Resend" },
-    { key: "rabbitmq",   label: "RabbitMQ" },
-    { key: "nginx",      label: "Nginx" },
+  2: [ // Arquitectura — BaaS, DBs modernas, pagos, email, microservicios
+    { key: "supabase",     label: "Supabase" },
+    { key: "neon",         label: "Neon DB" },
+    { key: "firebase",     label: "Firebase" },
+    { key: "planetscale",  label: "PlanetScale" },
+    { key: "postgresql",   label: "PostgreSQL" },
+    { key: "mysql",        label: "MySQL" },
+    { key: "mongodb",      label: "MongoDB" },
+    { key: "redis",        label: "Redis" },
+    { key: "elasticsearch",label: "Elastic" },
+    { key: "rabbitmq",     label: "RabbitMQ" },
+    { key: "graphql",      label: "GraphQL" },
+    { key: "stripe",       label: "Stripe" },
+    { key: "resend",       label: "Resend" },
+    { key: "prisma",       label: "Prisma" },
+    { key: "nginx",        label: "Nginx" },
+    { key: "docker",       label: "Docker" },
   ],
-  3: [ // AI Automation — modelos, orquestación, automatización
-    { key: "openai",      label: "OpenAI" },
-    { key: "anthropic",   label: "Claude" },
-    { key: "huggingface", label: "HuggingFace" },
-    { key: "langchain",   label: "LangChain" },
-    { key: "n8n",         label: "n8n" },
-    { key: "python",      label: "Python" },
-    { key: "fastapi",     label: "FastAPI" },
-    { key: "docker",      label: "Docker" },
-    { key: "redis",       label: "Redis" },
+  3: [ // AI / Automatización — modelos, orquestación, pipelines
+    { key: "openai",       label: "OpenAI" },
+    { key: "anthropic",    label: "Claude" },
+    { key: "huggingface",  label: "HuggingFace" },
+    { key: "langchain",    label: "LangChain" },
+    { key: "n8n",          label: "n8n" },
+    { key: "python",       label: "Python" },
+    { key: "fastapi",      label: "FastAPI" },
+    { key: "nodejs",       label: "Node.js" },
+    { key: "docker",       label: "Docker" },
+    { key: "redis",        label: "Redis" },
+    { key: "mongodb",      label: "MongoDB" },
+    { key: "supabase",     label: "Supabase" },
+    { key: "graphql",      label: "GraphQL" },
+    { key: "vercel",       label: "Vercel" },
+    { key: "railway",      label: "Railway" },
+    { key: "github",       label: "GitHub" },
   ],
-  4: [ // SEO — analítica, rendimiento, infraestructura web
+  4: [ // SEO — analítica, rendimiento, plataformas y CMS
     { key: "googleanalytics", label: "Analytics" },
     { key: "lighthouse",      label: "Lighthouse" },
     { key: "cloudflare",      label: "Cloudflare" },
@@ -295,17 +378,31 @@ const SERVICE_ICONS: Record<number, Array<{ key: string; label: string }>> = {
     { key: "tailwind",        label: "Tailwind" },
     { key: "nginx",           label: "Nginx" },
     { key: "vercel",          label: "Vercel" },
+    { key: "netlify",         label: "Netlify" },
+    { key: "wordpress",       label: "WordPress" },
+    { key: "shopify",         label: "Shopify" },
+    { key: "figma",           label: "Figma" },
+    { key: "html5",           label: "HTML5" },
+    { key: "css3",            label: "CSS3" },
+    { key: "github",          label: "GitHub" },
   ],
   5: [ // DevOps & Cloud — CI/CD, contenedores, nube, seguridad
-    { key: "docker",     label: "Docker" },
-    { key: "kubernetes", label: "Kubernetes" },
-    { key: "terraform",  label: "Terraform" },
-    { key: "ansible",    label: "Ansible" },
-    { key: "gitlab",     label: "GitLab CI" },
-    { key: "github",     label: "GitHub Actions" },
-    { key: "jenkins",    label: "Jenkins" },
-    { key: "aws",        label: "AWS" },
-    { key: "gcp",        label: "GCP" },
+    { key: "docker",       label: "Docker" },
+    { key: "kubernetes",   label: "Kubernetes" },
+    { key: "terraform",    label: "Terraform" },
+    { key: "ansible",      label: "Ansible" },
+    { key: "gitlab",       label: "GitLab CI" },
+    { key: "github",       label: "GitHub Actions" },
+    { key: "jenkins",      label: "Jenkins" },
+    { key: "prometheus",   label: "Prometheus" },
+    { key: "grafana",      label: "Grafana" },
+    { key: "aws",          label: "AWS" },
+    { key: "gcp",          label: "GCP" },
+    { key: "cloudflare",   label: "Cloudflare" },
+    { key: "digitalocean", label: "DigitalOcean" },
+    { key: "netlify",      label: "Netlify" },
+    { key: "railway",      label: "Railway" },
+    { key: "vault",        label: "Vault" },
   ],
 }
 
@@ -322,12 +419,12 @@ const TechIcon = ({ iconKey, label, serviceColor }: { iconKey: string; label: st
       transition={{ duration: 0.22 }}
     >
       <div
-        className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700"
+        className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700"
         style={{ boxShadow: `0 3px 10px 0 ${serviceColor}28` }}
       >
         <svg
           viewBox={icon.viewBox || "0 0 24 24"}
-          className="w-4 h-4 sm:w-5 sm:h-5"
+          className="w-4 h-4 sm:w-[18px] sm:h-[18px]"
           fill={icon.color}
           xmlns="http://www.w3.org/2000/svg"
           aria-label={label}
@@ -509,7 +606,7 @@ const Skills = () => {
   }
 
   return (
-    <section id="skills" className="relative flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden">
+    <section id="skills" className="relative py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden">
       {/* Tech background pattern */}
       <div className="absolute inset-0 opacity-10">
         <div
@@ -556,7 +653,7 @@ const Skills = () => {
         </motion.div>
 
         {/* Carousel */}
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlide}
@@ -564,7 +661,7 @@ const Skills = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
-              className="grid grid-cols-1 md:grid-cols-2 items-center gap-6 md:gap-8 py-2 md:py-4"
+              className="grid grid-cols-1 md:grid-cols-2 items-start gap-6 md:gap-10 py-2 md:py-4"
             >
               {/* Left: text content */}
               <div className="text-center order-2 md:order-1">
@@ -589,14 +686,29 @@ const Skills = () => {
                   ))}
                 </ul>
 
-                <div className="flex justify-center">
+                <div className="flex justify-center gap-2 flex-wrap">
                   <Button
                     asChild
                     size="sm"
-                    className="bg-primary hover:bg-primary/90 text-white rounded-lg px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm"
+                    className="bg-[#25D366] hover:bg-[#1ebe5a] text-white rounded-lg px-4 md:px-5 py-1.5 md:py-2 text-xs md:text-sm font-semibold flex items-center gap-1.5"
                   >
                     <a href={getWhatsAppLink(currentSlide)} target="_blank" rel="noopener noreferrer">
-                      {language === "es" ? "Conoce más" : "Learn more"}
+                      <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.856L.057 23.882l6.174-1.461A11.946 11.946 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.508-5.17-1.396l-.37-.22-3.664.867.923-3.572-.243-.385A9.958 9.958 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+                      </svg>
+                      {language === "es" ? "Contratar servicio" : "Hire me"}
+                    </a>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                    className="rounded-lg px-4 md:px-5 py-1.5 md:py-2 text-xs md:text-sm font-semibold border-2"
+                    style={{ borderColor: services[currentSlide].color, color: services[currentSlide].color }}
+                  >
+                    <a href="#experience">
+                      {language === "es" ? "Ver experiencia →" : "See experience →"}
                     </a>
                   </Button>
                 </div>
@@ -605,7 +717,7 @@ const Skills = () => {
               {/* Right: tech icon grid */}
               <div className="flex flex-col items-center gap-3 order-1 md:order-2">
                 <motion.div
-                  className="grid grid-cols-3 gap-3 sm:gap-4"
+                  className="grid grid-cols-4 gap-2 sm:gap-3"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.4, delay: 0.1 }}
@@ -613,9 +725,9 @@ const Skills = () => {
                   {(SERVICE_ICONS[currentSlide] ?? []).map((item, i) => (
                     <motion.div
                       key={item.key}
-                      initial={{ opacity: 0, scale: 0.7 }}
+                      initial={{ opacity: 0, scale: 0.85 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: i * 0.07 + 0.15, duration: 0.3, ease: "easeOut" }}
+                      transition={{ delay: i * 0.03 + 0.1, duration: 0.25, ease: "easeOut" }}
                     >
                       <TechIcon
                         iconKey={item.key}
