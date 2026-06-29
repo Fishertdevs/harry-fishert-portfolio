@@ -1,15 +1,206 @@
 "use client"
 
 import { useState, useEffect } from "react"
-
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/lib/language-context"
-import { usePortfolio } from "@/lib/portfolio-context"
 import { motion, AnimatePresence } from "framer-motion"
+
+// SVG paths from Simple Icons (simpleicons.org)
+const TECH_ICONS: Record<string, { path: string; color: string; viewBox?: string }> = {
+  python: {
+    color: "#3776AB",
+    viewBox: "0 0 24 24",
+    path: "M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05 1.07.13zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09-.33.22zM21.1 6.11l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.31.33-.25.35-.19.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01.21.03zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08-.33.23z",
+  },
+  django: {
+    color: "#092E20",
+    viewBox: "0 0 24 24",
+    path: "M11.146 0h3.924v18.166c-2.013.382-3.491.535-5.096.535-4.791 0-7.288-2.166-7.288-6.32 0-4.002 2.65-6.6 6.753-6.6.637 0 1.121.05 1.707.203zm0 9.143a3.894 3.894 0 00-1.325-.204c-1.988 0-3.134 1.223-3.134 3.365 0 2.09 1.096 3.236 3.109 3.236.433 0 .79-.025 1.35-.102V9.142zM21.314 6.06v11.109c0 3.849-.28 5.695-1.096 7.287-.764 1.541-1.783 2.523-3.875 3.594l-3.645-1.731c2.092-1.019 3.111-1.923 3.772-3.311.687-1.413.916-3.107.916-7.49V6.061h3.928zM17.386 0h3.924v4.019h-3.924z",
+  },
+  fastapi: {
+    color: "#009688",
+    viewBox: "0 0 24 24",
+    path: "M12 0C5.375 0 0 5.375 0 12c0 6.627 5.375 12 12 12 6.626 0 12-5.373 12-12 0-6.625-5.373-12-12-12zm-.624 21.62v-7.528H7.19L13.203 2.38v7.528h4.029L11.376 21.62z",
+  },
+  postgresql: {
+    color: "#4169E1",
+    viewBox: "0 0 24 24",
+    path: "M17.128 0a10.134 10.134 0 00-2.755.403l-.063.02A10.922 10.922 0 0012.6.258C11.422.238 10.41.524 9.594 1 8.79.721 7.122.24 5.364.336 4.14.403 2.804.775 1.814 1.82.827 2.865.305 4.482.415 6.682c.03.607.175 1.222.38 1.784a4.705 4.705 0 00.328.708c.139.24.303.47.456.663a3.91 3.91 0 00.587.603c.076.06.147.11.194.143l.066.044c.035.023.063.039.08.05.084.052.158.098.218.136.122.078.2.13.258.18.114.094.186.183.26.335.159.33.297.851.427 1.608a8.873 8.873 0 00.382 1.536 4.17 4.17 0 00.742 1.424c.37.462.87.795 1.387.939a2.19 2.19 0 00.535.064c.52 0 1.051-.182 1.54-.539a5.787 5.787 0 001.034-1.012c.255-.324.531-.667.688-.81.04-.037.072-.05.085-.05.075.005.152.034.278.09l.02.01c.318.14.736.31 1.15.457a6.36 6.36 0 001.384.326c.525.065 1.004.038 1.407-.131.296-.124.56-.31.792-.59l.04-.05c.03.04.063.081.096.118.386.44.88.795 1.424.97a3.5 3.5 0 001.087.166c.575 0 1.16-.156 1.694-.412.534-.257 1.034-.622 1.413-1.063.378-.442.64-.951.716-1.48.068-.476.015-.917-.09-1.384a6.928 6.928 0 00-.09-.37c-.03-.115-.062-.245-.083-.345-.03-.15-.04-.24-.04-.277 0-.055.003-.104.013-.17.019-.128.06-.294.115-.493.056-.2.125-.43.194-.673.12-.425.247-.889.318-1.336.072-.448.09-.884.017-1.279a3.348 3.348 0 00-.018-.087 3.43 3.43 0 00.478-.135 5.267 5.267 0 001.36-.726c.42-.304.77-.67 1.002-1.074.23-.404.344-.85.277-1.312-.067-.463-.311-.858-.652-1.143-.342-.285-.773-.45-1.218-.513a3.53 3.53 0 00-.356-.03 3.5 3.5 0 00-.597.053 5.23 5.23 0 00-.796.22c-.074.027-.139.054-.196.077a3.717 3.717 0 00-.074-.05c-.163-.1-.343-.195-.533-.284a4.918 4.918 0 00-1.298-.39 5.624 5.624 0 00-.937-.071zm0 .82c.299 0 .605.023.912.07a4.1 4.1 0 011.07.322c.16.074.315.156.463.247a4.847 4.847 0 011.06-.307 2.73 2.73 0 01.457-.04c.097 0 .194.006.29.02.34.046.66.17.909.372.248.202.428.476.474.79.046.31-.033.65-.213.967-.18.318-.46.617-.816.877a4.44 4.44 0 01-1.422.64 3.14 3.14 0 01-.438.09l.016.106c.065.39.05.81-.022 1.25-.067.43-.19.886-.31 1.312-.07.243-.138.472-.192.667-.054.195-.094.366-.113.503a1.98 1.98 0 00-.022.298c.001.079.013.2.046.372.025.128.059.261.089.374.032.12.063.242.087.351.1.434.14.808.086 1.19-.056.383-.245.795-.569 1.175-.324.38-.778.708-1.268.946-.49.237-1.03.376-1.57.376-.345 0-.672-.059-.96-.165-.497-.166-.955-.494-1.307-.903.38-.537.677-1.12.848-1.716.231-.807.275-1.583.17-2.2-.124-.734-.332-1.305-.538-1.74a2.89 2.89 0 00-.455-.682 2.315 2.315 0 00-.609-.434l-.063-.032a1.37 1.37 0 00-.607-.135c-.328 0-.597.111-.832.299-.306.25-.575.594-.849.954a5.01 5.01 0 01-.894.88c-.406.296-.873.476-1.328.476a1.4 1.4 0 01-.34-.04c-.388-.105-.776-.362-1.07-.736a3.374 3.374 0 01-.594-1.147 8.103 8.103 0 01-.35-1.455c-.134-.78-.277-1.334-.466-1.72-.19-.387-.432-.6-.757-.826a3.67 3.67 0 01-.237-.168 3.097 3.097 0 01-.46-.472 3.496 3.496 0 01-.37-.572 3.878 3.878 0 01-.28-.622A5.135 5.135 0 011.23 6.62c-.103-2.082.382-3.504 1.237-4.41C3.32 1.302 4.504.96 5.63.897c1.72-.097 3.39.407 4.05.655a3.14 3.14 0 011.92-.613c.36.006.74.056 1.128.16.385.103.78.267 1.153.5a9.328 9.328 0 012.597-.371c.216 0 .43.008.65.024z",
+  },
+  mongodb: {
+    color: "#47A248",
+    viewBox: "0 0 24 24",
+    path: "M17.193 9.555c-1.264-5.58-4.252-7.414-4.573-8.115-.28-.394-.53-.954-.735-1.44-.036.495-.055.685-.523 1.184-.723.566-4.438 3.682-4.74 10.02-.282 5.912 4.27 9.435 4.888 9.884l.07.05A73.49 73.49 0 0111.91 24h.481c.114-1.032.284-2.056.51-3.07.417-.296.604-.463.85-.693a11.342 11.342 0 003.639-8.464c.01-.814-.103-1.662-.197-2.218zm-5.336 8.195s0-8.291.275-8.29c.213 0 .49 10.695.49 10.695-.381-.045-.765-1.76-.765-2.405z",
+  },
+  react: {
+    color: "#61DAFB",
+    viewBox: "0 0 24 24",
+    path: "M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09c.522 0 .936.163 1.225.326 1.183.68 1.538 2.939.98 5.965-.041.21-.085.42-.134.632-1.046-.278-2.17-.49-3.35-.614a31.41 31.41 0 0 0-2.145-2.886 19.73 19.73 0 0 0 .68-.625c1.077-1.003 2.115-1.82 2.744-1.82zm-10.561 0c.627 0 1.665.814 2.743 1.817.23.215.455.43.68.63a31.293 31.293 0 0 0-2.145 2.886 31.013 31.013 0 0 0-3.35.614 18.85 18.85 0 0 1-.135-.632c-.558-3.025-.2-5.284.982-5.964.29-.166.705-.33 1.225-.33zm10.485 7.187c.32.11.628.226.912.35a17.57 17.57 0 0 1-.862.47c-.027-.28-.062-.57-.1-.86l.05.04zm-1.07 1.268a24.45 24.45 0 0 1-.434 2.027c-.29-.16-.6-.32-.93-.48a24.16 24.16 0 0 0 .93-1.547h.434zm-9.278.023c.31.16.62.32.91.48a24.64 24.64 0 0 0-.43 2.04 24.71 24.71 0 0 1-.93-1.55c.15-.31.3-.64.45-.97zm-1.98-.42c.284-.123.59-.238.912-.35l.05-.04c-.04.29-.074.58-.1.86a17.33 17.33 0 0 1-.862-.47zM12 8.087c.45.566.9 1.176 1.328 1.843a26.5 26.5 0 0 0-1.328-.045 26.5 26.5 0 0 0-1.328.045A31.02 31.02 0 0 1 12 8.087zm-5.56 1.946a27.52 27.52 0 0 1 2.555-.37 26.5 26.5 0 0 0-.82 1.682c-.35.73-.65 1.47-.9 2.2-.95-.56-1.75-1.16-2.37-1.76a10.22 10.22 0 0 1 1.535-1.752zm11.12 0c.55.5 1.05 1.07 1.535 1.752-.62.6-1.42 1.2-2.37 1.76-.25-.73-.55-1.47-.9-2.2a26.5 26.5 0 0 0-.82-1.682c.875.09 1.73.22 2.555.37zM12 12.004c.285 0 .577.012.87.035.28.52.552 1.08.806 1.66.25.578.47 1.16.65 1.73-.49.268-.98.5-1.47.7-.49-.2-.98-.432-1.47-.7.18-.57.4-1.152.65-1.73.254-.58.526-1.14.806-1.66.293-.023.585-.035.87-.035zm-4.06.35c.12.385.26.78.41 1.185.15.404.32.81.5 1.215-.28-.14-.55-.29-.81-.44a18.86 18.86 0 0 1-.1-1.96zm8.12 0c-.033.65-.06 1.31-.1 1.96-.26.15-.53.3-.81.44.18-.405.35-.81.5-1.215.15-.405.29-.8.41-1.185zm-9.1 4.386a24.25 24.25 0 0 0 .91 1.547 23.37 23.37 0 0 1-.93-.48 24.13 24.13 0 0 1-.41-2.03c.31.31.62.63.96.95zm10.09 1.067c-.31-.32-.62-.64-.96-.96a24.6 24.6 0 0 1-.41 2.03c-.31.16-.62.32-.93.48a24.25 24.25 0 0 0 .91-1.547zm-4.93 2.21c-.48-.2-.96-.43-1.44-.69.18-.58.39-1.15.63-1.71.24.56.45 1.13.63 1.71-.48.26-.96.49-1.44.69zm-4.69-2.55a24.25 24.25 0 0 0 .9 1.547 19.73 19.73 0 0 0 .68.625c1.077 1.003 2.115 1.82 2.744 1.82.63 0 1.667-.814 2.744-1.82.23-.195.455-.41.68-.625a24.25 24.25 0 0 0 .9-1.547c.24.56.45 1.13.63 1.71.48-.26.96-.49 1.44-.69a19.73 19.73 0 0 1-.68.625c-1.077 1.003-2.115 1.82-2.744 1.82-.522 0-.936-.164-1.225-.326-1.183-.68-1.538-2.94-.98-5.965.041-.21.085-.42.134-.632.32-.11.628-.226.912-.35.284.123.59.238.912.35.049.212.093.422.134.632.558 3.025.2 5.284-.982 5.964-.29.166-.705.33-1.225.33s-.935-.164-1.224-.33c-1.183-.68-1.538-2.939-.98-5.964.04-.21.085-.42.134-.632a17.6 17.6 0 0 1 .912-.35z",
+  },
+  nextjs: {
+    color: "#000000",
+    viewBox: "0 0 24 24",
+    path: "M11.5725 0c-.1763 0-.3098.0013-.3584.0067-.0516.0053-.2159.021-.3636.0328-3.4088.3073-6.6017 2.1463-8.624 4.9728C1.1004 6.584.3802 8.3666.1082 10.255c-.0962.659-.108.8537-.108 1.7474.0001.8938.012 1.0884.1082 1.7476.6809 4.6798 4.4602 8.3925 9.1296 8.9394.159.0174.3536.0316.445.0316.1035-.0001.2474-.0121.3608-.0312 4.6692-.5468 8.4487-4.2594 9.1296-8.9394.0961-.659.108-.8537.108-1.7475 0-.8938-.012-1.0884-.108-1.7476C18.6225 4.2056 14.8432.4929 10.1736.0461 10.0322.0207 9.8893.0059 9.7539.0013 9.6992-.0002 9.5822 0 9.4892 0H11.5725zM9 7l5 8h-2.1L9 10.35 6.1 15H4z",
+  },
+  vuejs: {
+    color: "#4FC08D",
+    viewBox: "0 0 24 24",
+    path: "M24,1.61H14.06L12,5.16,9.94,1.61H0L12,22.39ZM12,14.08,5.16,2.23H9.59L12,6.41l2.41-4.18h4.43Z",
+  },
+  typescript: {
+    color: "#3178C6",
+    viewBox: "0 0 24 24",
+    path: "M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z",
+  },
+  tailwind: {
+    color: "#06B6D4",
+    viewBox: "0 0 24 24",
+    path: "M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z",
+  },
+  docker: {
+    color: "#2496ED",
+    viewBox: "0 0 24 24",
+    path: "M13.983 11.078h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.185.185 0 00-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 00.186-.186V3.574a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m0 2.716h2.118a.187.187 0 00.186-.186V6.29a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.887c0 .102.082.185.185.186m-2.93 0h2.12a.186.186 0 00.184-.186V6.29a.185.185 0 00-.185-.185H8.1a.185.185 0 00-.185.185v1.887c0 .102.083.185.185.186m-2.964 0h2.119a.186.186 0 00.185-.186V6.29a.185.185 0 00-.185-.185H5.136a.186.186 0 00-.186.185v1.887c0 .102.084.185.186.186m5.893 2.715h2.118a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m-2.93 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.083.185.185.185m-2.964 0h2.119a.185.185 0 00.185-.185V9.006a.185.185 0 00-.184-.186h-2.12a.186.186 0 00-.186.186v1.887c0 .102.084.185.186.185m-2.92 0h2.12a.186.186 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.082.185.184.185m23.763.109c-.26-1.574-1.257-2.896-2.619-3.358l-.46-.16-.094-.473a6.201 6.201 0 00-6.22-5.026 6.37 6.37 0 00-5.308 2.959l-.268.424-.492.044c-1.736.156-3.271 1.123-4.197 2.57l-.221.35-.354.13A3.595 3.595 0 00.05 12.95v.059a3.6 3.6 0 003.597 3.597h16.917a2.534 2.534 0 002.528-2.528c0-.117-.015-.228-.032-.338",
+  },
+  kubernetes: {
+    color: "#326CE5",
+    viewBox: "0 0 24 24",
+    path: "M10.204 14.35l.007.01-.999 2.413a5.171 5.171 0 01-2.075-2.597l2.578-.437.004.005.485.606zm-.933-3.245l-2.797-.496a5.171 5.171 0 01.887-2.948l2.15 1.824-.003.006-.002.007a2.62 2.62 0 00-.235 1.607zm1.023.738l-.006.01-.004.011a2.621 2.621 0 00.232 1.606l.003.005-.003.006 1.14 2.285a5.168 5.168 0 01-3.407-1.247l2.045-2.676zM12 7.893a5.18 5.18 0 012.833.842l-1.734 2.02-.003.005h-.007a2.653 2.653 0 00-1.087 0h-.01l-.003-.005L9.255 8.74A5.18 5.18 0 0112 7.893zm-3.042-.22a5.17 5.17 0 00-1.775 2.33h-.002L4.6 10.32c.24-1.52.99-2.874 2.076-3.876l2.282 1.23zm6.084 0l2.283-1.229a8.15 8.15 0 012.076 3.876l-2.58.784a5.17 5.17 0 00-1.779-2.431zm1.857 3.57l2.579-.783a5.17 5.17 0 01.887 2.948l-2.797.496a2.62 2.62 0 00-.235-1.607l-.002-.006-.003-.006-.429-.042zm-1.39 2.375l-.003-.005.487-.61.578.098 2-1.197a5.168 5.168 0 01-2.066 2.591l-.996-2.877zm-2.47 2.83a5.183 5.183 0 01-1.04.106 5.18 5.18 0 01-1.04-.106l1.04-2.52 1.04 2.52zM12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 1.5c5.8 0 10.5 4.7 10.5 10.5S17.8 22.5 12 22.5 1.5 17.8 1.5 12 6.2 1.5 12 1.5z",
+  },
+  aws: {
+    color: "#FF9900",
+    viewBox: "0 0 24 24",
+    path: "M.664 13.983c0 .136.008.263.023.38l.032.123a7.23 7.23 0 00-.055.38l-.004.17c0 .516.202.93.603 1.237.396.302.89.453 1.484.453a4.12 4.12 0 001.073-.133l.296-.09.296-.097v.7H5.6v-4.098h-1.29v.18l-.006.178-.177-.072-.133-.056c-.36-.15-.81-.225-1.344-.225-.63 0-1.14.176-1.53.526-.394.35-.592.82-.592 1.413l.003.135zm1.43-.056c.15-.134.353-.2.604-.2.248 0 .472.057.67.17.198.112.36.277.485.49l.023.039v1.046l-.023.02a1.81 1.81 0 01-.485.306 1.492 1.492 0 01-.655.135c-.245 0-.445-.065-.598-.196a.67.67 0 01-.227-.526v-.56c0-.25.068-.456.206-.724zm3.946.25H4.44v.82h1.6zm6.91-3.168l-1.04 3.012-1.063-3.012H9.56l1.647 4.26.125.39a.47.47 0 01-.24.525 1.01 1.01 0 01-.5.116c-.16 0-.332-.023-.516-.068l-.168-.05v.885l.17.036c.234.05.473.075.716.075.5 0 .896-.114 1.185-.34.289-.228.54-.618.754-1.172l1.703-4.657h-1.266zm4.316-.082c-.44 0-.83.1-1.172.3-.342.197-.6.476-.777.835l-.04.082v-.135h-1.225v6.13h1.29V15.2l.05.073c.155.226.36.406.613.537.25.13.534.196.848.196.638 0 1.14-.227 1.507-.68.366-.453.55-1.084.55-1.893 0-.81-.185-1.437-.553-1.882-.368-.444-.872-.667-1.511-.667l.003.24-.003-.24zm-.234 1.01c.328 0 .578.128.75.384.172.257.258.632.258 1.126 0 .489-.086.863-.257 1.12-.172.258-.422.386-.75.386s-.578-.128-.75-.386c-.172-.257-.258-.631-.258-1.12 0-.494.086-.869.258-1.126.172-.256.422-.384.75-.384zm4.773.1c.252 0 .476.06.672.18.196.12.354.292.474.516l.023.043v-1.026l-.034-.024a1.81 1.81 0 00-.473-.247 1.79 1.79 0 00-.612-.1c-.498 0-.907.15-1.225.45-.318.3-.477.693-.477 1.18 0 .492.149.875.447 1.147.297.27.742.44 1.336.508l.25.028c.17.02.298.06.38.122.083.063.124.154.124.276 0 .13-.05.232-.148.303-.1.072-.244.108-.432.108a1.75 1.75 0 01-.657-.12 2.08 2.08 0 01-.536-.346l-.024-.022v1.038l.03.023c.18.135.378.238.594.31.216.07.449.106.698.106.524 0 .95-.148 1.276-.442.326-.295.489-.685.489-1.17 0-.47-.147-.836-.44-1.1-.29-.26-.726-.43-1.305-.508l-.234-.03c-.177-.023-.311-.063-.402-.12-.09-.06-.135-.145-.135-.257 0-.12.045-.215.137-.282.09-.068.22-.102.386-.102zm3.38.7l.006-.15.015-.147H23.2a7.248 7.248 0 00-.055.39l-.005.168c0 .516.203.93.603 1.238.397.302.89.452 1.484.452a4.12 4.12 0 001.073-.132l.296-.09.296-.097v.7H27.6v-4.097h-1.29v.18l-.006.178-.177-.072-.133-.056c-.36-.15-.81-.225-1.344-.225-.63 0-1.14.176-1.53.526-.394.35-.592.82-.592 1.413l.003.135zm1.429-.056c.15-.134.352-.2.604-.2.248 0 .472.057.67.17.198.112.36.277.485.49l.023.039v1.046l-.023.02a1.81 1.81 0 01-.485.306 1.492 1.492 0 01-.655.135c-.244 0-.444-.065-.597-.196a.67.67 0 01-.228-.526v-.56c0-.25.068-.456.206-.724z",
+  },
+  gcp: {
+    color: "#4285F4",
+    viewBox: "0 0 24 24",
+    path: "M12.19 2.38a9.344 9.344 0 00-9.234 6.893c.053-.02-.055.013 0 0-3.875 2.551-3.922 8.11-.247 10.941l.006.005a6.944 6.944 0 004.08 1.353h5.196l.03.02h5.58a6.76 6.76 0 006.46-6.39 6.942 6.942 0 00-2.465-5.763l-.005-.004a6.8 6.8 0 00-1.886-.972 9.344 9.344 0 00-7.516-6.083zm.27 2.648a6.7 6.7 0 015.982 4.57l.042.135.138.03a4.162 4.162 0 012.use 3.14 4.498 4.498 0 01-4.498 4.502l-5.17-.002-.012-.013H6.785a4.298 4.298 0 01-2.522-.812 4.9 4.9 0 01-.002-7.842 4.298 4.298 0 012.557-.848l.058.002.143-.123a6.7 6.7 0 015.442-2.74z",
+  },
+  github: {
+    color: "#181717",
+    viewBox: "0 0 24 24",
+    path: "M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12",
+  },
+  openai: {
+    color: "#412991",
+    viewBox: "0 0 24 24",
+    path: "M22.282 9.821a5.985 5.985 0 00-.516-4.91 6.046 6.046 0 00-6.51-2.9A6.065 6.065 0 0011.6.408a5.985 5.985 0 00-5.718 4.143 6.046 6.046 0 00-4.04 2.915 6.029 6.029 0 00.743 7.065 5.98 5.98 0 00.51 4.911 6.051 6.051 0 006.516 2.9A5.985 5.985 0 0012.56 24a6.02 6.02 0 005.718-4.174 6.046 6.046 0 004.048-2.918 6.028 6.028 0 00-.744-7.087zm-7.474 10.347a4.48 4.48 0 01-2.86-1.04l.141-.081 4.741-2.738a.78.78 0 00.392-.681v-6.69l2.004 1.156a.07.07 0 01.038.052v5.539a4.495 4.495 0 01-4.456 4.483zm-9.56-4.135a4.47 4.47 0 01-.535-3.014l.142.085 4.74 2.738a.768.768 0 00.785 0l5.792-3.344v2.312a.07.07 0 01-.027.06L11.177 19.88a4.496 4.496 0 01-5.929-3.847zm-1.24-10.51a4.468 4.468 0 012.324-1.968V9.32a.77.77 0 00.392.681l5.792 3.344-2.005 1.155a.07.07 0 01-.066 0l-4.916-2.84a4.497 4.497 0 01-1.521-5.809zm16.44 3.864l-5.792-3.344 2.005-1.155a.07.07 0 01.065 0l4.916 2.84a4.5 4.5 0 01-.735 8.124v-5.733a.777.777 0 00-.459-.732zm1.994-3.023l-.141-.085-4.741-2.738a.768.768 0 00-.784 0L8.977 6.892V4.58a.07.07 0 01.027-.06l4.916-2.837a4.5 4.5 0 016.679 4.66zm-12.64 4.135l-2.004-1.156a.07.07 0 01-.038-.053V9.508a4.5 4.5 0 017.375-3.453l-.142.08-4.74 2.739a.779.779 0 00-.393.681zm1.088-2.35l2.58-1.49 2.579 1.489v2.978l-2.58 1.49-2.579-1.49Z",
+  },
+  nodejs: {
+    color: "#339933",
+    viewBox: "0 0 24 24",
+    path: "M11.998,24c-0.321,0-0.641-0.084-0.922-0.247l-2.936-1.737c-0.438-0.245-0.224-0.332-0.08-0.383 c0.585-0.203,0.703-0.25,1.328-0.604c0.065-0.037,0.151-0.023,0.218,0.017l2.256,1.339c0.082,0.045,0.197,0.045,0.272,0l8.795-5.076 c0.082-0.047,0.134-0.141,0.134-0.238V6.921c0-0.099-0.053-0.192-0.137-0.242l-8.791-5.072c-0.081-0.047-0.189-0.047-0.271,0 L3.075,6.68C2.99,6.729,2.936,6.825,2.936,6.921v10.15c0,0.097,0.054,0.189,0.139,0.235l2.409,1.392 c1.307,0.654,2.108-0.116,2.108-0.89V7.787c0-0.142,0.114-0.253,0.256-0.253h1.115c0.139,0,0.255,0.112,0.255,0.253v10.021 c0,1.745-0.95,2.745-2.604,2.745c-0.508,0-0.909,0-2.026-0.551L2.28,18.675c-0.57-0.329-0.922-0.945-0.922-1.604V6.921 c0-0.659,0.353-1.275,0.922-1.603l8.795-5.082c0.557-0.315,1.296-0.315,1.848,0l8.794,5.082c0.57,0.329,0.924,0.944,0.924,1.603 v10.15c0,0.659-0.354,1.275-0.924,1.604l-8.794,5.078C12.643,23.916,12.324,24,11.998,24z M19.099,13.993 c0-1.9-1.284-2.406-3.987-2.763c-2.731-0.361-3.009-0.548-3.009-1.187c0-0.528,0.235-1.233,2.258-1.233 c1.807,0,2.473,0.389,2.747,1.607c0.024,0.115,0.129,0.199,0.247,0.199h1.141c0.071,0,0.138-0.031,0.186-0.081 c0.048-0.054,0.074-0.123,0.067-0.196c-0.177-2.098-1.571-3.076-4.388-3.076c-2.508,0-4.004,1.058-4.004,2.833 c0,1.925,1.488,2.457,3.895,2.695c2.88,0.282,3.103,0.703,3.103,1.269c0,0.983-0.789,1.402-2.642,1.402 c-2.327,0-2.839-0.584-3.011-1.742c-0.02-0.124-0.126-0.215-0.253-0.215h-1.137c-0.141,0-0.254,0.112-0.254,0.253 c0,1.482,0.806,3.248,4.655,3.248C17.501,17.007,19.099,15.91,19.099,13.993z",
+  },
+  graphql: {
+    color: "#E10098",
+    viewBox: "0 0 24 24",
+    path: "M14.051 2.751l4.935 2.85c.816-.523 1.871-.455 2.543.244.887.94.702 2.498-.332 3.167v5.696c1.032.669 1.217 2.23.33 3.167-.672.712-1.729.767-2.545.243l-4.934 2.85c.216.74-.045 1.551-.643 2.003-.986.74-2.37.432-2.992-.68-.192-.344-.285-.73-.264-1.108L5.8 18.283c-.815.523-1.871.455-2.543-.244-.887-.94-.702-2.498.332-3.167V9.168c-1.032-.669-1.217-2.23-.33-3.167.715-.757 1.764-.797 2.545-.243l4.934-2.85c-.198-.74.065-1.538.649-1.998.935-.724 2.29-.394 2.964.841h-.3zm-.638 1.97l-.04.033L9.438 7.605l-.046-.009c-.145-.024-.293-.02-.437.013l-.046.013-4.935-2.85-.047.026c-.317.183-.502.543-.443.906l.013.053v5.7l-.04.033c-.291.24-.456.6-.456.976 0 .39.178.757.482.99l.04.034v5.7l.013.053c.064.37.269.714.592.893l.046.026 4.935-2.85.046.013c.29.074.598.06.878-.04l.047-.018 4.934 2.85.047-.026c.328-.19.527-.548.527-.934v-.12l.013-.053V9.168l-.04-.033c-.3-.24-.482-.604-.482-.99 0-.386.166-.736.443-.976l.04-.034V1.44l-.013-.053c-.06-.355-.265-.692-.579-.878l-.047-.027-4.933 2.85zm.638 3.76l3.536 2.041V12l-3.536 2.04L11 14.044l-3.535-2.041v-4.08l3.535-2.042zM11 4.51L9.257 5.514l1.743 1.007 1.745-1.007zm0 14.98l1.744-1.005-1.744-1.006-1.744 1.006zm4.282-2.472l1.744-1.006v-2.013l-1.744 1.006zm-8.564 0v-3.019L4.974 13v2.013zm8.564-9.957v2.013l1.744 1.006V8.067zm-8.564 0l-1.744 1.006v2.013l1.744-1.006zM11 10.51l-1.744 1.005L11 12.52l1.744-1.005z",
+  },
+  googleanalytics: {
+    color: "#E37400",
+    viewBox: "0 0 24 24",
+    path: "M13.527.099C6.955-.744.942 3.9.099 10.473c-.843 6.572 3.8 12.584 10.373 13.428 6.573.843 12.587-3.801 13.428-10.374C24.744 6.955 20.101.943 13.527.099zm-.497 5.931c.936 0 1.696.76 1.696 1.697 0 .936-.76 1.696-1.696 1.696-.936 0-1.695-.76-1.695-1.696 0-.937.759-1.697 1.695-1.697zM6.81 18.687c-1.04 0-1.885-.845-1.885-1.886 0-1.04.845-1.885 1.885-1.885 1.04 0 1.885.845 1.885 1.885 0 1.041-.845 1.886-1.885 1.886zm6.22-.623c-1.04 0-1.885-.845-1.885-1.886 0-1.04.845-1.885 1.885-1.885 1.04 0 1.885.845 1.885 1.885 0 1.041-.845 1.886-1.885 1.886zm5.665-2.494c-.99.034-1.821-.748-1.848-1.748V7.735c.033-.99.848-1.772 1.848-1.748.977.028 1.761.814 1.761 1.798v6.034c-.007.984-.784 1.777-1.761 1.751z",
+  },
+  lighthouse: {
+    color: "#F44B21",
+    viewBox: "0 0 24 24",
+    path: "M12 0L1.605 6v12L12 24l10.395-6V6L12 0zm0 3.635l7.945 4.58v9.165L12 21.964 4.055 17.38V8.215L12 3.635zm0 3.76l-5.215 3.005v6.01L12 19.41l5.215-3v-6.01L12 7.395zm0 3.63l1.595.92v1.84L12 14.704l-1.595-.919v-1.84L12 11.025z",
+  },
+  langchain: {
+    color: "#1C3C3C",
+    viewBox: "0 0 24 24",
+    path: "M0 12.176v5.844l5.143 2.968 5.142-2.968v-5.844L5.143 9.208 0 12.176zm8.498 4.768-3.355 1.937-3.355-1.937v-3.874l3.355-1.937 3.355 1.937v3.874zm5.216-4.768v5.844l5.143 2.968L24 17.988v-5.844l-5.143-2.968-5.143 2.968zm8.498 4.768-3.355 1.937-3.356-1.937v-3.874l3.356-1.937 3.355 1.937v3.874zM5.143 0 0 2.968v5.844l5.143 2.968 5.142-2.968V2.968L5.143 0zm3.355 7.736-3.355 1.937-3.355-1.937V3.862l3.355-1.937 3.355 1.937v3.874z",
+  },
+}
+
+// Icon sets per service
+const SERVICE_ICONS: Record<number, Array<{ key: string; label: string }>> = {
+  0: [ // Backend
+    { key: "python", label: "Python" },
+    { key: "django", label: "Django" },
+    { key: "fastapi", label: "FastAPI" },
+    { key: "postgresql", label: "PostgreSQL" },
+    { key: "mongodb", label: "MongoDB" },
+    { key: "graphql", label: "GraphQL" },
+  ],
+  1: [ // Frontend
+    { key: "react", label: "React.js" },
+    { key: "nextjs", label: "Next.js" },
+    { key: "vuejs", label: "Vue.js" },
+    { key: "typescript", label: "TypeScript" },
+    { key: "tailwind", label: "Tailwind" },
+    { key: "nodejs", label: "Node.js" },
+  ],
+  2: [ // Software Architecture
+    { key: "docker", label: "Docker" },
+    { key: "aws", label: "AWS" },
+    { key: "gcp", label: "GCP" },
+    { key: "kubernetes", label: "Kubernetes" },
+    { key: "github", label: "GitHub" },
+    { key: "nodejs", label: "Node.js" },
+  ],
+  3: [ // AI Automation
+    { key: "openai", label: "OpenAI" },
+    { key: "python", label: "Python" },
+    { key: "langchain", label: "LangChain" },
+    { key: "fastapi", label: "FastAPI" },
+    { key: "docker", label: "Docker" },
+    { key: "graphql", label: "GraphQL" },
+  ],
+  4: [ // SEO
+    { key: "googleanalytics", label: "Analytics" },
+    { key: "lighthouse", label: "Lighthouse" },
+    { key: "nextjs", label: "Next.js" },
+    { key: "react", label: "React.js" },
+    { key: "typescript", label: "TypeScript" },
+    { key: "tailwind", label: "Tailwind" },
+  ],
+  5: [ // DevOps & Cloud
+    { key: "docker", label: "Docker" },
+    { key: "kubernetes", label: "Kubernetes" },
+    { key: "github", label: "GitHub CI/CD" },
+    { key: "aws", label: "AWS" },
+    { key: "gcp", label: "GCP" },
+    { key: "nodejs", label: "Node.js" },
+  ],
+}
+
+const TechIcon = ({ iconKey, label, serviceColor }: { iconKey: string; label: string; serviceColor: string }) => {
+  const icon = TECH_ICONS[iconKey]
+  if (!icon) return null
+
+  return (
+    <motion.div
+      className="flex flex-col items-center gap-1.5"
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      whileHover={{ scale: 1.12, y: -3 }}
+      transition={{ duration: 0.25 }}
+    >
+      <div
+        className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-md bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700"
+        style={{ boxShadow: `0 4px 14px 0 ${serviceColor}22` }}
+      >
+        <svg
+          viewBox={icon.viewBox || "0 0 24 24"}
+          className="w-5 h-5 sm:w-6 sm:h-6"
+          fill={icon.color}
+          xmlns="http://www.w3.org/2000/svg"
+          aria-label={label}
+        >
+          <path d={icon.path} />
+        </svg>
+      </div>
+      <span className="text-[9px] sm:text-[10px] text-gray-500 dark:text-gray-400 font-medium text-center leading-tight max-w-[52px]">
+        {label}
+      </span>
+    </motion.div>
+  )
+}
 
 const Skills = () => {
   const { language } = useLanguage()
-  const { portfolioData } = usePortfolio()
   const [currentSlide, setCurrentSlide] = useState(0)
 
   const services = language === "es"
@@ -17,164 +208,151 @@ const Skills = () => {
         {
           title: "Desarrollo",
           highlight: "Backend",
-          percentage: 90,
           features: [
             "Python con Django y FastAPI",
             "APIs REST y GraphQL escalables",
-            "Bases de datos SQL y NoSQL"
+            "Bases de datos SQL y NoSQL",
           ],
           color: "#0ea5e9",
           context: "Dominio técnico en arquitecturas servidor",
-          whatsappMessage: "Hola Harry, estoy interesado en tus servicios de Desarrollo Backend. Me gustaria conocer mas sobre como puedes ayudarme con APIs, bases de datos y arquitecturas servidor."
+          whatsappMessage: "Hola Harry, estoy interesado en tus servicios de Desarrollo Backend. Me gustaria conocer mas sobre como puedes ayudarme con APIs, bases de datos y arquitecturas servidor.",
         },
         {
           title: "Desarrollo",
           highlight: "Frontend",
-          percentage: 85,
           features: [
             "React.js y Next.js",
             "Vue.js y Nuxt.js",
-            "Interfaces modernas y responsivas"
+            "Interfaces modernas y responsivas",
           ],
           color: "#10b981",
           context: "Dominio en interfaces de usuario modernas",
-          whatsappMessage: "Hola Harry, estoy interesado en tus servicios de Desarrollo Frontend. Me gustaria conocer mas sobre como puedes ayudarme con interfaces modernas en React o Next.js."
+          whatsappMessage: "Hola Harry, estoy interesado en tus servicios de Desarrollo Frontend. Me gustaria conocer mas sobre como puedes ayudarme con interfaces modernas en React o Next.js.",
         },
         {
           title: "Arquitectura de",
           highlight: "Software",
-          percentage: 85,
           features: [
             "Diseño de sistemas SaaS",
             "Plataformas E-commerce",
-            "Websites y aplicaciones web"
+            "Websites y aplicaciones web",
           ],
           color: "#8b5cf6",
           context: "Capacidad sólida en diseño de sistemas escalables",
-          whatsappMessage: "Hola Harry, estoy interesado en tus servicios de Arquitectura de Software. Me gustaria conocer mas sobre diseño de sistemas SaaS y plataformas escalables."
+          whatsappMessage: "Hola Harry, estoy interesado en tus servicios de Arquitectura de Software. Me gustaria conocer mas sobre diseño de sistemas SaaS y plataformas escalables.",
         },
         {
           title: "Automatización",
           highlight: "con IA",
-          percentage: 80,
           features: [
             "Integración de modelos de lenguaje",
             "Automatización de flujos de trabajo",
-            "Chatbots y asistentes virtuales"
+            "Chatbots y asistentes virtuales",
           ],
           color: "#f59e0b",
           context: "Dominio en integración de modelos de lenguaje",
-          whatsappMessage: "Hola Harry, estoy interesado en tus servicios de Automatización con IA. Me gustaría conocer más sobre integración de modelos de lenguaje y chatbots."
+          whatsappMessage: "Hola Harry, estoy interesado en tus servicios de Automatización con IA. Me gustaría conocer más sobre integración de modelos de lenguaje y chatbots.",
         },
         {
           title: "Optimización",
           highlight: "SEO",
-          percentage: 75,
           features: [
             "SEO técnico y on-page",
             "Análisis de rendimiento web",
-            "Estrategias de posicionamiento"
+            "Estrategias de posicionamiento",
           ],
           color: "#ef4444",
           context: "Capacidad en estrategias de posicionamiento web",
-          whatsappMessage: "Hola Harry, estoy interesado en tus servicios de Optimización SEO. Me gustaría conocer más sobre estrategias de posicionamiento y rendimiento web."
+          whatsappMessage: "Hola Harry, estoy interesado en tus servicios de Optimización SEO. Me gustaría conocer más sobre estrategias de posicionamiento y rendimiento web.",
         },
         {
           title: "DevOps",
           highlight: "& Cloud",
-          percentage: 70,
           features: [
             "Docker y Kubernetes",
             "CI/CD con GitHub Actions",
-            "AWS, GCP y despliegue en la nube"
+            "AWS, GCP y despliegue en la nube",
           ],
           color: "#06b6d4",
           context: "Dominio en infraestructura y despliegue cloud",
-          whatsappMessage: "Hola Harry, estoy interesado en tus servicios de DevOps y Cloud. Me gustaria conocer mas sobre Docker, CI/CD y despliegue en la nube."
-        }
+          whatsappMessage: "Hola Harry, estoy interesado en tus servicios de DevOps y Cloud. Me gustaria conocer mas sobre Docker, CI/CD y despliegue en la nube.",
+        },
       ]
     : [
         {
           title: "Backend",
           highlight: "Development",
-          percentage: 90,
           features: [
             "Python with Django and FastAPI",
             "Scalable REST and GraphQL APIs",
-            "SQL and NoSQL databases"
+            "SQL and NoSQL databases",
           ],
           color: "#0ea5e9",
           context: "Mastery in server-side architectures",
-          whatsappMessage: "Hi Harry, I'm interested in your Backend Development services. I would like to know more about how you can help me with APIs, databases and server architectures."
+          whatsappMessage: "Hi Harry, I'm interested in your Backend Development services. I would like to know more about how you can help me with APIs, databases and server architectures.",
         },
         {
           title: "Frontend",
           highlight: "Development",
-          percentage: 85,
           features: [
             "React.js and Next.js",
             "Vue.js and Nuxt.js",
-            "Modern and responsive interfaces"
+            "Modern and responsive interfaces",
           ],
           color: "#10b981",
           context: "Mastery in modern user interfaces",
-          whatsappMessage: "Hi Harry, I'm interested in your Frontend Development services. I would like to know more about how you can help me with modern interfaces in React or Next.js."
+          whatsappMessage: "Hi Harry, I'm interested in your Frontend Development services. I would like to know more about how you can help me with modern interfaces in React or Next.js.",
         },
         {
           title: "Software",
           highlight: "Architecture",
-          percentage: 85,
           features: [
             "SaaS system design",
             "E-commerce platforms",
-            "Websites and web applications"
+            "Websites and web applications",
           ],
           color: "#8b5cf6",
           context: "Capability in scalable system design",
-          whatsappMessage: "Hi Harry, I'm interested in your Software Architecture services. I would like to know more about SaaS system design and scalable platforms."
+          whatsappMessage: "Hi Harry, I'm interested in your Software Architecture services. I would like to know more about SaaS system design and scalable platforms.",
         },
         {
           title: "AI",
           highlight: "Automation",
-          percentage: 80,
           features: [
             "Language model integration",
             "Workflow automation",
-            "Chatbots and virtual assistants"
+            "Chatbots and virtual assistants",
           ],
           color: "#f59e0b",
           context: "Mastery in language model integration",
-          whatsappMessage: "Hi Harry, I'm interested in your AI Automation services. I would like to know more about language model integration and chatbots."
+          whatsappMessage: "Hi Harry, I'm interested in your AI Automation services. I would like to know more about language model integration and chatbots.",
         },
         {
           title: "SEO",
           highlight: "Optimization",
-          percentage: 75,
           features: [
             "Technical and on-page SEO",
             "Web performance analysis",
-            "Positioning strategies"
+            "Positioning strategies",
           ],
           color: "#ef4444",
           context: "Capability in web positioning strategies",
-          whatsappMessage: "Hi Harry, I'm interested in your SEO Optimization services. I would like to know more about positioning strategies and web performance."
+          whatsappMessage: "Hi Harry, I'm interested in your SEO Optimization services. I would like to know more about positioning strategies and web performance.",
         },
         {
           title: "DevOps",
           highlight: "& Cloud",
-          percentage: 70,
           features: [
             "Docker and Kubernetes",
             "CI/CD with GitHub Actions",
-            "AWS, GCP and cloud deployment"
+            "AWS, GCP and cloud deployment",
           ],
           color: "#06b6d4",
           context: "Mastery in infrastructure and cloud deployment",
-          whatsappMessage: "Hi Harry, I'm interested in your DevOps and Cloud services. I would like to know more about Docker, CI/CD and cloud deployment."
-        }
+          whatsappMessage: "Hi Harry, I'm interested in your DevOps and Cloud services. I would like to know more about Docker, CI/CD and cloud deployment.",
+        },
       ]
 
-  // Auto-play carousel
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % services.length)
@@ -182,74 +360,30 @@ const Skills = () => {
     return () => clearInterval(interval)
   }, [services.length])
 
-  // WhatsApp link with contextual message based on current service
   const getWhatsAppLink = (serviceIndex: number) => {
     const message = services[serviceIndex].whatsappMessage
     return `https://api.whatsapp.com/send?phone=573112512939&text=${encodeURIComponent(message)}`
-  }
-
-  // Circular progress component with responsive size
-  const CircularProgress = ({ percentage, color, size = 140 }: { percentage: number, color: string, size?: number }) => {
-    const strokeWidth = size < 120 ? 6 : 8
-    const radius = (size - strokeWidth) / 2
-    const circumference = radius * 2 * Math.PI
-
-    return (
-      <div className="relative" style={{ width: size, height: size }}>
-        <svg width={size} height={size} className="transform -rotate-90">
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            stroke="#e5e7eb"
-            strokeWidth={strokeWidth}
-            fill="transparent"
-            className="dark:stroke-gray-700"
-          />
-          <motion.circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            stroke={color}
-            strokeWidth={strokeWidth}
-            fill="transparent"
-            strokeLinecap="round"
-            initial={{ strokeDasharray: `0 ${circumference}` }}
-            animate={{ strokeDasharray: `${(percentage / 100) * circumference} ${circumference}` }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-          />
-        </svg>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <motion.span 
-            className="text-xl sm:text-2xl md:text-3xl font-bold"
-            style={{ color }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            {percentage}%
-          </motion.span>
-        </div>
-      </div>
-    )
   }
 
   return (
     <section id="skills" className="relative flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden">
       {/* Tech background pattern */}
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 5% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 40%),
-                           radial-gradient(circle at 95% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 40%),
-                           radial-gradient(circle at 50% 10%, rgba(59, 130, 246, 0.2) 0%, transparent 40%),
-                           radial-gradient(circle at 50% 90%, rgba(59, 130, 246, 0.2) 0%, transparent 40%)`
-        }} />
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `radial-gradient(circle at 5% 50%, rgba(59,130,246,0.3) 0%, transparent 40%),
+                             radial-gradient(circle at 95% 50%, rgba(59,130,246,0.3) 0%, transparent 40%),
+                             radial-gradient(circle at 50% 10%, rgba(59,130,246,0.2) 0%, transparent 40%),
+                             radial-gradient(circle at 50% 90%, rgba(59,130,246,0.2) 0%, transparent 40%)`,
+          }}
+        />
         <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="skills-dots" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-              <circle cx="50" cy="50" r="2" fill="rgba(59, 130, 246, 0.3)" />
-              <circle cx="15" cy="15" r="1.5" fill="rgba(59, 130, 246, 0.2)" />
-              <circle cx="85" cy="85" r="1.5" fill="rgba(59, 130, 246, 0.2)" />
+              <circle cx="50" cy="50" r="2" fill="rgba(59,130,246,0.3)" />
+              <circle cx="15" cy="15" r="1.5" fill="rgba(59,130,246,0.2)" />
+              <circle cx="85" cy="85" r="1.5" fill="rgba(59,130,246,0.2)" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#skills-dots)" />
@@ -257,8 +391,8 @@ const Skills = () => {
       </div>
 
       <div className="relative z-10 container mx-auto px-4">
-        {/* Header - no label, captivating title */}
-        <motion.div 
+        {/* Header */}
+        <motion.div
           className="text-center mb-6 md:mb-10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -275,10 +409,10 @@ const Skills = () => {
               ? "Desarrollo soluciones digitales escalables y eficientes, orientadas a mejorar resultados y rendimiento."
               : "I build scalable and efficient digital solutions, focused on improving results and performance."}
           </p>
-          <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mt-3 md:mt-4"></div>
+          <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mt-3 md:mt-4" />
         </motion.div>
 
-        {/* Carousel - balanced grid on desktop, stacked on mobile */}
+        {/* Carousel */}
         <div className="max-w-2xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
@@ -287,17 +421,17 @@ const Skills = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
-              className="grid grid-cols-1 md:grid-cols-2 items-center gap-4 md:gap-8 py-2 md:py-4"
+              className="grid grid-cols-1 md:grid-cols-2 items-center gap-6 md:gap-8 py-2 md:py-4"
             >
-              {/* Text content - centered */}
+              {/* Left: text content */}
               <div className="text-center order-2 md:order-1">
-                {/* Title */}
                 <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
                   {services[currentSlide].title}{" "}
-                  <span style={{ color: services[currentSlide].color }}>{services[currentSlide].highlight}</span>
+                  <span style={{ color: services[currentSlide].color }}>
+                    {services[currentSlide].highlight}
+                  </span>
                 </h3>
 
-                {/* Features - no icons */}
                 <ul className="space-y-1 md:space-y-2 mb-3 md:mb-6">
                   {services[currentSlide].features.map((feature, index) => (
                     <motion.li
@@ -312,7 +446,6 @@ const Skills = () => {
                   ))}
                 </ul>
 
-                {/* Button - always centered */}
                 <div className="flex justify-center">
                   <Button
                     asChild
@@ -326,35 +459,35 @@ const Skills = () => {
                 </div>
               </div>
 
-              {/* Circular progress - RIGHT on desktop, top on mobile */}
-              <div className="flex flex-col items-center gap-2 md:gap-3 order-1 md:order-2">
-                <div className="block sm:hidden">
-                  <CircularProgress
-                    percentage={services[currentSlide].percentage}
-                    color={services[currentSlide].color}
-                    size={100}
-                  />
-                </div>
-                <div className="hidden sm:block md:hidden">
-                  <CircularProgress
-                    percentage={services[currentSlide].percentage}
-                    color={services[currentSlide].color}
-                    size={120}
-                  />
-                </div>
-                <div className="hidden md:block">
-                  <CircularProgress
-                    percentage={services[currentSlide].percentage}
-                    color={services[currentSlide].color}
-                    size={140}
-                  />
-                </div>
+              {/* Right: tech icon grid */}
+              <div className="flex flex-col items-center gap-3 order-1 md:order-2">
+                <motion.div
+                  className="grid grid-cols-3 gap-3 sm:gap-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 0.1 }}
+                >
+                  {(SERVICE_ICONS[currentSlide] ?? []).map((item, i) => (
+                    <motion.div
+                      key={item.key}
+                      initial={{ opacity: 0, scale: 0.7 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: i * 0.07 + 0.15, duration: 0.3, ease: "easeOut" }}
+                    >
+                      <TechIcon
+                        iconKey={item.key}
+                        label={item.label}
+                        serviceColor={services[currentSlide].color}
+                      />
+                    </motion.div>
+                  ))}
+                </motion.div>
                 <motion.p
-                  className="text-[10px] sm:text-xs md:text-sm font-medium text-center max-w-[100px] sm:max-w-[140px] md:max-w-[160px] leading-relaxed"
+                  className="text-[10px] sm:text-xs font-medium text-center mt-1"
                   style={{ color: services[currentSlide].color }}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.8, duration: 0.5, ease: "easeOut" }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.6 }}
                 >
                   {services[currentSlide].context}
                 </motion.p>
@@ -362,16 +495,18 @@ const Skills = () => {
             </motion.div>
           </AnimatePresence>
 
-          {/* Progress bar indicator - centered, auto only */}
+          {/* Slide indicator dots */}
           <div className="flex justify-center gap-1.5 mt-4 md:mt-8">
             {services.map((_, index) => (
-              <div
+              <button
                 key={index}
-                className={`h-1.5 rounded-full transition-all duration-500 ${
+                onClick={() => setCurrentSlide(index)}
+                className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
                   index === currentSlide
                     ? "w-8 bg-primary"
-                    : "w-2 bg-gray-300 dark:bg-gray-600"
+                    : "w-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400"
                 }`}
+                aria-label={`Slide ${index + 1}`}
               />
             ))}
           </div>
