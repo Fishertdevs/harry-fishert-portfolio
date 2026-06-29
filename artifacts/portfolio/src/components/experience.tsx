@@ -8,19 +8,17 @@ import { useLanguage } from "@/lib/language-context"
 import { usePortfolio } from "@/lib/portfolio-context"
 import { motion, AnimatePresence } from "framer-motion"
 
-// Colores para cada proyecto
 const projectColors = {
-  sgc: "#1e3a5f", // Azul oscuro elegante - SG&C Abogados
-  noosfera: "#7c3aed", // Morado - Noosfera IA
-  picapastos: "#ef0000", // Rojo puro - Picapastos
-  alterego: "#722f37", // Vinotinto - AlterEgo
-  mitiendago: "#16a34a", // Verde - MiTiendaGo
-  mikaza: "#9333ea", // Morado semioscuro - Mi Kaza
-  mc: "#3b82f6", // Azul - MC-Arquitectos
-  club: "#991b1b", // Rojo oscuro - Club Sacrifice
+  sgc: "#1e3a5f",
+  noosfera: "#7c3aed",
+  picapastos: "#ef0000",
+  alterego: "#722f37",
+  mitiendago: "#16a34a",
+  mc: "#3b82f6",
+  drmario: "#0ea5e9",
+  mymemorial: "#6366f1",
 }
 
-// Extrae el dominio limpio de la URL del proyecto para mostrarlo en la barra del navegador
 const getDomain = (url: string) => {
   if (!url || url === "#") return ""
   try {
@@ -38,7 +36,7 @@ const Experience = () => {
   const projects = language === "es"
     ? [
         {
-          title: "SG&C",
+          title: "SGC",
           highlight: "Abogados",
           role: "Web Developer",
           period: "Jun 2026",
@@ -103,17 +101,30 @@ const Experience = () => {
           color: projectColors.mitiendago,
         },
         {
-          title: "Mi Kaza",
-          highlight: "Rental",
-          role: "Full Stack Developer",
-          period: "May 2025 – Jun 2025",
-          description: "Implementación de plataforma de alojamiento universitario utilizando Next.js, React y Supabase, con gestión de datos en tiempo real y una base sólida para futuras versiones del producto.",
-          technologies: ["Next.js", "React", "Supabase", "PostgreSQL"],
-          image: "/projects/mikaza.png",
+          title: "Dr. Mario",
+          highlight: "Sánchez",
+          role: "Web Developer",
+          period: "2025 – 2026",
+          description: "Desarrollo de sitio web profesional para consultorio médico especializado, con presentación de servicios, información del especialista y sistema de contacto para programación de citas.",
+          technologies: ["Next.js", "React", "Tailwind CSS", "Vercel"],
+          image: "/projects/drmario.png",
           hasGithub: false,
-          demo: "https://mi-kaza-rental.vercel.app",
+          demo: "https://dr-mario-sanchez-website-api-server-one.vercel.app",
           featured: false,
-          color: projectColors.mikaza,
+          color: projectColors.drmario,
+        },
+        {
+          title: "My Memorial",
+          highlight: "Forever",
+          role: "Full Stack Developer",
+          period: "2025 – 2026",
+          description: "Plataforma digital de homenaje y memoria que permite crear perfiles conmemorativos para preservar recuerdos, compartir historias de vida y mantener vivos los legados personales.",
+          technologies: ["Next.js", "React", "Supabase", "Node.js"],
+          image: "/projects/mymemorial.png",
+          hasGithub: false,
+          demo: "https://my-memorial-forever-api-server-ztvm.vercel.app",
+          featured: false,
+          color: projectColors.mymemorial,
         },
         {
           title: "MC",
@@ -128,23 +139,10 @@ const Experience = () => {
           featured: false,
           color: projectColors.mc,
         },
-        {
-          title: "Club Sacrifice",
-          highlight: "Powerlifting",
-          role: "Frontend Developer",
-          period: "Ene 2024",
-          description: "Desarrollo de interfaz web optimizada para el fortalecimiento de la presencia digital de la marca y mejora de la interacción con la comunidad.",
-          technologies: ["React", "Tailwind CSS", "Framer Motion"],
-          image: "/projects/clubsacrifice.png",
-          hasGithub: false,
-          demo: "https://club-sacrifice-powerlifting.vercel.app",
-          featured: false,
-          color: projectColors.club,
-        },
       ]
     : [
         {
-          title: "SG&C",
+          title: "SGC",
           highlight: "Abogados",
           role: "Web Developer",
           period: "Jun 2026",
@@ -209,17 +207,30 @@ const Experience = () => {
           color: projectColors.mitiendago,
         },
         {
-          title: "Mi Kaza",
-          highlight: "Rental",
-          role: "Full Stack Developer",
-          period: "May 2025 – Jun 2025",
-          description: "Implementation of university housing platform using Next.js, React and Supabase, with real-time data management and a solid foundation for future product versions.",
-          technologies: ["Next.js", "React", "Supabase", "PostgreSQL"],
-          image: "/projects/mikaza.png",
+          title: "Dr. Mario",
+          highlight: "Sánchez",
+          role: "Web Developer",
+          period: "2025 – 2026",
+          description: "Development of a professional website for a specialized medical office, featuring service presentation, specialist information, and a contact system for appointment scheduling.",
+          technologies: ["Next.js", "React", "Tailwind CSS", "Vercel"],
+          image: "/projects/drmario.png",
           hasGithub: false,
-          demo: "https://mi-kaza-rental.vercel.app",
+          demo: "https://dr-mario-sanchez-website-api-server-one.vercel.app",
           featured: false,
-          color: projectColors.mikaza,
+          color: projectColors.drmario,
+        },
+        {
+          title: "My Memorial",
+          highlight: "Forever",
+          role: "Full Stack Developer",
+          period: "2025 – 2026",
+          description: "Digital tribute and memory platform that allows creating commemorative profiles to preserve memories, share life stories, and keep personal legacies alive.",
+          technologies: ["Next.js", "React", "Supabase", "Node.js"],
+          image: "/projects/mymemorial.png",
+          hasGithub: false,
+          demo: "https://my-memorial-forever-api-server-ztvm.vercel.app",
+          featured: false,
+          color: projectColors.mymemorial,
         },
         {
           title: "MC",
@@ -234,22 +245,8 @@ const Experience = () => {
           featured: false,
           color: projectColors.mc,
         },
-        {
-          title: "Club Sacrifice",
-          highlight: "Powerlifting",
-          role: "Frontend Developer",
-          period: "Jan 2024",
-          description: "Development of optimized web interface for strengthening the brand's digital presence and improving interaction with the community.",
-          technologies: ["React", "Tailwind CSS", "Framer Motion"],
-          image: "/projects/clubsacrifice.png",
-          hasGithub: false,
-          demo: "https://club-sacrifice-powerlifting.vercel.app",
-          featured: false,
-          color: projectColors.club,
-        },
       ]
 
-  // Auto-play carousel for projects
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % projects.length)
@@ -261,7 +258,6 @@ const Experience = () => {
 
   return (
     <section id="experience" className="relative flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden">
-      {/* Tech background pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
           backgroundImage: `radial-gradient(circle at 5% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 40%),
@@ -282,8 +278,7 @@ const Experience = () => {
       </div>
 
       <div className="relative z-10 container mx-auto px-4">
-        {/* Header */}
-        <motion.div 
+        <motion.div
           className="text-center mb-6 md:mb-10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -291,9 +286,7 @@ const Experience = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
-            {language === "es"
-              ? "Experiencia Laboral"
-              : "Work Experience"}
+            {language === "es" ? "Experiencia Laboral" : "Work Experience"}
           </h2>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base">
             {language === "es"
@@ -303,7 +296,6 @@ const Experience = () => {
           <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mt-3 md:mt-4"></div>
         </motion.div>
 
-        {/* Carousel */}
         <div className="max-w-5xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
@@ -314,9 +306,7 @@ const Experience = () => {
               transition={{ duration: 0.4 }}
               className="grid grid-cols-1 md:grid-cols-2 items-center gap-6 md:gap-10 py-2 md:py-4"
             >
-              {/* Text content */}
               <div className="text-center order-2 md:order-1">
-                {/* Title with star for featured */}
                 <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-1 md:mb-2">
                   <span className="inline-flex items-center justify-center gap-1.5 flex-wrap">
                     <span>{currentProject.title}</span>
@@ -329,12 +319,8 @@ const Experience = () => {
                   </span>
                 </h3>
 
-                {/* Role and period (no duration) - single line, no wrap */}
                 <div className="flex flex-nowrap justify-center items-center gap-1.5 sm:gap-2 mb-2 md:mb-3 whitespace-nowrap">
-                  <span 
-                    className="text-[11px] sm:text-sm font-semibold"
-                    style={{ color: currentProject.color }}
-                  >
+                  <span className="text-[11px] sm:text-sm font-semibold" style={{ color: currentProject.color }}>
                     {currentProject.role}
                   </span>
                   <span className="text-gray-400 text-[11px] sm:text-sm">|</span>
@@ -343,18 +329,16 @@ const Experience = () => {
                   </span>
                 </div>
 
-                {/* Description */}
                 <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm md:text-base mb-3 md:mb-4 leading-relaxed">
                   {currentProject.description}
                 </p>
 
-                {/* Technologies */}
                 <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2 mb-4">
                   {currentProject.technologies.map((tech, index) => (
                     <span
                       key={index}
                       className="px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-full"
-                      style={{ 
+                      style={{
                         backgroundColor: `${currentProject.color}15`,
                         color: currentProject.color
                       }}
@@ -364,15 +348,9 @@ const Experience = () => {
                   ))}
                 </div>
 
-                {/* Buttons */}
                 <div className="flex flex-wrap justify-center gap-2 md:gap-3">
                   {currentProject.hasGithub && (
-                    <Button
-                      asChild
-                      variant="ghost"
-                      size="sm"
-                      className="rounded-lg px-3 sm:px-4 py-1 md:py-1.5 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-700 dark:text-gray-300 hover:bg-transparent"
-                    >
+                    <Button asChild variant="ghost" size="sm" className="rounded-lg px-3 sm:px-4 py-1 md:py-1.5 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-700 dark:text-gray-300 hover:bg-transparent">
                       <a href={portfolioData.github} target="_blank" rel="noopener noreferrer">
                         <Github className="w-3 h-3 sm:w-4 sm:h-4" />
                         GitHub
@@ -380,13 +358,7 @@ const Experience = () => {
                     </Button>
                   )}
                   {currentProject.demo !== "#" && (
-                    <Button
-                      asChild
-                      variant="ghost"
-                      size="sm"
-                      className="rounded-lg px-3 sm:px-4 py-1 md:py-1.5 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm hover:bg-transparent"
-                      style={{ color: currentProject.color }}
-                    >
+                    <Button asChild variant="ghost" size="sm" className="rounded-lg px-3 sm:px-4 py-1 md:py-1.5 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm hover:bg-transparent" style={{ color: currentProject.color }}>
                       <a href={currentProject.demo} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">
                         {language === "es" ? "Ver proyecto" : "View project"}
                       </a>
@@ -395,13 +367,11 @@ const Experience = () => {
                 </div>
               </div>
 
-              {/* Project screenshot preview */}
               <div className="order-1 md:order-2">
                 <div
                   className="rounded-xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800"
                   style={{ boxShadow: `0 10px 40px -12px ${currentProject.color}40` }}
                 >
-                  {/* Browser-like top bar with URL search field */}
                   <div className="flex items-center px-3 py-2 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                     <div className="flex items-center gap-1.5 w-full px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 shadow-inner">
                       <Lock className="w-3 h-3 text-gray-400 flex-shrink-0" />
@@ -422,28 +392,22 @@ const Experience = () => {
             </motion.div>
           </AnimatePresence>
 
-          {/* Progress bar indicator with colors */}
           <div className="flex flex-wrap justify-center gap-1.5 mt-6 md:mt-8">
             {projects.map((project, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
                 className={`h-1 md:h-1.5 rounded-full transition-all duration-500 ${
-                  index === currentSlide
-                    ? "w-6 md:w-8"
-                    : "w-1.5 md:w-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400"
+                  index === currentSlide ? "w-6 md:w-8" : "w-1.5 md:w-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400"
                 }`}
-                style={{
-                  backgroundColor: index === currentSlide ? project.color : undefined
-                }}
+                style={{ backgroundColor: index === currentSlide ? project.color : undefined }}
                 aria-label={`Go to project ${index + 1}`}
               />
             ))}
           </div>
         </div>
 
-        {/* GitHub CTA */}
-        <motion.div 
+        <motion.div
           className="text-center mt-6 md:mt-10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -451,15 +415,9 @@ const Experience = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
         >
           <p className="text-gray-600 dark:text-gray-400 mb-2 md:mb-4 text-xs sm:text-sm max-w-md mx-auto">
-            {language === "es"
-              ? "Explora más proyectos y contribuciones"
-              : "Explore more projects and contributions"}
+            {language === "es" ? "Explora más proyectos y contribuciones" : "Explore more projects and contributions"}
           </p>
-          <Button
-            asChild
-            size="sm"
-            className="bg-[#24292e] hover:bg-[#1a1e22] text-white transition-all rounded-lg px-4 md:px-6 py-1.5 md:py-2 inline-flex items-center gap-1.5 md:gap-2 text-xs sm:text-sm w-auto"
-          >
+          <Button asChild size="sm" className="bg-[#24292e] hover:bg-[#1a1e22] text-white transition-all rounded-lg px-4 md:px-6 py-1.5 md:py-2 inline-flex items-center gap-1.5 md:gap-2 text-xs sm:text-sm w-auto">
             <a href={portfolioData.github} target="_blank" rel="noopener noreferrer">
               <Github className="w-4 h-4 md:w-5 md:h-5" />
               {language === "es" ? "Ver más en GitHub" : "View more on GitHub"}
