@@ -686,7 +686,7 @@ const Skills = () => {
                   ))}
                 </ul>
 
-                <div className="flex justify-center gap-2 flex-wrap">
+                <div className="flex justify-center gap-2">
                   <Button
                     asChild
                     size="sm"
@@ -702,13 +702,12 @@ const Skills = () => {
                   </Button>
                   <Button
                     asChild
-                    variant="outline"
                     size="sm"
-                    className="rounded-lg px-4 md:px-5 py-1.5 md:py-2 text-xs md:text-sm font-semibold border-2"
-                    style={{ borderColor: services[currentSlide].color, color: services[currentSlide].color }}
+                    className="rounded-lg px-4 md:px-5 py-1.5 md:py-2 text-xs md:text-sm font-semibold text-white"
+                    style={{ backgroundColor: services[currentSlide].color }}
                   >
                     <a href="#experience">
-                      {language === "es" ? "Ver experiencia →" : "See experience →"}
+                      {language === "es" ? "Ver experiencia" : "See experience"}
                     </a>
                   </Button>
                 </div>
