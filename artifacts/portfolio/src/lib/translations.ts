@@ -9,7 +9,7 @@ export const translations: Translations = {
     // Navbar
     home: "Inicio",
     about: "Perfil Profesional",
-    skills: "Habilidades",
+    skills: "Áreas",
     projects: "Proyectos",
     education: "Educación",
     experience: "Experiencia",
@@ -412,7 +412,7 @@ export const translations: Translations = {
     // Navbar
     home: "Home",
     about: "Professional Profile",
-    skills: "Skills",
+    skills: "Areas",
     projects: "Projects",
     education: "Education",
     experience: "Experience",
