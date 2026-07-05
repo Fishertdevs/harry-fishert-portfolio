@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/lib/language-context"
 import { usePortfolio } from "@/lib/portfolio-context"
 import { motion } from "framer-motion"
+import SectionBlobs from "@/components/section-blobs"
 
 // WhatsApp SVG Icon
 const WhatsAppIcon = ({ className }: { className?: string }) => (
@@ -19,6 +20,7 @@ const Contact = () => {
 
   return (
     <section id="contact" className="relative flex flex-col justify-center py-8 md:py-12 bg-white dark:bg-gray-900 overflow-hidden">
+      <SectionBlobs />
       {/* Tech background pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{

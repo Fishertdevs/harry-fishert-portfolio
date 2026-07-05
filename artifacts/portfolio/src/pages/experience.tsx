@@ -4,7 +4,7 @@ import Footer from "@/components/footer"
 
 export default function ExperiencePage() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen text-foreground">
       <Navbar />
       <main className="pt-16">
         <Experience />

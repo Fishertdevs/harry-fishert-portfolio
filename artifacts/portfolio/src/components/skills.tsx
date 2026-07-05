@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/lib/language-context"
 import { motion, AnimatePresence } from "framer-motion"
+import SectionBlobs from "@/components/section-blobs"
 
 // SVG paths from Simple Icons (simpleicons.org)
 const TECH_ICONS: Record<string, { path: string; color: string; viewBox?: string }> = {
@@ -607,6 +608,7 @@ const Skills = () => {
 
   return (
     <section id="skills" className="relative py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden">
+      <SectionBlobs />
       {/* Tech background pattern */}
       <div className="absolute inset-0 opacity-10">
         <div

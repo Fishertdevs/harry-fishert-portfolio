@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Github, Star, Lock, MapPin, Sparkles } from "lucide-react"
+import SectionBlobs from "@/components/section-blobs"
 import {
   SiNextdotjs,
   SiReact,
@@ -280,6 +281,7 @@ const Experience = () => {
 
   return (
     <section id="experience" className="relative flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden">
+      <SectionBlobs />
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
           backgroundImage: `radial-gradient(circle at 5% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 40%),

@@ -4,6 +4,7 @@ import { useLanguage } from "@/lib/language-context"
 import { usePortfolio } from "@/lib/portfolio-context"
 import { AnimatePresence, motion } from "framer-motion"
 import { useState, useEffect, useRef } from "react"
+import SectionBlobs from "@/components/section-blobs"
 
 
 const About = () => {
@@ -35,8 +36,9 @@ const About = () => {
     <section 
       id="about" 
       ref={sectionRef} 
-      className="flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden"
+      className="relative flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden"
     >
+      <SectionBlobs />
       <div className="container mx-auto px-4">
         <div className="text-center mb-6 md:mb-10">
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4 text-gray-900 dark:text-white">{t("aboutTitle")}</h2>

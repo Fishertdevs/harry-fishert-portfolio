@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useLanguage } from "@/lib/language-context"
 import { motion, AnimatePresence } from "framer-motion"
 import { MessageCircle, Users, Handshake, Award, HeartHandshake, Repeat2, Presentation, Ear } from "lucide-react"
+import SectionBlobs from "@/components/section-blobs"
 
 // SVG tech icon badges for education grids
 const EDU_ICONS: Record<string, { icon: JSX.Element; label: string; bg: string }> = {
@@ -446,6 +447,7 @@ const Education = () => {
 
   return (
     <section id="education" className="relative flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden">
+      <SectionBlobs />
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
           backgroundImage: `radial-gradient(circle at 5% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 40%),
