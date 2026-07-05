@@ -338,8 +338,8 @@ const ReviewsCarousel = () => {
             </p>
           </div>
         ) : (
-        /* Reviews Content - Text style like professional profile */
-        <div className="max-w-3xl mx-auto">
+        /* Reviews Content - elegant testimonial card */
+        <div className="max-w-xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlide}
@@ -347,22 +347,29 @@ const ReviewsCarousel = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
-              className="text-center"
+              className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700/60 px-6 py-8 sm:px-10 sm:py-10 text-center"
             >
+              {/* Avatar initial */}
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-4 text-xl sm:text-2xl font-bold">
+                {currentReview?.name?.trim()?.charAt(0)?.toUpperCase() || "?"}
+              </div>
+
               {/* Name */}
-              <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-1">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-1">
                 {currentReview?.name}
               </h3>
 
               {/* Position & Company */}
-              <p className="text-primary font-medium mb-2 md:mb-3 text-xs sm:text-sm md:text-base">
-                {currentReview?.position && currentReview?.company
-                  ? `${currentReview.position} - ${currentReview.company}`
-                  : currentReview?.company || currentReview?.position || ""}
-              </p>
+              {(currentReview?.position || currentReview?.company) && (
+                <p className="text-primary font-medium mb-3 text-xs sm:text-sm">
+                  {currentReview?.position && currentReview?.company
+                    ? `${currentReview.position} - ${currentReview.company}`
+                    : currentReview?.company || currentReview?.position || ""}
+                </p>
+              )}
 
-              {/* Role badge style */}
-              <div className="flex justify-center gap-1 mb-4 md:mb-6">
+              {/* Stars */}
+              <div className="flex justify-center gap-1 mb-5">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
                     key={star}
@@ -375,32 +382,30 @@ const ReviewsCarousel = () => {
                 ))}
               </div>
 
-              {/* Review Text - styled like the about description */}
-              <div className="relative min-h-[100px] sm:min-h-[120px] md:min-h-[140px]">
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-sm sm:text-base md:text-lg text-center max-w-2xl mx-auto">
-                  &ldquo;{currentReview?.review}&rdquo;
-                </p>
-              </div>
-
-              {/* Progress bar indicator */}
-              <div className="flex items-center gap-1.5 mt-6 md:mt-8 justify-center">
-                {reviews.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      setCurrentSlide(index)
-                      setIsAutoPlaying(false)
-                    }}
-                    className={`h-1 rounded-full transition-all duration-500 ${
-                      index === currentSlide
-                        ? "w-6 md:w-8 bg-primary"
-                        : "w-1.5 md:w-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400"
-                    }`}
-                  />
-                ))}
-              </div>
+              {/* Review Text */}
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-sm sm:text-base italic">
+                &ldquo;{currentReview?.review}&rdquo;
+              </p>
             </motion.div>
           </AnimatePresence>
+
+          {/* Progress bar indicator */}
+          <div className="flex items-center gap-1.5 mt-6 justify-center">
+            {reviews.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  setCurrentSlide(index)
+                  setIsAutoPlaying(false)
+                }}
+                className={`h-1 rounded-full transition-all duration-500 ${
+                  index === currentSlide
+                    ? "w-6 md:w-8 bg-primary"
+                    : "w-1.5 md:w-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400"
+                }`}
+              />
+            ))}
+          </div>
         </div>
         )}
 

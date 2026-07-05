@@ -96,6 +96,11 @@ export default function Home() {
               </div>
             )}
           </motion.div>
+          <div className="absolute bottom-0 left-0 right-0 overflow-hidden leading-none pointer-events-none">
+            <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-10 sm:h-14 md:h-20 block">
+              <path d="M0,32 C240,72 480,0 720,30 C960,60 1200,8 1440,40 L1440,80 L0,80 Z" className="fill-blue-700" />
+            </svg>
+          </div>
         </section>
         <TechStack />
         <Languages />

@@ -42,13 +42,20 @@ const TechIcon = memo(({
   return (
     <div className="flex flex-col items-center gap-2">
       <div
-        className="rounded-2xl overflow-hidden shadow-lg ring-4"
-        style={{ width: size, height: size, borderColor: `${color}33` } as React.CSSProperties}
+        className="rounded-2xl bg-white dark:bg-gray-800 flex items-center justify-center transition-transform duration-300 hover:-translate-y-1"
+        style={{
+          width: size,
+          height: size,
+          padding: size * 0.2,
+          boxShadow: `0 10px 25px -8px ${color}40, 0 2px 6px -2px rgba(0,0,0,0.08)`,
+        } as React.CSSProperties}
       >
-        {TECH_SVGS[tech]}
+        <div className="w-full h-full rounded-lg overflow-hidden">
+          {TECH_SVGS[tech]}
+        </div>
       </div>
       <motion.span
-        className="text-xl sm:text-2xl font-bold"
+        className="text-lg sm:text-xl font-bold"
         style={{ color }}
         initial={{ opacity: 0 }}
         animate={animate ? { opacity: 1 } : { opacity: 0 }}
@@ -129,7 +136,7 @@ const TechStack = () => {
                   tech={stack.tech}
                   percentage={stack.percentage}
                   color={stack.color}
-                  size={110}
+                  size={76}
                   animate={hasAnimatedOnce}
                 />
                 <p className="text-xs lg:text-sm text-gray-600 dark:text-gray-400 text-center leading-relaxed">
@@ -158,7 +165,7 @@ const TechStack = () => {
                 tech={stackData[currentSlide].tech}
                 percentage={stackData[currentSlide].percentage}
                 color={stackData[currentSlide].color}
-                size={96}
+                size={72}
                 animate={true}
               />
               <p className="text-xs text-gray-600 dark:text-gray-400 text-center leading-relaxed px-4">
