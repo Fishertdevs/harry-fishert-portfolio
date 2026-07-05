@@ -22,7 +22,7 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-const Footer = () => {
+const Footer = ({ waveClassName = "fill-white dark:fill-gray-900" }: { waveClassName?: string }) => {
   const { language } = useLanguage()
   const { portfolioData } = usePortfolio()
   const currentYear = new Date().getFullYear()
@@ -32,7 +32,7 @@ const Footer = () => {
       {/* SVG Wave separator */}
       <div className="overflow-hidden leading-none -mt-px">
         <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full block">
-          <path d="M0,0 C240,72 480,20 720,48 C960,72 1200,10 1440,54 L1440,0 L0,0 Z" className="fill-white dark:fill-gray-900" />
+          <path d="M0,0 C240,72 480,20 720,48 C960,72 1200,10 1440,54 L1440,0 L0,0 Z" className={waveClassName} />
         </svg>
       </div>
 

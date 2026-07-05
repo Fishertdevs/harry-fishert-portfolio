@@ -17,8 +17,6 @@ import EducationPage from "@/pages/education";
 import CookiesPage from "@/pages/cookies";
 import PrivacyPage from "@/pages/privacy";
 import TermsPage from "@/pages/terms";
-import AdminLoginPage from "@/pages/admin-login";
-import AdminDashboardPage from "@/pages/admin-dashboard";
 
 const queryClient = new QueryClient();
 
@@ -46,8 +44,6 @@ function Router() {
         <Route path="/cookies" component={CookiesPage} />
         <Route path="/privacy" component={PrivacyPage} />
         <Route path="/terms" component={TermsPage} />
-        <Route path="/admin/login" component={AdminLoginPage} />
-        <Route path="/admin/dashboard" component={AdminDashboardPage} />
         <Route component={NotFound} />
       </Switch>
     </>

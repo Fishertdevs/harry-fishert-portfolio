@@ -188,7 +188,7 @@ export default function Home() {
         <ReviewsCarousel />
         <CTASection />
       </main>
-      <Footer />
+      <Footer waveClassName="fill-blue-700" />
       <WhatsAppFloatingButton />
       <CookieBanner />
     </div>

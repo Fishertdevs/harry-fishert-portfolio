@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useLanguage } from "@/lib/language-context"
 import { motion, AnimatePresence } from "framer-motion"
-import { Star, Plus, Check, Send, User, Briefcase, Building, MessageSquare } from "lucide-react"
+import { Star, Plus, Check, Send, User, Briefcase, Building } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -165,9 +165,6 @@ const ReviewsCarousel = () => {
             className="space-y-4"
           >
             <div className="text-center mb-6">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <User className="w-8 h-8 text-primary" />
-              </div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {language === "es" ? "Cuéntanos sobre ti" : "Tell us about yourself"}
               </h3>
@@ -198,9 +195,6 @@ const ReviewsCarousel = () => {
             className="space-y-4"
           >
             <div className="text-center mb-6">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Briefcase className="w-8 h-8 text-primary" />
-              </div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {language === "es" ? "Información profesional" : "Professional information"}
               </h3>
@@ -239,9 +233,6 @@ const ReviewsCarousel = () => {
             className="space-y-4"
           >
             <div className="text-center mb-6">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Star className="w-8 h-8 text-primary" />
-              </div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {language === "es" ? "¿Cómo fue tu experiencia?" : "How was your experience?"}
               </h3>
@@ -249,7 +240,7 @@ const ReviewsCarousel = () => {
                 {language === "es" ? "Paso 3 de 4" : "Step 3 of 4"}
               </p>
             </div>
-            <div className="flex justify-center gap-2 py-4">
+            <div className="flex justify-center gap-2 py-2">
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
                   key={star}
@@ -285,9 +276,6 @@ const ReviewsCarousel = () => {
             className="space-y-4"
           >
             <div className="text-center mb-6">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <MessageSquare className="w-8 h-8 text-primary" />
-              </div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {language === "es" ? "Comparte tu opinión" : "Share your thoughts"}
               </h3>
@@ -302,7 +290,7 @@ const ReviewsCarousel = () => {
               value={formData.review}
               onChange={(e) => setFormData(prev => ({ ...prev, review: e.target.value }))}
               required
-              rows={5}
+              rows={3}
               className="border-gray-200 dark:border-gray-700 focus:border-primary resize-none"
             />
             <p className="text-xs text-gray-400 text-right">
@@ -340,9 +328,6 @@ const ReviewsCarousel = () => {
         {/* Empty state - shown until a real review is submitted */}
         {reviews.length === 0 ? (
           <div className="max-w-md mx-auto text-center py-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-              <MessageSquare className="h-8 w-8 text-primary" />
-            </div>
             <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-2">
               {language === "es" ? "Aún no hay reseñas" : "No reviews yet"}
             </h3>
@@ -431,9 +416,9 @@ const ReviewsCarousel = () => {
                 {language === "es" ? "Dejar una reseña" : "Leave a review"}
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className="sm:max-w-sm">
               <DialogHeader>
-                <DialogTitle className="text-center gradient-text text-xl">
+                <DialogTitle className="text-center gradient-text text-lg">
                   {language === "es" ? "Comparte tu experiencia" : "Share your experience"}
                 </DialogTitle>
               </DialogHeader>
@@ -457,7 +442,7 @@ const ReviewsCarousel = () => {
               ) : (
                 <form onSubmit={handleSubmitReview}>
                   {/* Progress indicator */}
-                  <div className="flex items-center justify-center gap-2 mb-6">
+                  <div className="flex items-center justify-center gap-2 mb-4">
                     {[1, 2, 3, 4].map((step) => (
                       <div
                         key={step}
@@ -491,7 +476,7 @@ const ReviewsCarousel = () => {
                   </AnimatePresence>
 
                   {/* Navigation buttons */}
-                  <div className="flex justify-between mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <div className="flex justify-between mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
                     <Button
                       type="button"
                       variant="outline"
