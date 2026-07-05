@@ -1,43 +1,27 @@
-// Sistema de almacenamiento permanente para reseñas
+// Sistema de reseñas respaldado por la base de datos (vía API)
 export interface Review {
   id: number
   name: string
-  company: string
-  position: string
+  email?: string
+  company?: string
+  position?: string
   rating: number
   review: string
-  date: string
-  time: string
-  verified: boolean
-  helpful: number
-  location?: string
-  projectType?: string
-  collaboration?: string
-  avatar?: string
-  ipAddress?: string
-  userAgent?: string
+  date?: string
   approved?: boolean
 }
 
-// Sistema completamente limpio - sin reseñas de ejemplo
-const INITIAL_REVIEWS: Review[] = []
-
-// Helper to check if we're in browser
 const isBrowser = typeof window !== "undefined"
+
+const getApiBase = (): string => {
+  const base = (import.meta as any).env?.BASE_URL || "/"
+  return `${base}${base.endsWith("/") ? "" : "/"}api/`
+}
 
 class ReviewsStorage {
   private static instance: ReviewsStorage
-  private reviews: Review[] = []
-  private readonly STORAGE_KEY = "portfolio-reviews-permanent"
-  private readonly API_ENDPOINT = "/api/reviews"
-  private initialized = false
 
-  private constructor() {
-    // Don't load reviews in constructor during SSR
-    if (isBrowser) {
-      this.loadReviews()
-    }
-  }
+  private constructor() {}
 
   public static getInstance(): ReviewsStorage {
     if (!ReviewsStorage.instance) {
@@ -46,191 +30,62 @@ class ReviewsStorage {
     return ReviewsStorage.instance
   }
 
-  private ensureInitialized(): void {
-    if (!this.initialized && isBrowser) {
-      this.loadReviews()
-    }
-  }
-
-  private loadReviews(): void {
-    if (!isBrowser) {
-      this.reviews = []
-      return
-    }
-    
+  public async getAllReviews(): Promise<Review[]> {
+    if (!isBrowser) return []
     try {
-      // Cargar desde localStorage
-      const stored = localStorage.getItem(this.STORAGE_KEY)
-      if (stored) {
-        this.reviews = JSON.parse(stored)
-      } else {
-        // Sistema completamente limpio - sin reseñas iniciales
-        this.reviews = []
-        this.saveToLocalStorage()
-      }
-      this.initialized = true
+      const res = await fetch(`${getApiBase()}reviews`)
+      if (!res.ok) throw new Error(`Failed to load reviews: ${res.status}`)
+      const data = await res.json()
+      return data.map((r: any) => ({
+        id: r.id,
+        name: r.name,
+        email: r.email ?? undefined,
+        company: r.company ?? undefined,
+        position: r.position ?? undefined,
+        rating: r.rating,
+        review: r.review,
+        date: r.createdAt,
+        approved: r.approved,
+      }))
     } catch (error) {
       console.error("Error loading reviews:", error)
-      this.reviews = []
+      return []
     }
   }
 
-  private saveToLocalStorage(): void {
-    if (!isBrowser) return
-    
-    try {
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.reviews))
-    } catch (error) {
-      console.error("Error saving to localStorage:", error)
-    }
-  }
-
-  public async getAllReviews(): Promise<Review[]> {
-    this.ensureInitialized()
-    return [...this.reviews].sort((a, b) => {
-      const dateA = new Date(`${a.date}T${a.time}`)
-      const dateB = new Date(`${b.date}T${b.time}`)
-      return dateB.getTime() - dateA.getTime()
+  public async addReview(
+    reviewData: Omit<Review, "id" | "date" | "approved">
+  ): Promise<Review> {
+    const res = await fetch(`${getApiBase()}reviews`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: reviewData.name,
+        email: reviewData.email || undefined,
+        position: reviewData.position || undefined,
+        company: reviewData.company || undefined,
+        rating: reviewData.rating,
+        review: reviewData.review,
+        approved: true,
+      }),
     })
-  }
 
-  public async addReview(reviewData: Omit<Review, "id" | "date" | "time" | "helpful" | "verified">): Promise<Review> {
-    this.ensureInitialized()
-    const now = new Date()
-    const newReview: Review = {
-      ...reviewData,
-      id: Date.now() + Math.random(), // ID único
-      date: now.toISOString().split("T")[0],
-      time: now.toTimeString().split(" ")[0].slice(0, 5),
-      helpful: 0,
-      verified: Math.random() > 0.7, // 30% de probabilidad de ser verificado
-      approved: true, // Visible por defecto; el admin puede ocultarla/editarla/eliminarla
+    if (!res.ok) {
+      const errBody = await res.json().catch(() => ({}))
+      throw new Error(errBody?.error ? JSON.stringify(errBody.error) : "No se pudo enviar la reseña")
     }
 
-    this.reviews.unshift(newReview) // Agregar al inicio
-    this.saveToLocalStorage()
-
-    // Intentar guardar en el servidor (simulado)
-    try {
-      await this.saveToServer(newReview)
-    } catch (error) {
-      console.warn("Could not save to server, but saved locally:", error)
-    }
-
-    return newReview
-  }
-
-  public async markAsHelpful(reviewId: number): Promise<void> {
-    this.ensureInitialized()
-    const review = this.reviews.find((r) => r.id === reviewId)
-    if (review) {
-      review.helpful += 1
-      this.saveToLocalStorage()
-
-      try {
-        await this.updateOnServer(review)
-      } catch (error) {
-        console.warn("Could not update on server, but updated locally:", error)
-      }
-    }
-  }
-
-  private async saveToServer(review: Review): Promise<void> {
-    // Simular llamada al servidor
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (Math.random() > 0.1) {
-          // 90% de éxito
-          resolve()
-        } else {
-          reject(new Error("Server error"))
-        }
-      }, 500)
-    })
-  }
-
-  private async updateOnServer(review: Review): Promise<void> {
-    // Simular actualización en servidor
-    return new Promise((resolve) => {
-      setTimeout(resolve, 200)
-    })
-  }
-
-  public async updateReview(
-    reviewId: number,
-    data: Partial<Pick<Review, "name" | "company" | "position" | "rating" | "review" | "approved">>,
-  ): Promise<void> {
-    this.ensureInitialized()
-    const review = this.reviews.find((r) => r.id === reviewId)
-    if (review) {
-      Object.assign(review, data)
-      this.saveToLocalStorage()
-    }
-  }
-
-  public async deleteReview(reviewId: number): Promise<void> {
-    this.ensureInitialized()
-    this.reviews = this.reviews.filter((r) => r.id !== reviewId)
-    this.saveToLocalStorage()
-  }
-
-  public async setApproved(reviewId: number, approved: boolean): Promise<void> {
-    this.ensureInitialized()
-    const review = this.reviews.find((r) => r.id === reviewId)
-    if (review) {
-      review.approved = approved
-      this.saveToLocalStorage()
-    }
-  }
-
-  public getReviewStats() {
-    this.ensureInitialized()
-    const totalReviews = this.reviews.length
-    if (totalReviews === 0) {
-      return {
-        totalReviews: 0,
-        averageRating: 0,
-        ratingDistribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 },
-      }
-    }
-
-    const averageRating = this.reviews.reduce((acc, review) => acc + review.rating, 0) / totalReviews
-    const ratingDistribution = {
-      5: this.reviews.filter((r) => r.rating === 5).length,
-      4: this.reviews.filter((r) => r.rating === 4).length,
-      3: this.reviews.filter((r) => r.rating === 3).length,
-      2: this.reviews.filter((r) => r.rating === 2).length,
-      1: this.reviews.filter((r) => r.rating === 1).length,
-    }
-
+    const created = await res.json()
     return {
-      totalReviews,
-      averageRating,
-      ratingDistribution,
-    }
-  }
-
-  // Método para limpiar todas las reseñas (útil para desarrollo)
-  public clearAllReviews(): void {
-    this.reviews = []
-    this.saveToLocalStorage()
-  }
-
-  // Método para exportar reseñas (útil para respaldos)
-  public exportReviews(): string {
-    return JSON.stringify(this.reviews, null, 2)
-  }
-
-  // Método para importar reseñas (útil para restaurar respaldos)
-  public importReviews(reviewsJson: string): void {
-    try {
-      const importedReviews = JSON.parse(reviewsJson)
-      if (Array.isArray(importedReviews)) {
-        this.reviews = importedReviews
-        this.saveToLocalStorage()
-      }
-    } catch (error) {
-      console.error("Error importing reviews:", error)
+      id: created.id,
+      name: created.name,
+      email: created.email ?? undefined,
+      company: created.company ?? undefined,
+      position: created.position ?? undefined,
+      rating: created.rating,
+      review: created.review,
+      date: created.createdAt,
+      approved: created.approved,
     }
   }
 }

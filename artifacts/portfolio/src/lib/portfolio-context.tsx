@@ -90,6 +90,31 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [])
 
+  // Cargar enlaces de redes sociales desde la base de datos
+  useEffect(() => {
+    const loadSocialLinks = async () => {
+      try {
+        const base = (import.meta as any).env?.BASE_URL || "/"
+        const apiBase = `${base}${base.endsWith("/") ? "" : "/"}api/`
+        const res = await fetch(`${apiBase}social-links`)
+        if (!res.ok) return
+        const links: { platform: string; url: string }[] = await res.json()
+        const overrides: Partial<PortfolioData> = {}
+        for (const link of links) {
+          if (link.platform === "github") overrides.github = link.url
+          if (link.platform === "instagram") overrides.instagram = link.url
+          if (link.platform === "whatsapp") overrides.whatsapp = link.url
+        }
+        if (Object.keys(overrides).length > 0) {
+          setPortfolioData((prev) => ({ ...prev, ...overrides }))
+        }
+      } catch (error) {
+        console.error("Error loading social links:", error)
+      }
+    }
+    loadSocialLinks()
+  }, [])
+
   // Guardar datos en localStorage cada vez que cambien
   useEffect(() => {
     localStorage.setItem("portfolio-settings", JSON.stringify(portfolioData))

@@ -10,6 +10,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { reviewsStorage, type Review } from "@/lib/reviews-storage"
 
+const reviewsPerPage = 3
+
 const ReviewsCarousel = () => {
   const { language } = useLanguage()
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -73,8 +75,6 @@ const ReviewsCarousel = () => {
         company: formData.company,
         rating: formData.rating,
         review: formData.review,
-        date: new Date().toISOString().split('T')[0],
-        approved: false
       })
 
       await loadReviews()
@@ -153,7 +153,6 @@ const ReviewsCarousel = () => {
     )
   }
 
-  const reviewsPerPage = 3
   const totalPages = Math.max(1, Math.ceil(reviews.length / reviewsPerPage))
   const visibleReviews = reviews.slice(
     currentSlide * reviewsPerPage,

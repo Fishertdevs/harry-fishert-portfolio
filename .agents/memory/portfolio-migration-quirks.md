@@ -23,3 +23,10 @@ The Playwright `runTest()` subagent repeatedly and consistently reports "clicked
 **Why:** This is very likely a `runTest` subagent timing/snapshot artifact when interacting with fast auto-advancing `AnimatePresence` carousels, not a real app bug — the same "mismatch" pattern reproduced identically across two unrelated components, ruling out a shared code bug.
 
 **How to apply:** When testing these carousels, prefer a fresh `screenshot` (app_preview, no clicks) to confirm the *initial* slide renders correctly, since pagination-click verification via `runTest` is unreliable here. Don't sink more time chasing "slide mismatch" bug reports from `runTest` on these carousels without also cross-checking via a plain screenshot.
+
+## External Neon DB (not the Replit-managed DB)
+This portfolio's reviews/social-links/contact-messages tables live in a user-provided external Neon Postgres, wired via a `NEON_DATABASE_URL` secret (raw `DATABASE_URL` is Replit-reserved and can't be requested as a secret) — `lib/db` falls back to `DATABASE_URL` if `NEON_DATABASE_URL` is absent.
+
+**Why:** The user pasted an external Neon connection string directly in chat instead of using Replit's built-in Postgres; the `executeSql` tool only targets Replit's own managed DB, so it can't run/seed queries against this Neon instance.
+
+**How to apply:** For one-off scripts against this Neon DB (seeding, ad-hoc queries), write a `.mjs`/`.ts` file *inside* a workspace package directory (e.g. `lib/db/`) and run it with `node`/`pnpm exec` from there — running from `/tmp` fails with `ERR_MODULE_NOT_FOUND` because it's outside pnpm's node_modules resolution. Delete the script after use.
