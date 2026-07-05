@@ -1,0 +1,1 @@
+- [Portfolio migration quirks](portfolio-migration-quirks.md) — missing project preview images and icon library gotchas in the Harry Fishert portfolio.

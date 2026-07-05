@@ -1,7 +1,19 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Github, Star, Lock } from "lucide-react"
+import { Github, Star, Lock, MapPin, Sparkles } from "lucide-react"
+import {
+  SiNextdotjs,
+  SiReact,
+  SiTailwindcss,
+  SiVercel,
+  SiSupabase,
+  SiNodedotjs,
+  SiPostgresql,
+  SiPython,
+  SiStripe,
+  SiWhatsapp,
+} from "react-icons/si"
 
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/lib/language-context"
@@ -14,9 +26,23 @@ const projectColors = {
   picapastos: "#ef0000",
   alterego: "#722f37",
   mitiendago: "#16a34a",
-  mc: "#3b82f6",
   drmario: "#0ea5e9",
   mymemorial: "#6366f1",
+}
+
+const techIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+  "Next.js": SiNextdotjs,
+  "React": SiReact,
+  "Tailwind CSS": SiTailwindcss,
+  "Vercel": SiVercel,
+  "Supabase": SiSupabase,
+  "Node.js": SiNodedotjs,
+  "PostgreSQL": SiPostgresql,
+  "Python": SiPython,
+  "Stripe": SiStripe,
+  "WhatsApp API": SiWhatsapp,
+  "IA Generativa": Sparkles,
+  "Generative AI": Sparkles,
 }
 
 const getDomain = (url: string) => {
@@ -126,19 +152,6 @@ const Experience = () => {
           featured: false,
           color: projectColors.mymemorial,
         },
-        {
-          title: "MC",
-          highlight: "Arquitectos",
-          role: "Arquitecto de Software & Backend",
-          period: "Sep 2024 – Dic 2024",
-          description: "Definición de arquitectura backend con FastAPI e implementación de sistema de geolocalización por coordenadas para predios en Bogotá, integrando bases de datos relacionales y preparando la estructura para modelos de machine learning.",
-          technologies: ["FastAPI", "Python", "PostgreSQL", "GIS"],
-          image: "/projects/mcarquitectos.png",
-          hasGithub: true,
-          demo: "#",
-          featured: false,
-          color: projectColors.mc,
-        },
       ]
     : [
         {
@@ -232,19 +245,6 @@ const Experience = () => {
           featured: false,
           color: projectColors.mymemorial,
         },
-        {
-          title: "MC",
-          highlight: "Arquitectos",
-          role: "Software Architect & Backend",
-          period: "Sep 2024 – Dec 2024",
-          description: "Backend architecture definition with FastAPI and implementation of geolocation system by coordinates for properties in Bogota, integrating relational databases and preparing the structure for machine learning models.",
-          technologies: ["FastAPI", "Python", "PostgreSQL", "GIS"],
-          image: "/projects/mcarquitectos.png",
-          hasGithub: true,
-          demo: "#",
-          featured: false,
-          color: projectColors.mc,
-        },
       ]
 
   useEffect(() => {
@@ -334,18 +334,22 @@ const Experience = () => {
                 </p>
 
                 <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2 mb-4">
-                  {currentProject.technologies.map((tech, index) => (
-                    <span
-                      key={index}
-                      className="px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-full"
-                      style={{
-                        backgroundColor: `${currentProject.color}15`,
-                        color: currentProject.color
-                      }}
-                    >
-                      {tech}
-                    </span>
-                  ))}
+                  {currentProject.technologies.map((tech, index) => {
+                    const TechIcon = techIcons[tech] ?? MapPin
+                    return (
+                      <span
+                        key={index}
+                        className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-full"
+                        style={{
+                          backgroundColor: `${currentProject.color}15`,
+                          color: currentProject.color
+                        }}
+                      >
+                        <TechIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                        {tech}
+                      </span>
+                    )
+                  })}
                 </div>
 
                 <div className="flex flex-wrap justify-center gap-2 md:gap-3">
