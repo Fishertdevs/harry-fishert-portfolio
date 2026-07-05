@@ -1,4 +1,5 @@
-import { Switch, Route, Router as WouterRouter } from "wouter";
+import { useEffect } from "react";
+import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -20,22 +21,35 @@ import AdminDashboardPage from "@/pages/admin-dashboard";
 
 const queryClient = new QueryClient();
 
+function ScrollToTopOnNavigate() {
+  const [location] = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [location]);
+
+  return null;
+}
+
 function Router() {
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/about" component={AboutPage} />
-      <Route path="/skills" component={SkillsPage} />
-      <Route path="/experience" component={ExperiencePage} />
-      <Route path="/contact" component={ContactPage} />
-      <Route path="/education" component={EducationPage} />
-      <Route path="/cookies" component={CookiesPage} />
-      <Route path="/privacy" component={PrivacyPage} />
-      <Route path="/terms" component={TermsPage} />
-      <Route path="/admin/login" component={AdminLoginPage} />
-      <Route path="/admin/dashboard" component={AdminDashboardPage} />
-      <Route component={NotFound} />
-    </Switch>
+    <>
+      <ScrollToTopOnNavigate />
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/about" component={AboutPage} />
+        <Route path="/skills" component={SkillsPage} />
+        <Route path="/experience" component={ExperiencePage} />
+        <Route path="/contact" component={ContactPage} />
+        <Route path="/education" component={EducationPage} />
+        <Route path="/cookies" component={CookiesPage} />
+        <Route path="/privacy" component={PrivacyPage} />
+        <Route path="/terms" component={TermsPage} />
+        <Route path="/admin/login" component={AdminLoginPage} />
+        <Route path="/admin/dashboard" component={AdminDashboardPage} />
+        <Route component={NotFound} />
+      </Switch>
+    </>
   );
 }
 
