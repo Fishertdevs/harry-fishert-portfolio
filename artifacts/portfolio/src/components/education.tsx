@@ -475,9 +475,24 @@ const Education = () => {
                 </ul>
               </div>
 
-              {/* Icon grid — RIGHT on desktop, top on mobile */}
+              {/* Icon grid / university logo — RIGHT on desktop, top on mobile */}
               <div className="flex justify-center order-1 md:order-2">
-                <TechIconGrid icons={SLIDE_ICONS[educationSlides[currentSlide].iconSet]} />
+                {educationSlides[currentSlide].iconSet === 0 ? (
+                  <motion.div
+                    className="flex items-center justify-center p-4 sm:p-6"
+                    initial={{ opacity: 0, scale: 0.85 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    <img
+                      src="/logos/universidad-central.png"
+                      alt="Universidad Central"
+                      className="w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44 object-contain"
+                    />
+                  </motion.div>
+                ) : (
+                  <TechIconGrid icons={SLIDE_ICONS[educationSlides[currentSlide].iconSet]} />
+                )}
               </div>
             </motion.div>
           </AnimatePresence>
