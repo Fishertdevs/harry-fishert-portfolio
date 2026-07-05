@@ -34,7 +34,7 @@ const Footer = ({
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="relative bg-gray-950 overflow-hidden">
+    <footer className="relative bg-slate-950 overflow-hidden">
       {/* SVG Wave separator */}
       <div className="overflow-hidden leading-none -mt-1 relative z-0">
         <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full block relative -translate-y-px">

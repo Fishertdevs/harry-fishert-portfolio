@@ -161,7 +161,7 @@ const Languages = () => {
   }, [languages.length])
 
   return (
-    <section id="languages" className="relative flex flex-col justify-center py-20 md:py-28 bg-gray-950 overflow-hidden">
+    <section id="languages" className="relative flex flex-col justify-center py-20 md:py-28 bg-slate-950 overflow-hidden">
       {/* Top wave divider */}
       <div className="absolute top-0 inset-x-0 leading-none pointer-events-none z-10 rotate-180">
         <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-10 sm:h-14 md:h-20 block">
