@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useLanguage } from "@/lib/language-context"
 import { motion, AnimatePresence } from "framer-motion"
-import { Star, Plus, Check, Send, User, Briefcase, Building } from "lucide-react"
+import { Star, Plus, Check, Send, User, Briefcase, Building, Quote, BadgeCheck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -347,45 +347,57 @@ const ReviewsCarousel = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
-              className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700/60 px-6 py-8 sm:px-10 sm:py-10 text-center"
+              className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200/70 dark:border-gray-700/60 overflow-hidden text-center"
             >
-              {/* Avatar initial */}
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-4 text-xl sm:text-2xl font-bold">
-                {currentReview?.name?.trim()?.charAt(0)?.toUpperCase() || "?"}
+              {/* LinkedIn-style cover banner */}
+              <div className="h-16 sm:h-20 bg-gradient-to-r from-primary via-blue-500 to-cyan-400 relative">
+                <Quote className="absolute right-4 top-3 w-8 h-8 sm:w-10 sm:h-10 text-white/25" fill="currentColor" strokeWidth={0} />
               </div>
 
-              {/* Name */}
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-1">
-                {currentReview?.name}
-              </h3>
+              <div className="px-6 sm:px-10 pb-8 sm:pb-10">
+                {/* Avatar initial - overlapping the banner like a LinkedIn profile photo */}
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto -mt-10 sm:-mt-12 mb-3 text-2xl sm:text-3xl font-bold ring-4 ring-white dark:ring-gray-800 shadow-md">
+                  {currentReview?.name?.trim()?.charAt(0)?.toUpperCase() || "?"}
+                </div>
 
-              {/* Position & Company */}
-              {(currentReview?.position || currentReview?.company) && (
-                <p className="text-primary font-medium mb-3 text-xs sm:text-sm">
-                  {currentReview?.position && currentReview?.company
-                    ? `${currentReview.position} - ${currentReview.company}`
-                    : currentReview?.company || currentReview?.position || ""}
+                {/* Name + verified badge */}
+                <div className="flex items-center justify-center gap-1.5 mb-1">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
+                    {currentReview?.name}
+                  </h3>
+                  <BadgeCheck className="w-5 h-5 sm:w-6 sm:h-6 text-primary fill-primary/15 shrink-0" />
+                </div>
+
+                {/* Position & Company - LinkedIn headline style */}
+                {(currentReview?.position || currentReview?.company) && (
+                  <p className="text-gray-500 dark:text-gray-400 font-medium mb-3 text-xs sm:text-sm">
+                    {currentReview?.position && currentReview?.company
+                      ? `${currentReview.position} en ${currentReview.company}`
+                      : currentReview?.company || currentReview?.position || ""}
+                  </p>
+                )}
+
+                {/* Stars */}
+                <div className="flex justify-center gap-1 mb-5">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={`h-4 w-4 sm:h-5 sm:w-5 ${
+                        star <= (currentReview?.rating || 5)
+                          ? "text-amber-400 fill-amber-400"
+                          : "text-gray-300 dark:text-gray-600"
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                <div className="h-px w-16 bg-gray-200 dark:bg-gray-700 mx-auto mb-5" />
+
+                {/* Review Text */}
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-sm sm:text-base italic">
+                  &ldquo;{currentReview?.review}&rdquo;
                 </p>
-              )}
-
-              {/* Stars */}
-              <div className="flex justify-center gap-1 mb-5">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star
-                    key={star}
-                    className={`h-4 w-4 sm:h-5 sm:w-5 ${
-                      star <= (currentReview?.rating || 5)
-                        ? "text-amber-400 fill-amber-400"
-                        : "text-gray-300 dark:text-gray-600"
-                    }`}
-                  />
-                ))}
               </div>
-
-              {/* Review Text */}
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-sm sm:text-base italic">
-                &ldquo;{currentReview?.review}&rdquo;
-              </p>
             </motion.div>
           </AnimatePresence>
 
