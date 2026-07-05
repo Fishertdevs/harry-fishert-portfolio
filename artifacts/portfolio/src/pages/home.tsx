@@ -57,10 +57,7 @@ export default function Home() {
       <main className="flex-1">
         <section id="home" ref={heroRef} className="relative flex items-center justify-center py-16 md:py-20 overflow-hidden">
           <motion.div className="absolute inset-0 z-0" variants={backgroundVariants} initial="hidden" animate="visible">
-            <div className="absolute inset-0 bg-gradient-to-b from-blue-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800"></div>
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.1),transparent_70%)]"></div>
-            <motion.div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-200/20 dark:bg-blue-500/10 rounded-full blur-3xl" animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3], x: [0, 30, 0], y: [0, -30, 0] }} transition={{ duration: 15, repeat: Infinity, repeatType: "reverse" }} />
-            <motion.div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-cyan-200/20 dark:bg-cyan-500/10 rounded-full blur-3xl" animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.4, 0.2], x: [0, -40, 0], y: [0, 40, 0] }} transition={{ duration: 18, repeat: Infinity, repeatType: "reverse" }} />
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800"></div>
           </motion.div>
           <motion.div className="relative z-10 px-4 max-w-6xl mx-auto w-full" variants={containerVariants} initial="hidden" animate={isVisible ? "visible" : "hidden"}>
             <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
@@ -69,8 +66,8 @@ export default function Home() {
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight mb-4">{language === "es" ? "a mi portafolio" : "to my portfolio"}</h1>
                 <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-400 mb-6">{language === "es" ? "Arquitecturas Escalables | Testing Automatizado e IA | Rendimiento | SEO & UX" : "Scalable Architectures | Automated Testing & AI | Performance | SEO & UX"}</p>
                 <div className="flex justify-center gap-3">
-                  <Button variant="outline" size="sm" className="rounded-lg px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm" onClick={() => setShowCVPreview(true)}>{language === "es" ? "Ver CV" : "View CV"}</Button>
-                  <Button size="sm" className="bg-primary hover:bg-primary/90 text-white rounded-lg px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm" asChild><a href="/experience">{language === "es" ? "Ver proyectos" : "View projects"}</a></Button>
+                  <Button variant="outline" size="sm" className="rounded-md px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm border-gray-300 dark:border-gray-600" onClick={() => setShowCVPreview(true)}>{language === "es" ? "Ver CV" : "View CV"}</Button>
+                  <Button size="sm" className="bg-primary hover:bg-primary/90 text-white rounded-md px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm" asChild><a href="/experience">{language === "es" ? "Ver proyectos" : "View projects"}</a></Button>
                 </div>
               </div>
               <div className="flex justify-center items-center order-1 md:order-2">
