@@ -27,7 +27,7 @@ const projectColors = {
   alterego: "#722f37",
   mitiendago: "#16a34a",
   drmario: "#0ea5e9",
-  mymemorial: "#6366f1",
+  mymemorial: "#6f4e37",
 }
 
 const techIcons: Record<string, React.ComponentType<{ className?: string }>> = {

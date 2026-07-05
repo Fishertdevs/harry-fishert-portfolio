@@ -3,12 +3,46 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
-import { Menu, X, Moon, Sun, Globe } from "lucide-react"
+import { Menu, X, Moon, Sun } from "lucide-react"
+import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useTheme } from "next-themes"
 import { useLanguage } from "@/lib/language-context"
 import { Link, useLocation } from "wouter"
+
+const ThemeSwitch = ({ theme, onToggle }: { theme: string | undefined; onToggle: () => void }) => (
+  <button
+    onClick={onToggle}
+    aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+    className="relative w-12 h-6 rounded-full bg-gray-200 dark:bg-gray-700 transition-colors flex items-center px-0.5 shrink-0"
+  >
+    <motion.span
+      className="w-5 h-5 rounded-full bg-white shadow flex items-center justify-center"
+      animate={{ x: theme === "dark" ? 22 : 0 }}
+      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+    >
+      {theme === "dark" ? <Moon className="w-3 h-3 text-indigo-500" /> : <Sun className="w-3 h-3 text-amber-500" />}
+    </motion.span>
+  </button>
+)
+
+const LanguageSwitch = ({ language, onToggle }: { language: string; onToggle: () => void }) => (
+  <button
+    onClick={onToggle}
+    aria-label="Change language"
+    className="relative w-14 h-6 rounded-full bg-gray-200 dark:bg-gray-700 transition-colors shrink-0"
+  >
+    <motion.span
+      className="absolute top-0.5 w-6 h-5 rounded-full bg-white shadow flex items-center justify-center text-[9px] font-bold text-primary"
+      animate={{ x: language === "es" ? 2 : 30 }}
+      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+    >
+      {language.toUpperCase()}
+    </motion.span>
+    <span className="absolute left-1.5 top-1/2 -translate-y-1/2 text-[9px] font-semibold text-gray-500 dark:text-gray-400">ES</span>
+    <span className="absolute right-1.5 top-1/2 -translate-y-1/2 text-[9px] font-semibold text-gray-500 dark:text-gray-400">EN</span>
+  </button>
+)
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -88,82 +122,14 @@ const Navbar = () => {
             </div>
           </div>
 
-          <div className="hidden md:flex items-center space-x-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleTheme}
-              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-              className="text-gray-700 dark:text-gray-300"
-            >
-              {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-            </Button>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label="Change language"
-                  className="text-gray-700 dark:text-gray-300"
-                >
-                  <Globe className="h-5 w-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  onClick={() => toggleLanguage("es")}
-                  className={language === "es" ? "bg-primary/10 text-primary" : ""}
-                >
-                  {language === "es" ? "Español" : "Spanish"}
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => toggleLanguage("en")}
-                  className={language === "en" ? "bg-primary/10 text-primary" : ""}
-                >
-                  {language === "es" ? "Inglés" : "English"}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+          <div className="hidden md:flex items-center space-x-3">
+            <ThemeSwitch theme={theme} onToggle={toggleTheme} />
+            <LanguageSwitch language={language} onToggle={() => toggleLanguage(language === "es" ? "en" : "es")} />
           </div>
 
-          <div className="md:hidden flex items-center gap-1">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleTheme}
-              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-              className="text-gray-700 dark:text-gray-300"
-            >
-              {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-            </Button>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label="Change language"
-                  className="text-gray-700 dark:text-gray-300"
-                >
-                  <Globe className="h-5 w-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  onClick={() => toggleLanguage("es")}
-                  className={language === "es" ? "bg-primary/10 text-primary" : ""}
-                >
-                  {language === "es" ? "Español" : "Spanish"}
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => toggleLanguage("en")}
-                  className={language === "en" ? "bg-primary/10 text-primary" : ""}
-                >
-                  {language === "es" ? "Inglés" : "English"}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+          <div className="md:hidden flex items-center gap-2">
+            <ThemeSwitch theme={theme} onToggle={toggleTheme} />
+            <LanguageSwitch language={language} onToggle={() => toggleLanguage(language === "es" ? "en" : "es")} />
 
             <Button
               variant="ghost"

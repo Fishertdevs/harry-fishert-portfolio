@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { useLanguage } from "@/lib/language-context"
 import { motion, AnimatePresence } from "framer-motion"
+import { MessageCircle, Users, Handshake, Award, HeartHandshake, Repeat2, Presentation, Ear } from "lucide-react"
 
 // SVG tech icon badges for education grids
 const EDU_ICONS: Record<string, { icon: JSX.Element; label: string; bg: string }> = {
@@ -232,13 +233,53 @@ const EDU_ICONS: Record<string, { icon: JSX.Element; label: string; bg: string }
       </svg>
     ),
   },
+  communication: {
+    label: "Comunicación",
+    bg: "#8b5cf6",
+    icon: <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />,
+  },
+  teamwork: {
+    label: "Trabajo en Equipo",
+    bg: "#06b6d4",
+    icon: <Users className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />,
+  },
+  collaboration: {
+    label: "Colaboración",
+    bg: "#10b981",
+    icon: <Handshake className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />,
+  },
+  leadership: {
+    label: "Liderazgo",
+    bg: "#f59e0b",
+    icon: <Award className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />,
+  },
+  empathy: {
+    label: "Empatía",
+    bg: "#ec4899",
+    icon: <HeartHandshake className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />,
+  },
+  adaptability: {
+    label: "Adaptabilidad",
+    bg: "#6366f1",
+    icon: <Repeat2 className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />,
+  },
+  publicspeaking: {
+    label: "Oratoria",
+    bg: "#ef4444",
+    icon: <Presentation className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />,
+  },
+  activelistening: {
+    label: "Escucha Activa",
+    bg: "#0ea5e9",
+    icon: <Ear className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />,
+  },
 }
 
 // Icon grid for each education slide (8 icons per slide)
 const SLIDE_ICONS: string[][] = [
   ["python", "javascript", "typescript", "postgresql", "docker", "linux", "github", "nodejs"],         // Ingeniería de Sistemas
   ["react", "nodejs", "javascript", "django", "postgresql", "github", "tailwind", "fastapi"],           // Desarrollo de Software
-  ["figma", "github", "react", "typescript", "tailwind", "javascript", "nodejs", "graphql"],            // Habilidades Profesionales
+  ["communication", "teamwork", "collaboration", "leadership", "empathy", "adaptability", "publicspeaking", "activelistening"], // Habilidades Profesionales
   ["linux", "docker", "vault", "cloudflare", "nginx", "sonarqube", "prometheus", "grafana"],             // Seguridad de la Información
   ["python", "openai", "anthropic", "huggingface", "langchain", "n8n", "fastapi", "docker"],            // IA / Redes Neuronales
 ]
