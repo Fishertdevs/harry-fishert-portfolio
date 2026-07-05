@@ -36,8 +36,8 @@ const Footer = ({
   return (
     <footer className="relative bg-gray-950 overflow-hidden">
       {/* SVG Wave separator */}
-      <div className="overflow-hidden leading-none -mt-px">
-        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full block">
+      <div className="overflow-hidden leading-none -mt-1 relative z-0">
+        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full block relative -translate-y-px">
           {useGradientWave && (
             <defs>
               <linearGradient id="footerWaveGradient" x1="0" y1="0" x2="1" y2="0">

@@ -89,56 +89,127 @@ const RELATED_SVGS: Record<"python" | "typescript" | "javascript", JSX.Element[]
   ],
 }
 
+const GRAPH_WIDTH = 220
+const GRAPH_HEIGHT = 150
+const MAIN_NODE = { x: 34, y: 75 }
+const HUB_NODE = { x: 108, y: 75 }
+const BRANCH_NODES = [
+  { x: 186, y: 26 },
+  { x: 186, y: 75 },
+  { x: 186, y: 124 },
+]
+
 const TechIcon = memo(({
   tech,
   percentage,
   color,
-  size = 110,
+  scale = 1,
   animate,
 }: {
   tech: "python" | "typescript" | "javascript"
   percentage: number
   color: string
-  size?: number
+  scale?: number
   animate: boolean
 }) => {
-  const variants = [TECH_SVGS[tech], ...RELATED_SVGS[tech]]
-  const [variantIndex, setVariantIndex] = useState(0)
+  const related = RELATED_SVGS[tech]
+  const mainNodeSize = 62
+  const hubNodeSize = 14
+  const branchNodeSize = 42
 
-  useEffect(() => {
-    if (!animate) return
-    const interval = setInterval(() => {
-      setVariantIndex((prev) => (prev + 1) % variants.length)
-    }, 2200)
-    return () => clearInterval(interval)
-  }, [animate, variants.length])
-
-  useEffect(() => {
-    setVariantIndex(0)
-  }, [tech])
+  const linePaths = BRANCH_NODES.map(
+    (node) =>
+      `M${HUB_NODE.x},${HUB_NODE.y} C${(HUB_NODE.x + node.x) / 2},${HUB_NODE.y} ${(HUB_NODE.x + node.x) / 2},${node.y} ${node.x - branchNodeSize / 2 - 2},${node.y}`
+  )
 
   return (
     <div className="flex flex-col items-center gap-2">
       <div
-        className="relative rounded-2xl bg-white dark:bg-gray-800 flex items-center justify-center transition-transform duration-300 hover:-translate-y-1 shadow-md"
-        style={{
-          width: size,
-          height: size,
-          padding: size * 0.2,
-        }}
+        className="relative"
+        style={{ width: GRAPH_WIDTH * scale, height: GRAPH_HEIGHT * scale }}
       >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={variantIndex}
-            className="w-full h-full rounded-lg overflow-hidden"
-            initial={{ opacity: 0, scale: 0.7, rotate: -8 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            exit={{ opacity: 0, scale: 0.7, rotate: 8 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+        <div
+          className="absolute top-0 left-0 origin-top-left"
+          style={{ width: GRAPH_WIDTH, height: GRAPH_HEIGHT, transform: `scale(${scale})` }}
+        >
+          <svg
+            viewBox={`0 0 ${GRAPH_WIDTH} ${GRAPH_HEIGHT}`}
+            className="absolute inset-0 w-full h-full"
+            fill="none"
           >
-            {variants[variantIndex]}
+            <motion.line
+              x1={MAIN_NODE.x + mainNodeSize / 2}
+              y1={MAIN_NODE.y}
+              x2={HUB_NODE.x}
+              y2={HUB_NODE.y}
+              stroke={color}
+              strokeWidth={3}
+              strokeLinecap="round"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={animate ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            />
+            {linePaths.map((d, i) => (
+              <motion.path
+                key={i}
+                d={d}
+                stroke={color}
+                strokeWidth={2.5}
+                strokeLinecap="round"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={animate ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
+                transition={{ duration: 0.6, delay: 0.25 + i * 0.12, ease: "easeOut" }}
+              />
+            ))}
+            <motion.circle
+              cx={HUB_NODE.x}
+              cy={HUB_NODE.y}
+              r={hubNodeSize / 2}
+              fill={color}
+              initial={{ scale: 0 }}
+              animate={animate ? { scale: 1 } : { scale: 0 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              style={{ transformOrigin: `${HUB_NODE.x}px ${HUB_NODE.y}px` }}
+            />
+          </svg>
+
+          {/* Main language node */}
+          <motion.div
+            className="absolute rounded-full bg-white dark:bg-gray-800 shadow-md flex items-center justify-center overflow-hidden"
+            style={{
+              width: mainNodeSize,
+              height: mainNodeSize,
+              left: MAIN_NODE.x - mainNodeSize / 2,
+              top: MAIN_NODE.y - mainNodeSize / 2,
+              padding: mainNodeSize * 0.16,
+            }}
+            initial={{ opacity: 0, scale: 0.6 }}
+            animate={animate ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.6 }}
+            transition={{ duration: 0.4 }}
+          >
+            <div className="w-full h-full rounded-full overflow-hidden">{TECH_SVGS[tech]}</div>
           </motion.div>
-        </AnimatePresence>
+
+          {/* Derived tech nodes */}
+          {BRANCH_NODES.map((node, i) => (
+            <motion.div
+              key={i}
+              className="absolute rounded-full bg-white dark:bg-gray-800 shadow-md flex items-center justify-center overflow-hidden"
+              style={{
+                width: branchNodeSize,
+                height: branchNodeSize,
+                left: node.x - branchNodeSize / 2,
+                top: node.y - branchNodeSize / 2,
+                padding: branchNodeSize * 0.16,
+              }}
+              initial={{ opacity: 0, scale: 0.4 }}
+              animate={animate ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.4 }}
+              transition={{ duration: 0.35, delay: 0.4 + i * 0.12 }}
+            >
+              <div className="w-full h-full rounded-full overflow-hidden">{related[i]}</div>
+            </motion.div>
+          ))}
+        </div>
       </div>
       <motion.span
         className="text-lg sm:text-xl font-bold"
@@ -222,7 +293,7 @@ const TechStack = () => {
                   tech={stack.tech}
                   percentage={stack.percentage}
                   color={stack.color}
-                  size={76}
+                  scale={0.62}
                   animate={hasAnimatedOnce}
                 />
                 <p className="text-xs lg:text-sm text-gray-600 dark:text-gray-400 text-center leading-relaxed">
@@ -251,7 +322,7 @@ const TechStack = () => {
                 tech={stackData[currentSlide].tech}
                 percentage={stackData[currentSlide].percentage}
                 color={stackData[currentSlide].color}
-                size={72}
+                scale={0.68}
                 animate={true}
               />
               <p className="text-xs text-gray-600 dark:text-gray-400 text-center leading-relaxed px-4">
