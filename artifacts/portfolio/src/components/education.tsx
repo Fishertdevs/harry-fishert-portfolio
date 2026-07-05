@@ -304,7 +304,7 @@ const TechIconGrid = ({ icons }: { icons: string[] }) => (
           >
             {icon.icon}
           </div>
-          <span className="text-[9px] sm:text-[10px] text-gray-500 dark:text-gray-400 text-center leading-tight truncate w-full text-center">
+          <span className="text-[9px] sm:text-[10px] text-gray-500 dark:text-slate-400 text-center leading-tight truncate w-full text-center">
             {icon.label}
           </span>
         </motion.div>
@@ -446,7 +446,7 @@ const Education = () => {
     : "Training focused on software development, with emphasis on practical and scalable solutions."
 
   return (
-    <section id="education" className="relative flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden">
+    <section id="education" className="relative flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-slate-900 overflow-hidden">
       <SectionBlobs />
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -478,7 +478,7 @@ const Education = () => {
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
             {sectionTitle}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base">
+          <p className="text-gray-600 dark:text-slate-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base">
             {sectionSubtitle}
           </p>
           <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mt-3 md:mt-4"></div>
@@ -507,7 +507,7 @@ const Education = () => {
                   {educationSlides[currentSlide].features.map((feature, index) => (
                     <motion.li
                       key={index}
-                      className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm md:text-base"
+                      className="text-gray-600 dark:text-slate-400 text-xs sm:text-sm md:text-base"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 + 0.2 }}
@@ -548,7 +548,7 @@ const Education = () => {
                 className={`h-1.5 rounded-full transition-all duration-500 ${
                   index === currentSlide
                     ? "w-8"
-                    : "w-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500"
+                    : "w-2 bg-gray-300 dark:bg-slate-600 hover:bg-gray-400 dark:hover:bg-gray-500"
                 }`}
                 style={{ backgroundColor: index === currentSlide ? slide.color : undefined }}
               />

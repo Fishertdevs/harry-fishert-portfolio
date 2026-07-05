@@ -76,7 +76,9 @@ const ReviewsCarousel = () => {
         date: new Date().toISOString().split('T')[0],
         approved: false
       })
-      
+
+      await loadReviews()
+      setCurrentSlide(0)
       setSubmitSuccess(true)
       setFormData({
         name: "",
@@ -138,11 +140,11 @@ const ReviewsCarousel = () => {
 
   if (isLoading) {
     return (
-      <section className="py-12 md:py-16 bg-white dark:bg-gray-900">
+      <section className="py-12 md:py-16 bg-white dark:bg-slate-900">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-            <p className="mt-4 text-gray-600 dark:text-gray-400">
+            <p className="mt-4 text-gray-600 dark:text-slate-400">
               {language === "es" ? "Cargando reseñas..." : "Loading reviews..."}
             </p>
           </div>
@@ -168,7 +170,7 @@ const ReviewsCarousel = () => {
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {language === "es" ? "Cuéntanos sobre ti" : "Tell us about yourself"}
               </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-gray-500 dark:text-slate-400">
                 {language === "es" ? "Paso 1 de 4" : "Step 1 of 4"}
               </p>
             </div>
@@ -180,7 +182,7 @@ const ReviewsCarousel = () => {
                   value={formData.name}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                   required
-                  className="pl-10 border-gray-200 dark:border-gray-700 focus:border-primary h-12"
+                  className="pl-10 border-gray-200 dark:border-slate-700 focus:border-primary h-12"
                 />
               </div>
             </div>
@@ -198,7 +200,7 @@ const ReviewsCarousel = () => {
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {language === "es" ? "Información profesional" : "Professional information"}
               </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-gray-500 dark:text-slate-400">
                 {language === "es" ? "Paso 2 de 4 (Opcional)" : "Step 2 of 4 (Optional)"}
               </p>
             </div>
@@ -209,7 +211,7 @@ const ReviewsCarousel = () => {
                   placeholder={language === "es" ? "Tu cargo o posición" : "Your position or role"}
                   value={formData.position}
                   onChange={(e) => setFormData(prev => ({ ...prev, position: e.target.value }))}
-                  className="pl-10 border-gray-200 dark:border-gray-700 focus:border-primary h-12"
+                  className="pl-10 border-gray-200 dark:border-slate-700 focus:border-primary h-12"
                 />
               </div>
               <div className="relative">
@@ -218,7 +220,7 @@ const ReviewsCarousel = () => {
                   placeholder={language === "es" ? "Nombre de tu empresa" : "Your company name"}
                   value={formData.company}
                   onChange={(e) => setFormData(prev => ({ ...prev, company: e.target.value }))}
-                  className="pl-10 border-gray-200 dark:border-gray-700 focus:border-primary h-12"
+                  className="pl-10 border-gray-200 dark:border-slate-700 focus:border-primary h-12"
                 />
               </div>
             </div>
@@ -236,7 +238,7 @@ const ReviewsCarousel = () => {
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {language === "es" ? "¿Cómo fue tu experiencia?" : "How was your experience?"}
               </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-gray-500 dark:text-slate-400">
                 {language === "es" ? "Paso 3 de 4" : "Step 3 of 4"}
               </p>
             </div>
@@ -252,13 +254,13 @@ const ReviewsCarousel = () => {
                     className={`h-10 w-10 transition-colors ${
                       star <= formData.rating
                         ? "text-amber-400 fill-amber-400"
-                        : "text-gray-300 dark:text-gray-600"
+                        : "text-gray-300 dark:text-slate-600"
                     }`}
                   />
                 </button>
               ))}
             </div>
-            <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-center text-sm text-gray-500 dark:text-slate-400">
               {formData.rating === 5 && (language === "es" ? "¡Excelente!" : "Excellent!")}
               {formData.rating === 4 && (language === "es" ? "Muy bueno" : "Very good")}
               {formData.rating === 3 && (language === "es" ? "Bueno" : "Good")}
@@ -279,7 +281,7 @@ const ReviewsCarousel = () => {
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {language === "es" ? "Comparte tu opinión" : "Share your thoughts"}
               </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-gray-500 dark:text-slate-400">
                 {language === "es" ? "Paso 4 de 4" : "Step 4 of 4"}
               </p>
             </div>
@@ -291,7 +293,7 @@ const ReviewsCarousel = () => {
               onChange={(e) => setFormData(prev => ({ ...prev, review: e.target.value }))}
               required
               rows={3}
-              className="border-gray-200 dark:border-gray-700 focus:border-primary resize-none"
+              className="border-gray-200 dark:border-slate-700 focus:border-primary resize-none"
             />
             <p className="text-xs text-gray-400 text-right">
               {formData.review.length} / {language === "es" ? "mínimo 10 caracteres" : "minimum 10 characters"}
@@ -304,7 +306,7 @@ const ReviewsCarousel = () => {
   }
 
   return (
-    <section className="py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden">
+    <section className="py-12 md:py-16 bg-white dark:bg-slate-900 overflow-hidden">
       <div className="container mx-auto px-4">
         {/* Header */}
         <motion.div
@@ -317,7 +319,7 @@ const ReviewsCarousel = () => {
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4 text-gray-900 dark:text-white">
             {language === "es" ? "Clientes y resultados" : "Clients and results"}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base mb-3">
+          <p className="text-gray-600 dark:text-slate-400 text-sm md:text-base mb-3">
             {language === "es" 
               ? "Proyectos desarrollados en entornos productivos para quienes han confiado en mi trabajo"
               : "Projects developed in production environments for those who have trusted my work"}
@@ -331,15 +333,15 @@ const ReviewsCarousel = () => {
             <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-2">
               {language === "es" ? "Aún no hay reseñas" : "No reviews yet"}
             </h3>
-            <p className="text-gray-500 dark:text-gray-400 text-sm">
+            <p className="text-gray-500 dark:text-slate-400 text-sm">
               {language === "es"
                 ? "Sé el primero en compartir tu experiencia trabajando conmigo."
                 : "Be the first to share your experience working with me."}
             </p>
           </div>
         ) : (
-        /* Reviews Content - elegant testimonial card */
-        <div className="max-w-xl mx-auto">
+        /* Reviews Content - Google review style card */
+        <div className="max-w-sm mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlide}
@@ -347,57 +349,46 @@ const ReviewsCarousel = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200/70 dark:border-gray-700/60 overflow-hidden text-center"
+              className="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-gray-100 dark:border-slate-700/60 p-4 sm:p-5 text-left"
             >
-              {/* LinkedIn-style cover banner */}
-              <div className="h-16 sm:h-20 bg-gradient-to-r from-primary via-blue-500 to-cyan-400 relative">
-                <Quote className="absolute right-4 top-3 w-8 h-8 sm:w-10 sm:h-10 text-white/25" fill="currentColor" strokeWidth={0} />
-              </div>
-
-              <div className="px-6 sm:px-10 pb-8 sm:pb-10">
-                {/* Avatar initial - overlapping the banner like a LinkedIn profile photo */}
-                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto -mt-10 sm:-mt-12 mb-3 text-2xl sm:text-3xl font-bold ring-4 ring-white dark:ring-gray-800 shadow-md">
-                  {currentReview?.name?.trim()?.charAt(0)?.toUpperCase() || "?"}
+              {/* Header: initials avatar + name + stars */}
+              <div className="flex items-start justify-between gap-3 mb-2">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center text-base sm:text-lg font-bold shrink-0">
+                    {currentReview?.name?.trim()?.charAt(0)?.toUpperCase() || "?"}
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <h3 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white truncate">
+                        {currentReview?.name}
+                      </h3>
+                      <BadgeCheck className="w-4 h-4 text-primary fill-primary/15 shrink-0" />
+                    </div>
+                    <p className="text-gray-400 dark:text-slate-500 text-[10px] sm:text-xs uppercase tracking-wide truncate">
+                      {currentReview?.position && currentReview?.company
+                        ? `${currentReview.position} en ${currentReview.company}`
+                        : currentReview?.company || currentReview?.position || (language === "es" ? "Usuario verificado" : "Verified user")}
+                    </p>
+                  </div>
                 </div>
-
-                {/* Name + verified badge */}
-                <div className="flex items-center justify-center gap-1.5 mb-1">
-                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
-                    {currentReview?.name}
-                  </h3>
-                  <BadgeCheck className="w-5 h-5 sm:w-6 sm:h-6 text-primary fill-primary/15 shrink-0" />
-                </div>
-
-                {/* Position & Company - LinkedIn headline style */}
-                {(currentReview?.position || currentReview?.company) && (
-                  <p className="text-gray-500 dark:text-gray-400 font-medium mb-3 text-xs sm:text-sm">
-                    {currentReview?.position && currentReview?.company
-                      ? `${currentReview.position} en ${currentReview.company}`
-                      : currentReview?.company || currentReview?.position || ""}
-                  </p>
-                )}
-
-                {/* Stars */}
-                <div className="flex justify-center gap-1 mb-5">
+                <div className="flex gap-0.5 shrink-0 pt-1">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star
                       key={star}
-                      className={`h-4 w-4 sm:h-5 sm:w-5 ${
+                      className={`h-3.5 w-3.5 ${
                         star <= (currentReview?.rating || 5)
                           ? "text-amber-400 fill-amber-400"
-                          : "text-gray-300 dark:text-gray-600"
+                          : "text-gray-300 dark:text-slate-600"
                       }`}
                     />
                   ))}
                 </div>
-
-                <div className="h-px w-16 bg-gray-200 dark:bg-gray-700 mx-auto mb-5" />
-
-                {/* Review Text */}
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-sm sm:text-base italic">
-                  &ldquo;{currentReview?.review}&rdquo;
-                </p>
               </div>
+
+              {/* Review Text */}
+              <p className="text-gray-600 dark:text-slate-400 leading-relaxed text-sm line-clamp-4">
+                {currentReview?.review}
+              </p>
             </motion.div>
           </AnimatePresence>
 
@@ -413,7 +404,7 @@ const ReviewsCarousel = () => {
                 className={`h-1 rounded-full transition-all duration-500 ${
                   index === currentSlide
                     ? "w-6 md:w-8 bg-primary"
-                    : "w-1.5 md:w-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400"
+                    : "w-1.5 md:w-2 bg-gray-300 dark:bg-slate-600 hover:bg-gray-400"
                 }`}
               />
             ))}
@@ -452,7 +443,7 @@ const ReviewsCarousel = () => {
                   <p className="text-xl font-semibold text-gray-900 dark:text-white">
                     {language === "es" ? "¡Gracias por tu reseña!" : "Thanks for your review!"}
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                  <p className="text-sm text-gray-500 dark:text-slate-400 mt-2">
                     {language === "es" ? "Tu reseña será revisada y publicada pronto." : "Your review will be reviewed and published soon."}
                   </p>
                 </motion.div>
@@ -471,7 +462,7 @@ const ReviewsCarousel = () => {
                               ? "bg-primary text-white"
                               : step === currentStep
                               ? "bg-primary text-white"
-                              : "bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
+                              : "bg-gray-200 dark:bg-slate-700 text-gray-500 dark:text-slate-400"
                           }`}
                         >
                           {step < currentStep ? <Check className="w-4 h-4" /> : step}
@@ -479,7 +470,7 @@ const ReviewsCarousel = () => {
                         {step < 4 && (
                           <div
                             className={`flex-1 h-1 mx-2 rounded transition-colors ${
-                              step < currentStep ? "bg-primary" : "bg-gray-200 dark:bg-gray-700"
+                              step < currentStep ? "bg-primary" : "bg-gray-200 dark:bg-slate-700"
                             }`}
                           />
                         )}
@@ -493,7 +484,7 @@ const ReviewsCarousel = () => {
                   </AnimatePresence>
 
                   {/* Navigation buttons */}
-                  <div className="flex justify-between mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+                  <div className="flex justify-between mt-4 pt-3 border-t border-gray-200 dark:border-slate-700">
                     <Button
                       type="button"
                       variant="outline"

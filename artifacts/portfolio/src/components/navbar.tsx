@@ -14,7 +14,7 @@ const ThemeSwitch = ({ theme, onToggle }: { theme: string | undefined; onToggle:
   <button
     onClick={onToggle}
     aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-    className="relative w-12 h-6 rounded-full bg-gray-200 dark:bg-gray-700 transition-colors flex items-center px-0.5 shrink-0"
+    className="relative w-12 h-6 rounded-full bg-gray-200 dark:bg-slate-700 transition-colors flex items-center px-0.5 shrink-0"
   >
     <motion.span
       className="w-5 h-5 rounded-full bg-white shadow flex items-center justify-center"
@@ -30,7 +30,7 @@ const LanguageSwitch = ({ language, onToggle }: { language: string; onToggle: ()
   <button
     onClick={onToggle}
     aria-label="Change language"
-    className="relative w-14 h-6 rounded-full bg-gray-200 dark:bg-gray-700 transition-colors shrink-0"
+    className="relative w-14 h-6 rounded-full bg-gray-200 dark:bg-slate-700 transition-colors shrink-0"
   >
     <span className="absolute left-1.5 top-1/2 -translate-y-1/2 text-[11px] leading-none">🇪🇸</span>
     <span className="absolute right-1.5 top-1/2 -translate-y-1/2 text-[11px] leading-none">🇺🇸</span>
@@ -95,7 +95,7 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
-        transparentHero ? "bg-transparent" : "bg-white/90 dark:bg-gray-900/90 shadow-md backdrop-blur-md"
+        transparentHero ? "bg-transparent" : "bg-white/90 dark:bg-slate-900/90 shadow-md backdrop-blur-md"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -124,7 +124,7 @@ const Navbar = () => {
                         : "text-primary font-semibold"
                       : transparentHero
                         ? "text-white/80 hover:text-white"
-                        : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white"
+                        : "text-gray-700 dark:text-slate-300 hover:text-primary dark:hover:text-white"
                   }`}
                 >
                   {item.name}
@@ -147,7 +147,7 @@ const Navbar = () => {
               size="icon"
               onClick={toggleMenu}
               aria-label={isOpen ? "Close menu" : "Open menu"}
-              className="text-gray-700 dark:text-gray-300"
+              className="text-gray-700 dark:text-slate-300"
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
@@ -157,7 +157,7 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {isOpen && (
-        <div className="md:hidden bg-white dark:bg-gray-900 shadow-lg p-4 animate-fade-in">
+        <div className="md:hidden bg-white dark:bg-slate-900 shadow-lg p-4 animate-fade-in">
           <div className="flex flex-col space-y-2 pb-3 pt-2">
             {navItems.map((item) => (
               <Link
@@ -166,7 +166,7 @@ const Navbar = () => {
                 className={`px-3 py-2 text-base font-medium outline-none ring-0 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 ${
                   isActive(item.href)
                     ? "text-primary font-semibold"
-                    : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white"
+                    : "text-gray-700 dark:text-slate-300 hover:text-primary dark:hover:text-white"
                 }`}
                 onClick={() => setIsOpen(false)}
               >

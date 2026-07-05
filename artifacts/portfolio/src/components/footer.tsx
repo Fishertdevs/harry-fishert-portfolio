@@ -23,7 +23,7 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 )
 
 const Footer = ({
-  waveClassName = "fill-white dark:fill-gray-900",
+  waveClassName = "fill-white dark:fill-slate-900",
   useGradientWave = false,
 }: {
   waveClassName?: string

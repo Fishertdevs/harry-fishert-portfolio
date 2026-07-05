@@ -420,7 +420,7 @@ const TechIcon = ({ iconKey, label, serviceColor }: { iconKey: string; label: st
       transition={{ duration: 0.22 }}
     >
       <div
-        className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center border border-gray-100 dark:border-gray-700"
+        className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center border border-gray-100 dark:border-slate-700"
         style={{ backgroundColor: "#ffffff", boxShadow: `0 3px 10px 0 ${serviceColor}28` }}
       >
         <svg
@@ -433,7 +433,7 @@ const TechIcon = ({ iconKey, label, serviceColor }: { iconKey: string; label: st
           <path d={icon.path} />
         </svg>
       </div>
-      <span className="text-[8px] sm:text-[9px] text-gray-500 dark:text-gray-400 font-medium text-center leading-tight max-w-[48px]">
+      <span className="text-[8px] sm:text-[9px] text-gray-500 dark:text-slate-400 font-medium text-center leading-tight max-w-[48px]">
         {label}
       </span>
     </motion.div>
@@ -607,7 +607,7 @@ const Skills = () => {
   }
 
   return (
-    <section id="skills" className="relative py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden">
+    <section id="skills" className="relative py-12 md:py-16 bg-white dark:bg-slate-900 overflow-hidden">
       <SectionBlobs />
       {/* Tech background pattern */}
       <div className="absolute inset-0 opacity-10">
@@ -646,7 +646,7 @@ const Skills = () => {
               ? "Áreas de Práctica"
               : "Areas of Practice"}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base">
+          <p className="text-gray-600 dark:text-slate-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base">
             {language === "es"
               ? "Especialización técnica orientada al desarrollo de soluciones digitales escalables y eficientes."
               : "Technical expertise focused on building scalable and efficient digital solutions."}
@@ -678,7 +678,7 @@ const Skills = () => {
                   {services[currentSlide].features.map((feature, index) => (
                     <motion.li
                       key={index}
-                      className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm md:text-base"
+                      className="text-gray-600 dark:text-slate-400 text-xs sm:text-sm md:text-base"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 + 0.2 }}
@@ -718,7 +718,7 @@ const Skills = () => {
               {/* Right: tech icon grid */}
               <div className="flex flex-col items-center gap-3 order-1 md:order-2">
                 <motion.div
-                  className="grid grid-cols-4 gap-2 sm:gap-3"
+                  className="flex flex-wrap justify-center gap-2 sm:gap-3 max-w-[19rem] sm:max-w-[23rem]"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.4, delay: 0.1 }}
@@ -726,6 +726,7 @@ const Skills = () => {
                   {(SERVICE_ICONS[currentSlide] ?? []).map((item, i) => (
                     <motion.div
                       key={item.key}
+                      className="w-[15%] sm:w-[15%]"
                       initial={{ opacity: 0, scale: 0.85 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: i * 0.03 + 0.1, duration: 0.25, ease: "easeOut" }}
@@ -760,7 +761,7 @@ const Skills = () => {
                 className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
                   index === currentSlide
                     ? "w-8 bg-primary"
-                    : "w-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400"
+                    : "w-2 bg-gray-300 dark:bg-slate-600 hover:bg-gray-400"
                 }`}
                 aria-label={`Slide ${index + 1}`}
               />

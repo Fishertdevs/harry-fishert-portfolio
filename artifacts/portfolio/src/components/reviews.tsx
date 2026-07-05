@@ -256,7 +256,7 @@ const Reviews = () => {
                 className={`h-10 w-10 transition-all duration-200 ${
                   star <= (hoverRating || selectedRating)
                     ? "text-amber-400 fill-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]"
-                    : "text-gray-300 dark:text-gray-600"
+                    : "text-gray-300 dark:text-slate-600"
                 }`}
               />
               {star <= (hoverRating || selectedRating) && (
@@ -297,7 +297,7 @@ const Reviews = () => {
           className={`${size} ${
             star <= rating
               ? "text-amber-400 fill-amber-400"
-              : "text-gray-300 dark:text-gray-600"
+              : "text-gray-300 dark:text-slate-600"
           }`}
         />
       ))}
@@ -313,7 +313,7 @@ const Reviews = () => {
             className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all ${
               currentStep >= step
                 ? "bg-primary text-white"
-                : "bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
+                : "bg-gray-200 dark:bg-slate-700 text-gray-500 dark:text-slate-400"
             }`}
             animate={{ scale: currentStep === step ? 1.1 : 1 }}
           >
@@ -321,7 +321,7 @@ const Reviews = () => {
           </motion.div>
           {step < 3 && (
             <div className={`w-12 h-1 mx-1 rounded ${
-              currentStep > step ? "bg-primary" : "bg-gray-200 dark:bg-gray-700"
+              currentStep > step ? "bg-primary" : "bg-gray-200 dark:bg-slate-700"
             }`} />
           )}
         </div>
@@ -347,7 +347,7 @@ const Reviews = () => {
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                 {language === "es" ? "¿Cómo calificarías tu experiencia?" : "How would you rate your experience?"}
               </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
                 {language === "es" ? "Selecciona una calificación" : "Select a rating"}
               </p>
             </div>
@@ -389,7 +389,7 @@ const Reviews = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder={language === "es" ? "Tu nombre *" : "Your name *"}
-                  className="pl-10 h-12 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary/20"
+                  className="pl-10 h-12 bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700 focus:ring-2 focus:ring-primary/20"
                   required
                 />
               </div>
@@ -402,7 +402,7 @@ const Reviews = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder={language === "es" ? "Tu email *" : "Your email *"}
-                  className="pl-10 h-12 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary/20"
+                  className="pl-10 h-12 bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700 focus:ring-2 focus:ring-primary/20"
                   required
                 />
               </div>
@@ -415,7 +415,7 @@ const Reviews = () => {
                     value={formData.position}
                     onChange={handleInputChange}
                     placeholder={language === "es" ? "Tu cargo" : "Your position"}
-                    className="pl-10 h-12 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary/20"
+                    className="pl-10 h-12 bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700 focus:ring-2 focus:ring-primary/20"
                   />
                 </div>
                 <div className="relative">
@@ -425,7 +425,7 @@ const Reviews = () => {
                     value={formData.company}
                     onChange={handleInputChange}
                     placeholder={language === "es" ? "Tu empresa" : "Your company"}
-                    className="pl-10 h-12 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary/20"
+                    className="pl-10 h-12 bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700 focus:ring-2 focus:ring-primary/20"
                   />
                 </div>
               </div>
@@ -465,7 +465,7 @@ const Reviews = () => {
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                 {language === "es" ? "Escribe tu reseña" : "Write your review"}
               </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
                 {language === "es" ? "Comparte tu experiencia trabajando conmigo" : "Share your experience working with me"}
               </p>
             </div>
@@ -480,10 +480,10 @@ const Reviews = () => {
                   : "Describe your experience... What did you like? What could be improved?"
                 }
                 rows={5}
-                className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary/20 resize-none"
+                className="bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700 focus:ring-2 focus:ring-primary/20 resize-none"
                 required
               />
-              <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-2">
+              <div className="flex justify-between text-xs text-gray-500 dark:text-slate-400 mt-2">
                 <span>{language === "es" ? "Mínimo 20 caracteres" : "Minimum 20 characters"}</span>
                 <span className={formData.review.length < 20 ? "text-red-500" : "text-green-500"}>
                   {formData.review.length}/20
@@ -492,15 +492,15 @@ const Reviews = () => {
             </div>
 
             {/* Summary */}
-            <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 space-y-2">
+            <div className="bg-gray-50 dark:bg-slate-800/50 rounded-lg p-4 space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600 dark:text-gray-400">
+                <span className="text-sm text-gray-600 dark:text-slate-400">
                   {language === "es" ? "Calificación:" : "Rating:"}
                 </span>
                 <StarRating rating={selectedRating} size="h-4 w-4" />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600 dark:text-gray-400">
+                <span className="text-sm text-gray-600 dark:text-slate-400">
                   {language === "es" ? "Nombre:" : "Name:"}
                 </span>
                 <span className="text-sm font-medium text-gray-900 dark:text-white">{formData.name}</span>
@@ -543,7 +543,7 @@ const Reviews = () => {
 
   if (isLoading) {
     return (
-      <section id="reviews" className="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+      <section id="reviews" className="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-slate-900 dark:to-slate-800">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-4">
@@ -552,7 +552,7 @@ const Reviews = () => {
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
             </div>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-600 dark:text-slate-400">
               {language === "es" ? "Cargando reseñas..." : "Loading reviews..."}
             </p>
           </div>
@@ -562,7 +562,7 @@ const Reviews = () => {
   }
 
   return (
-    <section id="reviews" className="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <section id="reviews" className="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-slate-900 dark:to-slate-800">
       <div className="container mx-auto px-4">
         {/* Header */}
         <motion.div 
@@ -575,7 +575,7 @@ const Reviews = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
             {language === "es" ? "Reseñas" : "Reviews"}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
+          <p className="text-gray-600 dark:text-slate-400 max-w-2xl mx-auto text-sm md:text-base">
             {t("reviewsDescription")}
           </p>
           <div className="h-1 w-16 bg-primary mx-auto rounded-full mt-4"></div>
@@ -591,7 +591,7 @@ const Reviews = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             {/* Average Rating */}
-            <Card className="text-center bg-white dark:bg-gray-800 border-0 shadow-lg">
+            <Card className="text-center bg-white dark:bg-slate-800 border-0 shadow-lg">
               <CardContent className="pt-6">
                 <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-amber-100 dark:bg-amber-900/30 mb-4">
                   <Award className="h-7 w-7 text-amber-600 dark:text-amber-400" />
@@ -600,14 +600,14 @@ const Reviews = () => {
                   {reviewStats.averageRating.toFixed(1)}
                 </div>
                 <StarRating rating={Math.round(reviewStats.averageRating)} />
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                <p className="text-sm text-gray-500 dark:text-slate-400 mt-2">
                   {language === "es" ? "Calificación promedio" : "Average rating"}
                 </p>
               </CardContent>
             </Card>
 
             {/* Total Reviews */}
-            <Card className="text-center bg-white dark:bg-gray-800 border-0 shadow-lg">
+            <Card className="text-center bg-white dark:bg-slate-800 border-0 shadow-lg">
               <CardContent className="pt-6">
                 <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-blue-100 dark:bg-blue-900/30 mb-4">
                   <MessageSquare className="h-7 w-7 text-blue-600 dark:text-blue-400" />
@@ -615,14 +615,14 @@ const Reviews = () => {
                 <div className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
                   {reviewStats.totalReviews}
                 </div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-gray-500 dark:text-slate-400">
                   {language === "es" ? "Reseñas totales" : "Total reviews"}
                 </p>
               </CardContent>
             </Card>
 
             {/* Rating Distribution */}
-            <Card className="bg-white dark:bg-gray-800 border-0 shadow-lg">
+            <Card className="bg-white dark:bg-slate-800 border-0 shadow-lg">
               <CardContent className="pt-6">
                 <h4 className="font-medium mb-4 text-center text-gray-900 dark:text-white text-sm">
                   {language === "es" ? "Distribución" : "Distribution"}
@@ -632,7 +632,7 @@ const Reviews = () => {
                     <div key={rating} className="flex items-center gap-2">
                       <span className="text-xs w-3">{rating}</span>
                       <Star className="h-3 w-3 text-amber-400 fill-amber-400" />
-                      <div className="flex-1 h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <div className="flex-1 h-2 bg-gray-100 dark:bg-slate-700 rounded-full overflow-hidden">
                         <motion.div
                           className="h-full bg-amber-400 rounded-full"
                           initial={{ width: 0 }}
@@ -660,13 +660,13 @@ const Reviews = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center py-12 max-w-md mx-auto"
           >
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-100 dark:bg-gray-800 mb-6">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-100 dark:bg-slate-800 mb-6">
               <MessageSquare className="h-10 w-10 text-gray-400" />
             </div>
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
               {language === "es" ? "Aún no hay reseñas disponibles." : "No reviews available yet."}
             </h3>
-            <p className="text-gray-500 dark:text-gray-400 mb-6">
+            <p className="text-gray-500 dark:text-slate-400 mb-6">
               {language === "es" ? "Se el primero en dejar una!" : "Be the first to leave one!"}
             </p>
             
@@ -677,7 +677,7 @@ const Reviews = () => {
                   {language === "es" ? "+ Dejar una reseña" : "+ Leave a review"}
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-md bg-white dark:bg-gray-900 border-0 shadow-2xl">
+              <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border-0 shadow-2xl">
                 <DialogHeader>
                   <DialogTitle className="text-center text-xl font-semibold text-primary">
                     {language === "es" ? "Comparte tu experiencia" : "Share your experience"}
@@ -703,7 +703,7 @@ const Reviews = () => {
                     {language === "es" ? "Dejar una reseña" : "Leave a review"}
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-md bg-white dark:bg-gray-900 border-0 shadow-2xl">
+                <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 border-0 shadow-2xl">
                   <DialogHeader>
                     <DialogTitle className="text-center text-xl font-semibold text-primary">
                       {language === "es" ? "Comparte tu experiencia" : "Share your experience"}
@@ -735,7 +735,7 @@ const Reviews = () => {
                       transition={{ delay: index * 0.1 }}
                       layout
                     >
-                      <Card className="h-full bg-white dark:bg-gray-800 border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                      <Card className="h-full bg-white dark:bg-slate-800 border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
                         <CardHeader className="pb-3">
                           <div className="flex items-start gap-4">
                             {/* Avatar */}
@@ -756,7 +756,7 @@ const Reviews = () => {
                                 )}
                               </div>
                               {(review.position || review.company) && (
-                                <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
+                                <p className="text-sm text-gray-500 dark:text-slate-400 truncate">
                                   {review.position}{review.position && review.company && " en "}{review.company}
                                 </p>
                               )}
@@ -770,10 +770,10 @@ const Reviews = () => {
                           </div>
                         </CardHeader>
                         <CardContent className="pt-0">
-                          <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed mb-4">
+                          <p className="text-gray-700 dark:text-slate-300 text-sm leading-relaxed mb-4">
                             {review.review}
                           </p>
-                          <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
+                          <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-slate-700">
                             <Button
                               variant="ghost"
                               size="sm"

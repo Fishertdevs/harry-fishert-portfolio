@@ -219,7 +219,7 @@ const TechIcon = memo(({
 
           {/* Main language node */}
           <motion.div
-            className="absolute rounded-full bg-white dark:bg-gray-800 shadow-md flex items-center justify-center overflow-hidden"
+            className="absolute rounded-full bg-white dark:bg-slate-800 shadow-md flex items-center justify-center overflow-hidden"
             style={{
               width: mainNodeSize,
               height: mainNodeSize,
@@ -251,7 +251,7 @@ const TechIcon = memo(({
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={`${groupIndex}-${item.name}`}
-                    className="rounded-full bg-white dark:bg-gray-800 shadow-md flex items-center justify-center overflow-hidden"
+                    className="rounded-full bg-white dark:bg-slate-800 shadow-md flex items-center justify-center overflow-hidden"
                     style={{
                       width: branchNodeSize,
                       height: branchNodeSize,
@@ -268,7 +268,7 @@ const TechIcon = memo(({
                 <AnimatePresence mode="wait">
                   <motion.span
                     key={`${groupIndex}-${item.name}-label`}
-                    className="text-[9px] sm:text-[10px] font-semibold text-gray-600 dark:text-gray-300 text-center leading-tight whitespace-nowrap"
+                    className="text-[9px] sm:text-[10px] font-semibold text-gray-600 dark:text-slate-300 text-center leading-tight whitespace-nowrap"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -324,7 +324,7 @@ const TechStack = () => {
   }, [stackData.length])
 
   return (
-    <section id="tech-stack" className="relative flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden">
+    <section id="tech-stack" className="relative flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-slate-900 overflow-hidden">
       <SectionBlobs hideTop />
       <div className="relative z-10 container mx-auto px-4">
         <motion.div
@@ -337,7 +337,7 @@ const TechStack = () => {
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
             {language === "es" ? "Mi Stack de Trabajo" : "My Work Stack"}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base">
+          <p className="text-gray-600 dark:text-slate-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base">
             {language === "es"
               ? "Implementación de arquitecturas modernas para el desarrollo de soluciones integrales, escalables y orientadas a resultados."
               : "Implementation of modern architectures for the development of comprehensive, scalable and results-oriented solutions."}
@@ -367,7 +367,7 @@ const TechStack = () => {
                   scale={0.85}
                   animate={hasAnimatedOnce}
                 />
-                <p className="text-xs lg:text-sm text-gray-600 dark:text-gray-400 text-center leading-relaxed">
+                <p className="text-xs lg:text-sm text-gray-600 dark:text-slate-400 text-center leading-relaxed">
                   {stack.tags.join(" | ")}
                 </p>
               </motion.div>
@@ -396,7 +396,7 @@ const TechStack = () => {
                 scale={0.9}
                 animate={true}
               />
-              <p className="text-xs text-gray-600 dark:text-gray-400 text-center leading-relaxed px-4">
+              <p className="text-xs text-gray-600 dark:text-slate-400 text-center leading-relaxed px-4">
                 {stackData[currentSlide].tags.join(" | ")}
               </p>
             </motion.div>
@@ -410,7 +410,7 @@ const TechStack = () => {
                 className={`h-1.5 rounded-full transition-all duration-500 ${
                   index === currentSlide
                     ? "w-8 bg-primary"
-                    : "w-2 bg-gray-300 dark:bg-gray-600"
+                    : "w-2 bg-gray-300 dark:bg-slate-600"
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />

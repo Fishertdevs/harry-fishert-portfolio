@@ -395,12 +395,12 @@ const Projects = () => {
   }
 
   return (
-    <section id="projects" className="py-20 bg-white dark:bg-gray-900">
+    <section id="projects" className="py-20 bg-white dark:bg-slate-900">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-on-scroll">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">{t("projectsTitle")}</h2>
           <div className="h-1 w-20 bg-primary mx-auto"></div>
-          <p className="text-gray-700 dark:text-gray-300 mt-6 max-w-2xl mx-auto">{t("projectsDescription")}</p>
+          <p className="text-gray-700 dark:text-slate-300 mt-6 max-w-2xl mx-auto">{t("projectsDescription")}</p>
         </div>
 
         {/* Categorías principales */}
@@ -459,7 +459,7 @@ const Projects = () => {
                 onValueChange={setDifficulty}
                 className="w-full max-w-2xl mx-auto"
               >
-                <TabsList className="grid grid-cols-4 w-full bg-white dark:bg-gray-800 p-1 rounded-lg shadow-md">
+                <TabsList className="grid grid-cols-4 w-full bg-white dark:bg-slate-800 p-1 rounded-lg shadow-md">
                   <TabsTrigger value="all" className="data-[state=active]:bg-primary data-[state=active]:text-white">
                     {t("all")}
                   </TabsTrigger>
@@ -504,7 +504,7 @@ const Projects = () => {
               className="h-full"
               whileHover={{ y: -10, transition: { duration: 0.3 } }}
             >
-              <Card className="bg-white dark:bg-gray-800 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 h-full flex flex-col">
+              <Card className="bg-white dark:bg-slate-800 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 h-full flex flex-col">
                 <div className="relative h-48 overflow-hidden group">
                   <img
                     src={project.image || "/placeholder.svg"}
@@ -526,7 +526,7 @@ const Projects = () => {
                         {project.tags.length > 3 && (
                           <Badge
                             variant="secondary"
-                            className="bg-gray-700/80 text-white dark:bg-gray-600/90 dark:text-white text-xs"
+                            className="bg-gray-700/80 text-white dark:bg-slate-600/90 dark:text-white text-xs"
                           >
                             +{project.tags.length - 3}
                           </Badge>
@@ -564,12 +564,12 @@ const Projects = () => {
                 </div>
 
                 <CardHeader className="relative flex-grow">
-                  <div className="absolute -top-10 left-4 bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg border border-gray-100 dark:border-gray-700 transform transition-transform duration-300 hover:rotate-12">
+                  <div className="absolute -top-10 left-4 bg-white dark:bg-slate-800 p-3 rounded-full shadow-lg border border-gray-100 dark:border-slate-700 transform transition-transform duration-300 hover:rotate-12">
                     {project.icon}
                   </div>
                   <div className="pt-6">
                     <CardTitle className="text-gray-800 dark:text-white">{project.title}</CardTitle>
-                    <CardDescription className="text-gray-500 dark:text-gray-400 mt-2">
+                    <CardDescription className="text-gray-500 dark:text-slate-400 mt-2">
                       {project.description}
                     </CardDescription>
                   </div>

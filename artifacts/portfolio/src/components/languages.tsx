@@ -165,14 +165,14 @@ const Languages = () => {
       {/* Top wave divider */}
       <div className="absolute top-0 inset-x-0 leading-none pointer-events-none z-10 rotate-180">
         <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-10 sm:h-14 md:h-20 block">
-          <path d="M0,32 C240,72 480,0 720,30 C960,60 1200,8 1440,40 L1440,80 L0,80 Z" className="fill-white dark:fill-gray-900" />
+          <path d="M0,32 C240,72 480,0 720,30 C960,60 1200,8 1440,40 L1440,80 L0,80 Z" className="fill-white dark:fill-slate-900" />
         </svg>
       </div>
 
       {/* Bottom wave divider */}
       <div className="absolute bottom-0 inset-x-0 leading-none pointer-events-none z-10">
         <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-10 sm:h-14 md:h-20 block">
-          <path d="M0,32 C240,72 480,0 720,30 C960,60 1200,8 1440,40 L1440,80 L0,80 Z" className="fill-white dark:fill-gray-900" />
+          <path d="M0,32 C240,72 480,0 720,30 C960,60 1200,8 1440,40 L1440,80 L0,80 Z" className="fill-white dark:fill-slate-900" />
         </svg>
       </div>
 
@@ -298,7 +298,7 @@ const Languages = () => {
                 className={`h-1.5 rounded-full transition-all duration-500 ${
                   index === currentSlide
                     ? "w-8 bg-primary"
-                    : "w-2 bg-gray-300 dark:bg-gray-600"
+                    : "w-2 bg-gray-300 dark:bg-slate-600"
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />

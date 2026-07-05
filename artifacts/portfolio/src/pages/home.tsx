@@ -66,27 +66,27 @@ export default function Home() {
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4">{language === "es" ? "a mi portafolio" : "to my portfolio"}</h1>
                 <p className="text-xs sm:text-sm md:text-base text-gray-300 mb-6">{language === "es" ? "Arquitecturas Escalables | Testing Automatizado e IA | Rendimiento | SEO & UX" : "Scalable Architectures | Automated Testing & AI | Performance | SEO & UX"}</p>
                 <div className="flex justify-center gap-3">
-                  <Button variant="outline" size="sm" className="rounded-md px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm border-gray-300 dark:border-gray-600" onClick={() => setShowCVPreview(true)}>{language === "es" ? "Ver CV" : "View CV"}</Button>
+                  <Button variant="outline" size="sm" className="rounded-md px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm border-gray-300 dark:border-slate-600" onClick={() => setShowCVPreview(true)}>{language === "es" ? "Ver CV" : "View CV"}</Button>
                   <Button size="sm" className="bg-primary hover:bg-primary/90 text-white rounded-md px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm" asChild><a href="/experience">{language === "es" ? "Ver proyectos" : "View projects"}</a></Button>
                 </div>
               </div>
               <div className="flex justify-center items-center order-1 md:order-2">
-                <div className="w-48 h-48 sm:w-60 sm:h-60 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-xl md:rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-xl">
+                <div className="w-48 h-48 sm:w-60 sm:h-60 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-xl md:rounded-2xl overflow-hidden bg-gray-100 dark:bg-slate-800 shadow-xl">
                   <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Gemini_Generated_Image_fg8qd1fg8qd1fg8q-Photoroom-ujx6hQDY5lsfZDeUo0fk2OVZurdv7L.webp" alt={portfolioData.name} className="w-full h-full object-cover object-top" />
                 </div>
               </div>
             </motion.div>
             {showCVPreview && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={() => setShowCVPreview(false)}>
-                <motion.div className="bg-white dark:bg-gray-900 rounded-lg p-3 md:p-4 max-w-2xl w-full max-h-[80vh] overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700" initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }} transition={{ duration: 0.2 }} onClick={(e) => e.stopPropagation()}>
-                  <div className="flex justify-between items-center mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
+                <motion.div className="bg-white dark:bg-slate-900 rounded-lg p-3 md:p-4 max-w-2xl w-full max-h-[80vh] overflow-hidden shadow-2xl border border-gray-200 dark:border-slate-700" initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }} transition={{ duration: 0.2 }} onClick={(e) => e.stopPropagation()}>
+                  <div className="flex justify-between items-center mb-3 pb-2 border-b border-gray-200 dark:border-slate-700">
                     <h3 className="text-sm md:text-base font-semibold text-gray-900 dark:text-white">{language === "es" ? "Curriculum Vitae" : "Resume"}</h3>
                     <div className="flex gap-2">
                       <Button variant="default" size="sm" onClick={handleDownloadCV} className="h-7 text-xs px-3">{language === "es" ? "Descargar" : "Download"}</Button>
                       <Button variant="ghost" size="sm" onClick={() => setShowCVPreview(false)} className="h-7 w-7 p-0"><X className="h-4 w-4" /></Button>
                     </div>
                   </div>
-                  <div className="w-full h-[60vh] md:h-[65vh] overflow-auto rounded-md bg-gray-50 dark:bg-gray-800">
+                  <div className="w-full h-[60vh] md:h-[65vh] overflow-auto rounded-md bg-gray-50 dark:bg-slate-800">
                     <iframe src="/cv/HARRY_FISHERT_DEV_2026.pdf" className="w-full h-full" title="CV Preview" />
                   </div>
                 </motion.div>
@@ -95,7 +95,7 @@ export default function Home() {
           </motion.div>
           <div className="absolute bottom-0 left-0 right-0 overflow-hidden leading-none pointer-events-none">
             <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-10 sm:h-14 md:h-20 block">
-              <path d="M0,32 C240,72 480,0 720,30 C960,60 1200,8 1440,40 L1440,80 L0,80 Z" className="fill-white dark:fill-gray-900" />
+              <path d="M0,32 C240,72 480,0 720,30 C960,60 1200,8 1440,40 L1440,80 L0,80 Z" className="fill-white dark:fill-slate-900" />
             </svg>
           </div>
         </section>

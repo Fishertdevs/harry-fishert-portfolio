@@ -36,7 +36,7 @@ const About = () => {
     <section 
       id="about" 
       ref={sectionRef} 
-      className="relative flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden"
+      className="relative flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-slate-900 overflow-hidden"
     >
       <SectionBlobs />
       <div className="container mx-auto px-4">
@@ -51,7 +51,7 @@ const About = () => {
             
             {/* Image - LEFT side, vertically centered */}
             <div className="flex justify-center items-center">
-              <div className="w-48 h-48 sm:w-60 sm:h-60 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-xl md:rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-xl">
+              <div className="w-48 h-48 sm:w-60 sm:h-60 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-xl md:rounded-2xl overflow-hidden bg-gray-100 dark:bg-slate-800 shadow-xl">
                 <img
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Gemini_Generated_Image_fg8qd1fg8qd1fg8q-Photoroom-ujx6hQDY5lsfZDeUo0fk2OVZurdv7L.webp"
                   alt={portfolioData.name}
@@ -83,7 +83,7 @@ const About = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -16 }}
                     transition={{ duration: 0.5 }}
-                    className="text-gray-600 dark:text-gray-400 leading-relaxed text-xs sm:text-sm md:text-base text-center"
+                    className="text-gray-600 dark:text-slate-400 leading-relaxed text-xs sm:text-sm md:text-base text-center"
                   >
                     {textSlides[currentSlide]}
                   </motion.p>
@@ -98,7 +98,7 @@ const About = () => {
                     className={`h-1 rounded-full transition-all duration-500 ${
                       index === currentSlide
                         ? "w-6 md:w-8 bg-primary"
-                        : "w-1.5 md:w-2 bg-gray-300 dark:bg-gray-600"
+                        : "w-1.5 md:w-2 bg-gray-300 dark:bg-slate-600"
                     }`}
                   />
                 ))}

@@ -71,7 +71,7 @@ const NavigationDots = () => {
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
                 activeSection === section.id
                   ? "bg-primary scale-125"
-                  : "bg-gray-300 dark:bg-gray-600 hover:bg-primary/70 dark:hover:bg-primary/70"
+                  : "bg-gray-300 dark:bg-slate-600 hover:bg-primary/70 dark:hover:bg-primary/70"
               }`}
               onClick={() => handleDotClick(section.id)}
               whileHover={{ scale: 1.2 }}
@@ -79,7 +79,7 @@ const NavigationDots = () => {
               aria-label={`Navegar a ${section.label}`}
             />
             <div className="absolute right-full mr-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div className="bg-white dark:bg-gray-800 text-gray-800 dark:text-white px-2 py-1 rounded shadow-md text-sm whitespace-nowrap">
+              <div className="bg-white dark:bg-slate-800 text-gray-800 dark:text-white px-2 py-1 rounded shadow-md text-sm whitespace-nowrap">
                 {section.label}
               </div>
             </div>

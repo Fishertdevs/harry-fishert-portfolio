@@ -280,7 +280,7 @@ const Experience = () => {
   }, [currentSlide, currentDomain])
 
   return (
-    <section id="experience" className="relative flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden">
+    <section id="experience" className="relative flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-slate-900 overflow-hidden">
       <SectionBlobs />
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -312,7 +312,7 @@ const Experience = () => {
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
             {language === "es" ? "Experiencia Laboral" : "Work Experience"}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base">
+          <p className="text-gray-600 dark:text-slate-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base">
             {language === "es"
               ? "Desarrollo de soluciones full stack basadas en problemas reales y enfocadas en entornos de producción."
               : "Development of full stack solutions based on real problems and focused on production environments."}
@@ -348,12 +348,12 @@ const Experience = () => {
                     {currentProject.role}
                   </span>
                   <span className="text-gray-400 text-[11px] sm:text-sm">|</span>
-                  <span className="text-[11px] sm:text-sm text-gray-500 dark:text-gray-400">
+                  <span className="text-[11px] sm:text-sm text-gray-500 dark:text-slate-400">
                     {currentProject.period}
                   </span>
                 </div>
 
-                <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm md:text-base mb-3 md:mb-4 leading-relaxed">
+                <p className="text-gray-600 dark:text-slate-400 text-xs sm:text-sm md:text-base mb-3 md:mb-4 leading-relaxed">
                   {currentProject.description}
                 </p>
 
@@ -381,7 +381,7 @@ const Experience = () => {
 
                 <div className="flex flex-wrap justify-center gap-2 md:gap-3">
                   {currentProject.hasGithub && (
-                    <Button asChild variant="ghost" size="sm" className="rounded-lg px-3 sm:px-4 py-1 md:py-1.5 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-700 dark:text-gray-300 hover:bg-transparent">
+                    <Button asChild variant="ghost" size="sm" className="rounded-lg px-3 sm:px-4 py-1 md:py-1.5 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-700 dark:text-slate-300 hover:bg-transparent">
                       <a href={portfolioData.github} target="_blank" rel="noopener noreferrer">
                         <Github className="w-3 h-3 sm:w-4 sm:h-4" />
                         GitHub
@@ -400,13 +400,13 @@ const Experience = () => {
 
               <div className="order-1 md:order-2">
                 <div
-                  className="rounded-xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800"
+                  className="rounded-xl overflow-hidden shadow-xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800"
                   style={{ boxShadow: `0 10px 40px -12px ${currentProject.color}40` }}
                 >
-                  <div className="flex items-center px-3 py-2 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-                    <div className="flex items-center gap-1.5 w-full px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 shadow-inner">
+                  <div className="flex items-center px-3 py-2 bg-gray-100 dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700">
+                    <div className="flex items-center gap-1.5 w-full px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 shadow-inner">
                       <Lock className="w-3 h-3 text-gray-400 flex-shrink-0" />
-                      <span className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 truncate">
+                      <span className="text-[10px] sm:text-xs text-gray-500 dark:text-slate-400 truncate">
                         {typedUrl}
                         {typedUrl.length < currentDomain.length && (
                           <span
@@ -417,7 +417,7 @@ const Experience = () => {
                       </span>
                     </div>
                   </div>
-                  <div className="relative aspect-[16/10] bg-white dark:bg-gray-900">
+                  <div className="relative aspect-[16/10] bg-white dark:bg-slate-900">
                     <AnimatePresence>
                       {showPreview && (
                         <motion.img
@@ -432,9 +432,9 @@ const Experience = () => {
                       )}
                     </AnimatePresence>
                     {!showPreview && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+                      <div className="absolute inset-0 flex items-center justify-center bg-gray-50 dark:bg-slate-900">
                         <div
-                          className="w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 border-gray-200 dark:border-gray-700 animate-spin"
+                          className="w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 border-gray-200 dark:border-slate-700 animate-spin"
                           style={{ borderTopColor: currentProject.color }}
                         />
                       </div>
@@ -451,7 +451,7 @@ const Experience = () => {
                 key={index}
                 onClick={() => setCurrentSlide(index)}
                 className={`h-1 md:h-1.5 rounded-full transition-all duration-500 ${
-                  index === currentSlide ? "w-6 md:w-8" : "w-1.5 md:w-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400"
+                  index === currentSlide ? "w-6 md:w-8" : "w-1.5 md:w-2 bg-gray-300 dark:bg-slate-600 hover:bg-gray-400"
                 }`}
                 style={{ backgroundColor: index === currentSlide ? project.color : undefined }}
                 aria-label={`Go to project ${index + 1}`}
@@ -467,7 +467,7 @@ const Experience = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <p className="text-gray-600 dark:text-gray-400 mb-2 md:mb-4 text-xs sm:text-sm max-w-md mx-auto">
+          <p className="text-gray-600 dark:text-slate-400 mb-2 md:mb-4 text-xs sm:text-sm max-w-md mx-auto">
             {language === "es" ? "Explora más proyectos y contribuciones" : "Explore more projects and contributions"}
           </p>
           <Button asChild size="sm" className="bg-[#24292e] hover:bg-[#1a1e22] text-white transition-all rounded-lg px-4 md:px-6 py-1.5 md:py-2 inline-flex items-center gap-1.5 md:gap-2 text-xs sm:text-sm w-auto">
