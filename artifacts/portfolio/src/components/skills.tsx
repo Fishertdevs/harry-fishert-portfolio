@@ -641,13 +641,13 @@ const Skills = () => {
         >
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
             {language === "es"
-              ? "Áreas de práctica en las que trabajo"
-              : "Areas of practice I work in"}
+              ? "Áreas de Práctica"
+              : "Areas of Practice"}
           </h2>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base">
             {language === "es"
-              ? "Estas son las áreas de práctica en las que me especializo, orientadas a mejorar resultados y rendimiento."
-              : "These are the areas of practice I specialize in, focused on improving results and performance."}
+              ? "Especialización técnica orientada al desarrollo de soluciones digitales escalables y eficientes."
+              : "Technical expertise focused on building scalable and efficient digital solutions."}
           </p>
           <div className="h-1 w-12 md:w-16 bg-primary mx-auto rounded-full mt-3 md:mt-4" />
         </motion.div>
