@@ -26,6 +26,69 @@ const TECH_SVGS: Record<"python" | "typescript" | "javascript", JSX.Element> = {
   ),
 }
 
+// Related/derived technology icons shown in rotation for each core language
+const RELATED_SVGS: Record<"python" | "typescript" | "javascript", JSX.Element[]> = {
+  python: [
+    // Django
+    <svg key="django" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+      <rect width="128" height="128" rx="18" fill="#092E20" />
+      <text x="64" y="80" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="46" fill="#44B78B">Dj</text>
+    </svg>,
+    // Flask
+    <svg key="flask" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+      <rect width="128" height="128" rx="18" fill="#111111" />
+      <text x="64" y="80" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="42" fill="#ffffff">Fl</text>
+    </svg>,
+    // FastAPI
+    <svg key="fastapi" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+      <rect width="128" height="128" rx="18" fill="#05998B" />
+      <text x="64" y="80" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="38" fill="#ffffff">Fa</text>
+    </svg>,
+  ],
+  typescript: [
+    // Angular
+    <svg key="angular" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+      <rect width="128" height="128" rx="18" fill="#DD0031" />
+      <text x="64" y="82" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="52" fill="#ffffff">A</text>
+    </svg>,
+    // NestJS
+    <svg key="nestjs" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+      <rect width="128" height="128" rx="18" fill="#E0234E" />
+      <text x="64" y="82" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="52" fill="#ffffff">N</text>
+    </svg>,
+    // Deno
+    <svg key="deno" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+      <rect width="128" height="128" rx="18" fill="#111111" />
+      <circle cx="64" cy="60" r="34" fill="#ffffff" />
+      <circle cx="76" cy="52" r="4" fill="#111111" />
+    </svg>,
+  ],
+  javascript: [
+    // React
+    <svg key="react" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+      <rect width="128" height="128" rx="18" fill="#111827" />
+      <g transform="translate(64,64)">
+        <circle r="9" fill="#61DAFB" />
+        <ellipse rx="34" ry="13" fill="none" stroke="#61DAFB" strokeWidth="4.5" />
+        <ellipse rx="34" ry="13" fill="none" stroke="#61DAFB" strokeWidth="4.5" transform="rotate(60)" />
+        <ellipse rx="34" ry="13" fill="none" stroke="#61DAFB" strokeWidth="4.5" transform="rotate(120)" />
+      </g>
+    </svg>,
+    // Node.js
+    <svg key="nodejs" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+      <rect width="128" height="128" rx="18" fill="#333333" />
+      <path d="M64 18 L104 40 V88 L64 110 L24 88 V40 Z" fill="#339933" />
+      <text x="64" y="76" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="30" fill="#ffffff">JS</text>
+    </svg>,
+    // Vue
+    <svg key="vue" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+      <rect width="128" height="128" rx="18" fill="#ffffff" />
+      <path d="M20 24 L64 100 L108 24 H86 L64 62 L42 24 Z" fill="#4FC08D" />
+      <path d="M46 24 L64 55 L82 24 H68 L64 31 L60 24 Z" fill="#35495E" />
+    </svg>,
+  ],
+}
+
 const TechIcon = memo(({
   tech,
   percentage,
@@ -39,20 +102,43 @@ const TechIcon = memo(({
   size?: number
   animate: boolean
 }) => {
+  const variants = [TECH_SVGS[tech], ...RELATED_SVGS[tech]]
+  const [variantIndex, setVariantIndex] = useState(0)
+
+  useEffect(() => {
+    if (!animate) return
+    const interval = setInterval(() => {
+      setVariantIndex((prev) => (prev + 1) % variants.length)
+    }, 2200)
+    return () => clearInterval(interval)
+  }, [animate, variants.length])
+
+  useEffect(() => {
+    setVariantIndex(0)
+  }, [tech])
+
   return (
     <div className="flex flex-col items-center gap-2">
       <div
-        className="rounded-2xl bg-white dark:bg-gray-800 flex items-center justify-center transition-transform duration-300 hover:-translate-y-1"
+        className="relative rounded-2xl bg-white dark:bg-gray-800 flex items-center justify-center transition-transform duration-300 hover:-translate-y-1 shadow-md"
         style={{
           width: size,
           height: size,
           padding: size * 0.2,
-          boxShadow: `0 10px 25px -8px ${color}40, 0 2px 6px -2px rgba(0,0,0,0.08)`,
-        } as React.CSSProperties}
+        }}
       >
-        <div className="w-full h-full rounded-lg overflow-hidden">
-          {TECH_SVGS[tech]}
-        </div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={variantIndex}
+            className="w-full h-full rounded-lg overflow-hidden"
+            initial={{ opacity: 0, scale: 0.7, rotate: -8 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            exit={{ opacity: 0, scale: 0.7, rotate: 8 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+          >
+            {variants[variantIndex]}
+          </motion.div>
+        </AnimatePresence>
       </div>
       <motion.span
         className="text-lg sm:text-xl font-bold"

@@ -104,7 +104,7 @@ export default function Home() {
         <ReviewsCarousel />
         <CTASection />
       </main>
-      <Footer waveClassName="fill-blue-700 dark:fill-blue-700" />
+      <Footer useGradientWave />
       <WhatsAppFloatingButton />
       <CookieBanner />
     </div>

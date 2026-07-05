@@ -22,7 +22,13 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-const Footer = ({ waveClassName = "fill-white dark:fill-gray-900" }: { waveClassName?: string }) => {
+const Footer = ({
+  waveClassName = "fill-white dark:fill-gray-900",
+  useGradientWave = false,
+}: {
+  waveClassName?: string
+  useGradientWave?: boolean
+}) => {
   const { language } = useLanguage()
   const { portfolioData } = usePortfolio()
   const currentYear = new Date().getFullYear()
@@ -32,7 +38,20 @@ const Footer = ({ waveClassName = "fill-white dark:fill-gray-900" }: { waveClass
       {/* SVG Wave separator */}
       <div className="overflow-hidden leading-none -mt-px">
         <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full block">
-          <path d="M0,0 C240,72 480,20 720,48 C960,72 1200,10 1440,54 L1440,0 L0,0 Z" className={waveClassName} />
+          {useGradientWave && (
+            <defs>
+              <linearGradient id="footerWaveGradient" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#1d4ed8" />
+                <stop offset="50%" stopColor="#3b82f6" />
+                <stop offset="100%" stopColor="#22d3ee" />
+              </linearGradient>
+            </defs>
+          )}
+          <path
+            d="M0,0 C240,72 480,20 720,48 C960,72 1200,10 1440,54 L1440,0 L0,0 Z"
+            className={useGradientWave ? undefined : waveClassName}
+            fill={useGradientWave ? "url(#footerWaveGradient)" : undefined}
+          />
         </svg>
       </div>
 
