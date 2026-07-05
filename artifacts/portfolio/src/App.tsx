@@ -3,6 +3,7 @@ import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import BackgroundDecoration from "@/components/background-decoration";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LanguageProvider } from "@/lib/language-context";
 import { PortfolioProvider } from "@/lib/portfolio-context";
@@ -60,6 +61,7 @@ function App() {
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={true}>
           <LanguageProvider>
             <PortfolioProvider>
+              <BackgroundDecoration />
               <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
                 <Router />
               </WouterRouter>

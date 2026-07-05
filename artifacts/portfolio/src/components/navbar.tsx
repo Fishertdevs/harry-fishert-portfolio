@@ -32,15 +32,15 @@ const LanguageSwitch = ({ language, onToggle }: { language: string; onToggle: ()
     aria-label="Change language"
     className="relative w-14 h-6 rounded-full bg-gray-200 dark:bg-gray-700 transition-colors shrink-0"
   >
+    <span className="absolute left-1.5 top-1/2 -translate-y-1/2 text-[11px] leading-none">🇪🇸</span>
+    <span className="absolute right-1.5 top-1/2 -translate-y-1/2 text-[11px] leading-none">🇺🇸</span>
     <motion.span
-      className="absolute top-0.5 w-6 h-5 rounded-full bg-white shadow flex items-center justify-center text-[9px] font-bold text-primary"
+      className="absolute top-0.5 w-6 h-5 rounded-full bg-white shadow flex items-center justify-center text-[11px] leading-none"
       animate={{ x: language === "es" ? 2 : 30 }}
       transition={{ type: "spring", stiffness: 500, damping: 30 }}
     >
-      {language.toUpperCase()}
+      {language === "es" ? "🇪🇸" : "🇺🇸"}
     </motion.span>
-    <span className="absolute left-1.5 top-1/2 -translate-y-1/2 text-[9px] font-semibold text-gray-500 dark:text-gray-400">ES</span>
-    <span className="absolute right-1.5 top-1/2 -translate-y-1/2 text-[9px] font-semibold text-gray-500 dark:text-gray-400">EN</span>
   </button>
 )
 
@@ -110,9 +110,9 @@ const Navbar = () => {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors outline-none ring-0 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 ${
+                  className={`px-3 py-2 text-sm font-medium transition-colors outline-none ring-0 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 ${
                     isActive(item.href)
-                      ? "text-primary bg-primary/10"
+                      ? "text-primary font-semibold"
                       : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white"
                   }`}
                 >
@@ -152,9 +152,9 @@ const Navbar = () => {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-3 py-2 rounded-md text-base font-medium outline-none ring-0 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 ${
+                className={`px-3 py-2 text-base font-medium outline-none ring-0 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 ${
                   isActive(item.href)
-                    ? "text-primary bg-primary/10"
+                    ? "text-primary font-semibold"
                     : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white"
                 }`}
                 onClick={() => setIsOpen(false)}
