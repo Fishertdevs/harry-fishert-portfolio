@@ -255,6 +255,28 @@ const Experience = () => {
   }, [projects.length])
 
   const currentProject = projects[currentSlide]
+  const currentDomain = getDomain(currentProject.demo) || `${currentProject.title.toLowerCase().replace(/[^a-z0-9]/g, "")}.dev`
+
+  const [typedUrl, setTypedUrl] = useState("")
+  const [showPreview, setShowPreview] = useState(false)
+
+  useEffect(() => {
+    setTypedUrl("")
+    setShowPreview(false)
+    let charIndex = 0
+    const typingSpeed = 35
+
+    const typeInterval = setInterval(() => {
+      charIndex++
+      setTypedUrl(currentDomain.slice(0, charIndex))
+      if (charIndex >= currentDomain.length) {
+        clearInterval(typeInterval)
+        setTimeout(() => setShowPreview(true), 300)
+      }
+    }, typingSpeed)
+
+    return () => clearInterval(typeInterval)
+  }, [currentSlide, currentDomain])
 
   return (
     <section id="experience" className="relative flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden">
@@ -345,7 +367,10 @@ const Experience = () => {
                           color: currentProject.color
                         }}
                       >
-                        <TechIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                        <TechIcon
+                          className="w-3 h-3 sm:w-3.5 sm:h-3.5"
+                          style={{ color: currentProject.color }}
+                        />
                         {tech}
                       </span>
                     )
@@ -380,16 +405,38 @@ const Experience = () => {
                     <div className="flex items-center gap-1.5 w-full px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 shadow-inner">
                       <Lock className="w-3 h-3 text-gray-400 flex-shrink-0" />
                       <span className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 truncate">
-                        {getDomain(currentProject.demo) || `${currentProject.title.toLowerCase().replace(/[^a-z0-9]/g, "")}.dev`}
+                        {typedUrl}
+                        {typedUrl.length < currentDomain.length && (
+                          <span
+                            className="inline-block w-[1px] h-2.5 sm:h-3 ml-0.5 align-middle animate-pulse"
+                            style={{ backgroundColor: currentProject.color }}
+                          />
+                        )}
                       </span>
                     </div>
                   </div>
                   <div className="relative aspect-[16/10] bg-white dark:bg-gray-900">
-                    <img
-                      src={currentProject.image || "/placeholder.svg"}
-                      alt={`${language === "es" ? "Vista previa de" : "Preview of"} ${currentProject.title} ${currentProject.highlight}`}
-                      className="object-cover object-top w-full h-full"
-                    />
+                    <AnimatePresence>
+                      {showPreview && (
+                        <motion.img
+                          key={currentProject.image}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.5, ease: "easeOut" }}
+                          src={currentProject.image || "/placeholder.svg"}
+                          alt={`${language === "es" ? "Vista previa de" : "Preview of"} ${currentProject.title} ${currentProject.highlight}`}
+                          className="absolute inset-0 object-cover object-top w-full h-full"
+                        />
+                      )}
+                    </AnimatePresence>
+                    {!showPreview && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+                        <div
+                          className="w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 border-gray-200 dark:border-gray-700 animate-spin"
+                          style={{ borderTopColor: currentProject.color }}
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
