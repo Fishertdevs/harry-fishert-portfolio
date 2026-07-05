@@ -25,7 +25,7 @@ export default function CTASection() {
   }
 
   return (
-    <section className="py-12 md:py-16 mx-3 sm:mx-6 md:mx-10 rounded-t-3xl bg-gradient-to-r from-blue-600 to-blue-700">
+    <section className="py-12 md:py-16 w-full bg-blue-700">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
