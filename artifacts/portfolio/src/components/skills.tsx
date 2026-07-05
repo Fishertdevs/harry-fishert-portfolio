@@ -420,8 +420,8 @@ const TechIcon = ({ iconKey, label, serviceColor }: { iconKey: string; label: st
       transition={{ duration: 0.22 }}
     >
       <div
-        className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700"
-        style={{ boxShadow: `0 3px 10px 0 ${serviceColor}28` }}
+        className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center border border-gray-100 dark:border-gray-700"
+        style={{ backgroundColor: "#ffffff", boxShadow: `0 3px 10px 0 ${serviceColor}28` }}
       >
         <svg
           viewBox={icon.viewBox || "0 0 24 24"}
