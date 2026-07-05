@@ -61,7 +61,7 @@ export default function CTASection() {
         </div>
         
         {/* Bottom text */}
-        <div className="text-center mt-8 pt-6 border-t border-white/20">
+        <div className="text-center mt-8 pt-6">
           <p className="text-white/80 text-sm">
             {language === "es" 
               ? "Soluciones escalables a medida" 
