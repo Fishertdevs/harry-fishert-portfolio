@@ -522,7 +522,7 @@ const Education = () => {
               <div className="flex justify-center order-1 md:order-2">
                 {educationSlides[currentSlide].iconSet === 0 ? (
                   <motion.div
-                    className="flex items-center justify-center p-4 sm:p-6"
+                    className="flex items-center justify-center p-4 sm:p-6 bg-white rounded-2xl shadow-md"
                     initial={{ opacity: 0, scale: 0.85 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.4 }}

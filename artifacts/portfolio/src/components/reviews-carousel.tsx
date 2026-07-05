@@ -52,10 +52,10 @@ const ReviewsCarousel = () => {
   }
 
   useEffect(() => {
-    if (!isAutoPlaying || reviews.length === 0) return
+    if (!isAutoPlaying || reviews.length <= reviewsPerPage) return
 
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % reviews.length)
+      setCurrentSlide((prev) => (prev + 1) % Math.ceil(reviews.length / reviewsPerPage))
     }, 8000)
 
     return () => clearInterval(interval)
@@ -153,7 +153,12 @@ const ReviewsCarousel = () => {
     )
   }
 
-  const currentReview = reviews[currentSlide]
+  const reviewsPerPage = 3
+  const totalPages = Math.max(1, Math.ceil(reviews.length / reviewsPerPage))
+  const visibleReviews = reviews.slice(
+    currentSlide * reviewsPerPage,
+    currentSlide * reviewsPerPage + reviewsPerPage
+  )
 
   // Step content for multi-step form
   const renderStepContent = () => {
@@ -340,8 +345,8 @@ const ReviewsCarousel = () => {
             </p>
           </div>
         ) : (
-        /* Reviews Content - Google review style card */
-        <div className="max-w-sm mx-auto">
+        /* Reviews Content - grid of up to 3 review cards at once */
+        <div className="max-w-5xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlide}
@@ -349,66 +354,75 @@ const ReviewsCarousel = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
-              className="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-gray-100 dark:border-slate-700/60 p-4 sm:p-5 text-left"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
             >
-              {/* Header: initials avatar + name + stars */}
-              <div className="flex items-start justify-between gap-3 mb-2">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center text-base sm:text-lg font-bold shrink-0">
-                    {currentReview?.name?.trim()?.charAt(0)?.toUpperCase() || "?"}
-                  </div>
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      <h3 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white truncate">
-                        {currentReview?.name}
-                      </h3>
-                      <BadgeCheck className="w-4 h-4 text-primary fill-primary/15 shrink-0" />
+              {visibleReviews.map((review, i) => (
+                <div
+                  key={review.id ?? `${currentSlide}-${i}`}
+                  className="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-gray-100 dark:border-slate-700/60 p-4 sm:p-5 text-left flex flex-col"
+                >
+                  {/* Header: initials avatar + name + stars */}
+                  <div className="flex items-start justify-between gap-3 mb-2">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center text-base sm:text-lg font-bold shrink-0">
+                        {review?.name?.trim()?.charAt(0)?.toUpperCase() || "?"}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <h3 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white truncate">
+                            {review?.name}
+                          </h3>
+                          <BadgeCheck className="w-4 h-4 text-primary fill-primary/15 shrink-0" />
+                        </div>
+                        <p className="text-gray-400 dark:text-slate-500 text-[10px] sm:text-xs uppercase tracking-wide truncate">
+                          {review?.position && review?.company
+                            ? `${review.position} en ${review.company}`
+                            : review?.company || review?.position || (language === "es" ? "Usuario verificado" : "Verified user")}
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-gray-400 dark:text-slate-500 text-[10px] sm:text-xs uppercase tracking-wide truncate">
-                      {currentReview?.position && currentReview?.company
-                        ? `${currentReview.position} en ${currentReview.company}`
-                        : currentReview?.company || currentReview?.position || (language === "es" ? "Usuario verificado" : "Verified user")}
-                    </p>
+                    <div className="flex gap-0.5 shrink-0 pt-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          className={`h-3.5 w-3.5 ${
+                            star <= (review?.rating || 5)
+                              ? "text-amber-400 fill-amber-400"
+                              : "text-gray-300 dark:text-slate-600"
+                          }`}
+                        />
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <div className="flex gap-0.5 shrink-0 pt-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                      key={star}
-                      className={`h-3.5 w-3.5 ${
-                        star <= (currentReview?.rating || 5)
-                          ? "text-amber-400 fill-amber-400"
-                          : "text-gray-300 dark:text-slate-600"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
 
-              {/* Review Text */}
-              <p className="text-gray-600 dark:text-slate-400 leading-relaxed text-sm line-clamp-4">
-                {currentReview?.review}
-              </p>
+                  {/* Review Text */}
+                  <p className="text-gray-600 dark:text-slate-400 leading-relaxed text-sm line-clamp-4">
+                    {review?.review}
+                  </p>
+                </div>
+              ))}
             </motion.div>
           </AnimatePresence>
 
           {/* Progress bar indicator */}
-          <div className="flex items-center gap-1.5 mt-6 justify-center">
-            {reviews.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setCurrentSlide(index)
-                  setIsAutoPlaying(false)
-                }}
-                className={`h-1 rounded-full transition-all duration-500 ${
-                  index === currentSlide
-                    ? "w-6 md:w-8 bg-primary"
-                    : "w-1.5 md:w-2 bg-gray-300 dark:bg-slate-600 hover:bg-gray-400"
-                }`}
-              />
-            ))}
-          </div>
+          {totalPages > 1 && (
+            <div className="flex items-center gap-1.5 mt-6 justify-center">
+              {Array.from({ length: totalPages }).map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setCurrentSlide(index)
+                    setIsAutoPlaying(false)
+                  }}
+                  className={`h-1 rounded-full transition-all duration-500 ${
+                    index === currentSlide
+                      ? "w-6 md:w-8 bg-primary"
+                      : "w-1.5 md:w-2 bg-gray-300 dark:bg-slate-600 hover:bg-gray-400"
+                  }`}
+                />
+              ))}
+            </div>
+          )}
         </div>
         )}
 
