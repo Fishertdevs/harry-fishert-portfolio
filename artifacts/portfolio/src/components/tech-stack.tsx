@@ -26,78 +26,107 @@ const TECH_SVGS: Record<"python" | "typescript" | "javascript", JSX.Element> = {
   ),
 }
 
-// Related/derived technology icons shown in rotation for each core language
-const RELATED_SVGS: Record<"python" | "typescript" | "javascript", JSX.Element[]> = {
+type RelatedTech = { name: string; svg: JSX.Element }
+
+const badge = (key: string, bg: string, label: string, fill = "#ffffff", fontSize = 40) => (
+  <svg key={key} viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+    <rect width="128" height="128" rx="18" fill={bg} />
+    <text x="64" y="80" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="700" fontSize={fontSize} fill={fill}>{label}</text>
+  </svg>
+)
+
+// 9 related/derived technology icons per core language, shown in rotating groups of 3
+const NAMED_RELATED: Record<"python" | "typescript" | "javascript", RelatedTech[]> = {
   python: [
-    // Django
-    <svg key="django" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-      <rect width="128" height="128" rx="18" fill="#092E20" />
-      <text x="64" y="80" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="46" fill="#44B78B">Dj</text>
-    </svg>,
-    // Flask
-    <svg key="flask" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-      <rect width="128" height="128" rx="18" fill="#111111" />
-      <text x="64" y="80" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="42" fill="#ffffff">Fl</text>
-    </svg>,
-    // FastAPI
-    <svg key="fastapi" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-      <rect width="128" height="128" rx="18" fill="#05998B" />
-      <text x="64" y="80" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="38" fill="#ffffff">Fa</text>
-    </svg>,
+    { name: "Django", svg: badge("django", "#092E20", "Dj", "#44B78B", 44) },
+    { name: "Flask", svg: badge("flask", "#111111", "Fl", "#ffffff", 40) },
+    { name: "FastAPI", svg: badge("fastapi", "#05998B", "Fa", "#ffffff", 36) },
+    { name: "NumPy", svg: badge("numpy", "#4D77CF", "Np", "#ffffff", 36) },
+    { name: "Pandas", svg: badge("pandas", "#150458", "Pd", "#E70488", 36) },
+    { name: "Pytest", svg: badge("pytest", "#0A9EDC", "Pt", "#ffffff", 36) },
+    { name: "Selenium", svg: badge("selenium", "#43B02A", "Se", "#ffffff", 36) },
+    { name: "Airflow", svg: badge("airflow", "#017CEE", "Af", "#ffffff", 36) },
+    { name: "TensorFlow", svg: badge("tensorflow", "#FF6F00", "Tf", "#ffffff", 36) },
   ],
   typescript: [
-    // Angular
-    <svg key="angular" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-      <rect width="128" height="128" rx="18" fill="#DD0031" />
-      <text x="64" y="82" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="52" fill="#ffffff">A</text>
-    </svg>,
-    // NestJS
-    <svg key="nestjs" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-      <rect width="128" height="128" rx="18" fill="#E0234E" />
-      <text x="64" y="82" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="52" fill="#ffffff">N</text>
-    </svg>,
-    // Deno
-    <svg key="deno" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-      <rect width="128" height="128" rx="18" fill="#111111" />
-      <circle cx="64" cy="60" r="34" fill="#ffffff" />
-      <circle cx="76" cy="52" r="4" fill="#111111" />
-    </svg>,
+    { name: "Angular", svg: badge("angular", "#DD0031", "A", "#ffffff", 52) },
+    { name: "NestJS", svg: badge("nestjs", "#E0234E", "N", "#ffffff", 52) },
+    {
+      name: "Deno",
+      svg: (
+        <svg key="deno" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <rect width="128" height="128" rx="18" fill="#111111" />
+          <circle cx="64" cy="60" r="34" fill="#ffffff" />
+          <circle cx="76" cy="52" r="4" fill="#111111" />
+        </svg>
+      ),
+    },
+    { name: "Prisma", svg: badge("prisma", "#0C344B", "Pr", "#5AC9E8", 36) },
+    { name: "GraphQL", svg: badge("graphql", "#E10098", "Gq", "#ffffff", 36) },
+    { name: "RxJS", svg: badge("rxjs", "#B7178C", "Rx", "#ffffff", 36) },
+    { name: "Vite", svg: badge("vite", "#242424", "Vi", "#BD34FE", 40) },
+    { name: "Jest", svg: badge("jest", "#C21325", "Je", "#ffffff", 40) },
+    { name: "tRPC", svg: badge("trpc", "#2596BE", "tR", "#ffffff", 36) },
   ],
   javascript: [
-    // React
-    <svg key="react" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-      <rect width="128" height="128" rx="18" fill="#111827" />
-      <g transform="translate(64,64)">
-        <circle r="9" fill="#61DAFB" />
-        <ellipse rx="34" ry="13" fill="none" stroke="#61DAFB" strokeWidth="4.5" />
-        <ellipse rx="34" ry="13" fill="none" stroke="#61DAFB" strokeWidth="4.5" transform="rotate(60)" />
-        <ellipse rx="34" ry="13" fill="none" stroke="#61DAFB" strokeWidth="4.5" transform="rotate(120)" />
-      </g>
-    </svg>,
-    // Node.js
-    <svg key="nodejs" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-      <rect width="128" height="128" rx="18" fill="#333333" />
-      <path d="M64 18 L104 40 V88 L64 110 L24 88 V40 Z" fill="#339933" />
-      <text x="64" y="76" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="30" fill="#ffffff">JS</text>
-    </svg>,
-    // Vue
-    <svg key="vue" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-      <rect width="128" height="128" rx="18" fill="#ffffff" />
-      <path d="M20 24 L64 100 L108 24 H86 L64 62 L42 24 Z" fill="#4FC08D" />
-      <path d="M46 24 L64 55 L82 24 H68 L64 31 L60 24 Z" fill="#35495E" />
-    </svg>,
+    {
+      name: "React",
+      svg: (
+        <svg key="react" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <rect width="128" height="128" rx="18" fill="#111827" />
+          <g transform="translate(64,64)">
+            <circle r="9" fill="#61DAFB" />
+            <ellipse rx="34" ry="13" fill="none" stroke="#61DAFB" strokeWidth="4.5" />
+            <ellipse rx="34" ry="13" fill="none" stroke="#61DAFB" strokeWidth="4.5" transform="rotate(60)" />
+            <ellipse rx="34" ry="13" fill="none" stroke="#61DAFB" strokeWidth="4.5" transform="rotate(120)" />
+          </g>
+        </svg>
+      ),
+    },
+    {
+      name: "Node.js",
+      svg: (
+        <svg key="nodejs" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <rect width="128" height="128" rx="18" fill="#333333" />
+          <path d="M64 18 L104 40 V88 L64 110 L24 88 V40 Z" fill="#339933" />
+          <text x="64" y="76" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="30" fill="#ffffff">JS</text>
+        </svg>
+      ),
+    },
+    {
+      name: "Vue",
+      svg: (
+        <svg key="vue" viewBox="0 0 128 128" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+          <rect width="128" height="128" rx="18" fill="#ffffff" />
+          <path d="M20 24 L64 100 L108 24 H86 L64 62 L42 24 Z" fill="#4FC08D" />
+          <path d="M46 24 L64 55 L82 24 H68 L64 31 L60 24 Z" fill="#35495E" />
+        </svg>
+      ),
+    },
+    { name: "Express", svg: badge("express", "#ffffff", "Ex", "#111111", 38) },
+    { name: "Next.js", svg: badge("nextjs", "#000000", "N.", "#ffffff", 44) },
+    { name: "Redux", svg: badge("redux", "#764ABC", "Rd", "#ffffff", 36) },
+    { name: "jQuery", svg: badge("jquery", "#0769AD", "jQ", "#ffffff", 36) },
+    { name: "Webpack", svg: badge("webpack", "#1C78C0", "Wp", "#ffffff", 36) },
+    { name: "Electron", svg: badge("electron", "#2B2E3A", "El", "#9FEAF9", 36) },
   ],
 }
 
-const GRAPH_WIDTH = 220
-const GRAPH_HEIGHT = 150
-const MAIN_NODE = { x: 34, y: 75 }
-const HUB_NODE = { x: 108, y: 75 }
+const GRAPH_WIDTH = 200
+const GRAPH_HEIGHT = 210
+const MAIN_NODE = { x: 100, y: 26 }
+const HUB_NODE = { x: 100, y: 66 }
 const BRANCH_NODES = [
-  { x: 186, y: 26 },
-  { x: 186, y: 75 },
-  { x: 186, y: 124 },
+  { x: 34, y: 138 },
+  { x: 100, y: 138 },
+  { x: 166, y: 138 },
 ]
+
+const chunk3 = <T,>(arr: T[]): T[][] => {
+  const out: T[][] = []
+  for (let i = 0; i < arr.length; i += 3) out.push(arr.slice(i, i + 3))
+  return out
+}
 
 const TechIcon = memo(({
   tech,
@@ -112,15 +141,30 @@ const TechIcon = memo(({
   scale?: number
   animate: boolean
 }) => {
-  const related = RELATED_SVGS[tech]
-  const mainNodeSize = 62
-  const hubNodeSize = 14
-  const branchNodeSize = 42
+  const groups = chunk3(NAMED_RELATED[tech])
+  const [groupIndex, setGroupIndex] = useState(0)
+  const mainNodeSize = 58
+  const hubNodeSize = 12
+  const branchNodeSize = 40
+
+  useEffect(() => {
+    if (!animate) return
+    const interval = setInterval(() => {
+      setGroupIndex((prev) => (prev + 1) % groups.length)
+    }, 2600)
+    return () => clearInterval(interval)
+  }, [animate, groups.length])
+
+  useEffect(() => {
+    setGroupIndex(0)
+  }, [tech])
 
   const linePaths = BRANCH_NODES.map(
     (node) =>
-      `M${HUB_NODE.x},${HUB_NODE.y} C${(HUB_NODE.x + node.x) / 2},${HUB_NODE.y} ${(HUB_NODE.x + node.x) / 2},${node.y} ${node.x - branchNodeSize / 2 - 2},${node.y}`
+      `M${HUB_NODE.x},${HUB_NODE.y} C${HUB_NODE.x},${(HUB_NODE.y + node.y) / 2} ${node.x},${(HUB_NODE.y + node.y) / 2} ${node.x},${node.y - branchNodeSize / 2 - 2}`
   )
+
+  const currentGroup = groups[groupIndex] ?? groups[0]
 
   return (
     <div className="flex flex-col items-center gap-2">
@@ -138,8 +182,8 @@ const TechIcon = memo(({
             fill="none"
           >
             <motion.line
-              x1={MAIN_NODE.x + mainNodeSize / 2}
-              y1={MAIN_NODE.y}
+              x1={MAIN_NODE.x}
+              y1={MAIN_NODE.y + mainNodeSize / 2}
               x2={HUB_NODE.x}
               y2={HUB_NODE.y}
               stroke={color}
@@ -190,25 +234,52 @@ const TechIcon = memo(({
             <div className="w-full h-full rounded-full overflow-hidden">{TECH_SVGS[tech]}</div>
           </motion.div>
 
-          {/* Derived tech nodes */}
-          {BRANCH_NODES.map((node, i) => (
-            <motion.div
-              key={i}
-              className="absolute rounded-full bg-white dark:bg-gray-800 shadow-md flex items-center justify-center overflow-hidden"
-              style={{
-                width: branchNodeSize,
-                height: branchNodeSize,
-                left: node.x - branchNodeSize / 2,
-                top: node.y - branchNodeSize / 2,
-                padding: branchNodeSize * 0.16,
-              }}
-              initial={{ opacity: 0, scale: 0.4 }}
-              animate={animate ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.4 }}
-              transition={{ duration: 0.35, delay: 0.4 + i * 0.12 }}
-            >
-              <div className="w-full h-full rounded-full overflow-hidden">{related[i]}</div>
-            </motion.div>
-          ))}
+          {/* Derived tech nodes - rotating groups of 3 (out of 9) */}
+          {BRANCH_NODES.map((node, i) => {
+            const item = currentGroup[i]
+            if (!item) return null
+            return (
+              <div
+                key={i}
+                className="absolute flex flex-col items-center gap-1"
+                style={{
+                  left: node.x - branchNodeSize / 2,
+                  top: node.y - branchNodeSize / 2,
+                  width: branchNodeSize,
+                }}
+              >
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={`${groupIndex}-${item.name}`}
+                    className="rounded-full bg-white dark:bg-gray-800 shadow-md flex items-center justify-center overflow-hidden"
+                    style={{
+                      width: branchNodeSize,
+                      height: branchNodeSize,
+                      padding: branchNodeSize * 0.16,
+                    }}
+                    initial={{ opacity: 0, scale: 0.4, y: -6 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.4, y: 6 }}
+                    transition={{ duration: 0.35 }}
+                  >
+                    <div className="w-full h-full rounded-full overflow-hidden">{item.svg}</div>
+                  </motion.div>
+                </AnimatePresence>
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={`${groupIndex}-${item.name}-label`}
+                    className="text-[9px] sm:text-[10px] font-semibold text-gray-600 dark:text-gray-300 text-center leading-tight whitespace-nowrap"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {item.name}
+                  </motion.span>
+                </AnimatePresence>
+              </div>
+            )
+          })}
         </div>
       </div>
       <motion.span
@@ -254,7 +325,7 @@ const TechStack = () => {
 
   return (
     <section id="tech-stack" className="relative flex flex-col justify-center py-12 md:py-16 bg-white dark:bg-gray-900 overflow-hidden">
-      <SectionBlobs />
+      <SectionBlobs hideTop />
       <div className="relative z-10 container mx-auto px-4">
         <motion.div
           className="text-center mb-8 md:mb-12"
@@ -280,7 +351,7 @@ const TechStack = () => {
             {stackData.map((stack, index) => (
               <motion.div
                 key={`desktop-${stack.name}-${index}`}
-                className="flex flex-col items-center gap-4"
+                className="flex flex-col items-center gap-3"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -293,7 +364,7 @@ const TechStack = () => {
                   tech={stack.tech}
                   percentage={stack.percentage}
                   color={stack.color}
-                  scale={0.62}
+                  scale={0.85}
                   animate={hasAnimatedOnce}
                 />
                 <p className="text-xs lg:text-sm text-gray-600 dark:text-gray-400 text-center leading-relaxed">
@@ -313,7 +384,7 @@ const TechStack = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
-              className="flex flex-col items-center gap-4 py-4"
+              className="flex flex-col items-center gap-3 py-4"
             >
               <h3 className="text-lg font-bold" style={{ color: stackData[currentSlide].color }}>
                 {stackData[currentSlide].name}
@@ -322,7 +393,7 @@ const TechStack = () => {
                 tech={stackData[currentSlide].tech}
                 percentage={stackData[currentSlide].percentage}
                 color={stackData[currentSlide].color}
-                scale={0.68}
+                scale={0.9}
                 animate={true}
               />
               <p className="text-xs text-gray-600 dark:text-gray-400 text-center leading-relaxed px-4">
