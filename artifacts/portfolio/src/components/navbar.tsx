@@ -99,7 +99,12 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0">
-            <Link href="/" className="text-xl font-bold text-primary">
+            <Link
+              href="/"
+              className={`text-xl font-bold transition-colors ${
+                scrolled ? "text-primary" : "text-white"
+              }`}
+            >
               Harry Fishert
             </Link>
           </div>
@@ -112,8 +117,12 @@ const Navbar = () => {
                   href={item.href}
                   className={`px-3 py-2 text-sm font-medium transition-colors outline-none ring-0 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 ${
                     isActive(item.href)
-                      ? "text-primary font-semibold"
-                      : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white"
+                      ? scrolled
+                        ? "text-primary font-semibold"
+                        : "text-white font-semibold"
+                      : scrolled
+                        ? "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white"
+                        : "text-white/80 hover:text-white"
                   }`}
                 >
                   {item.name}
