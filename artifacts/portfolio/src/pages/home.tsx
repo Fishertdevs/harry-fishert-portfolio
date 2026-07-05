@@ -57,7 +57,7 @@ export default function Home() {
       <main className="flex-1">
         <section id="home" ref={heroRef} className="relative flex items-center justify-center py-16 md:py-20 overflow-hidden">
           <motion.div className="absolute inset-0 z-0" variants={backgroundVariants} initial="hidden" animate="visible">
-            <div className="absolute inset-0 bg-black"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-700 via-blue-500 to-cyan-400"></div>
           </motion.div>
           <motion.div className="relative z-10 px-4 max-w-6xl mx-auto w-full" variants={containerVariants} initial="hidden" animate={isVisible ? "visible" : "hidden"}>
             <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
