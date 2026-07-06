@@ -335,7 +335,7 @@ const TechStack = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4">
-            {language === "es" ? "Mi Stack de Trabajo" : "My Work Stack"}
+            {language === "es" ? "Mis Skills Más Utilizadas" : "My Most Used Skills"}
           </h2>
           <p className="text-gray-600 dark:text-slate-400 max-w-2xl mx-auto text-xs sm:text-sm md:text-base">
             {language === "es"
