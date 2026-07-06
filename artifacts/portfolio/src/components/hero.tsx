@@ -151,11 +151,11 @@ const Hero = () => {
           <div className="flex-1 flex flex-col justify-center items-center lg:items-start text-center lg:text-left">
             <motion.div variants={itemVariants} className="mb-8">
               <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight" style={{ color: '#000000' }}>
-                {language === "es" ? "Bienvenido" : "Welcome"}
+                {language === "es" ? "Hola, soy Harry" : "Hi, I'm Harry"}
               </h1>
-              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight" style={{ color: '#000000' }}>
-                {language === "es" ? "a mi portafolio" : "to my portfolio"}
-              </h1>
+              <p className="mt-3 text-xl sm:text-2xl md:text-3xl font-medium text-gray-600 dark:text-slate-300">
+                {language === "es" ? "Bienvenido a mi portafolio" : "Welcome to my portfolio"}
+              </p>
             </motion.div>
 
             <motion.div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-8" variants={itemVariants}>

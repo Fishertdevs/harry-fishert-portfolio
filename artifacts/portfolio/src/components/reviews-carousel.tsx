@@ -21,6 +21,7 @@ const ReviewsCarousel = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
   
   // Multi-step form state
   const [currentStep, setCurrentStep] = useState(1)
@@ -39,17 +40,20 @@ const ReviewsCarousel = () => {
     loadReviews()
   }, [])
 
-  const loadReviews = async () => {
+  // `silent` avoids toggling the full-page loading state on background reloads
+  // (e.g. right after submitting a review), which would otherwise unmount the
+  // whole component tree -- including the review dialog -- while it refetches.
+  const loadReviews = async (silent = false) => {
     try {
-      setIsLoading(true)
+      if (!silent) setIsLoading(true)
       const allReviews = await reviewsStorage.getAllReviews()
       // Solo reseñas reales aprobadas por el admin; sin reseñas simuladas
       setReviews(allReviews.filter((r) => r.approved === true))
     } catch (error) {
       console.error("Error loading reviews:", error)
-      setReviews([])
+      if (!silent) setReviews([])
     } finally {
-      setIsLoading(false)
+      if (!silent) setIsLoading(false)
     }
   }
 
@@ -66,7 +70,8 @@ const ReviewsCarousel = () => {
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
+    setSubmitError(null)
+
     try {
       await reviewsStorage.addReview({
         name: formData.name,
@@ -77,8 +82,7 @@ const ReviewsCarousel = () => {
         review: formData.review,
       })
 
-      await loadReviews()
-      setCurrentSlide(0)
+      // Show success immediately; don't let a slow/failed reload block the confirmation.
       setSubmitSuccess(true)
       setFormData({
         name: "",
@@ -88,15 +92,24 @@ const ReviewsCarousel = () => {
         rating: 5,
         review: ""
       })
-      
+
+      loadReviews(true)
+        .then(() => setCurrentSlide(0))
+        .catch((error) => console.error("Error reloading reviews:", error))
+
       setTimeout(() => {
         setIsDialogOpen(false)
         setSubmitSuccess(false)
         setCurrentStep(1)
-      }, 2000)
-      
+      }, 3000)
+
     } catch (error) {
       console.error("Error submitting review:", error)
+      setSubmitError(
+        language === "es"
+          ? "No se pudo enviar tu reseña. Por favor, intentá de nuevo."
+          : "We couldn't submit your review. Please try again."
+      )
     } finally {
       setIsSubmitting(false)
     }
@@ -495,6 +508,11 @@ const ReviewsCarousel = () => {
                   <AnimatePresence mode="wait">
                     {renderStepContent()}
                   </AnimatePresence>
+
+                  {/* Error message */}
+                  {submitError && (
+                    <p className="text-sm text-red-500 text-center mt-3">{submitError}</p>
+                  )}
 
                   {/* Navigation buttons */}
                   <div className="flex justify-between mt-4 pt-3 border-t border-gray-200 dark:border-slate-700">
