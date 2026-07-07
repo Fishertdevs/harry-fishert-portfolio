@@ -98,12 +98,14 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
         const apiBase = `${base}${base.endsWith("/") ? "" : "/"}api/`
         const res = await fetch(`${apiBase}social-links`)
         if (!res.ok) return
-        const links: { platform: string; url: string }[] = await res.json()
+        const links: { platform: string; label: string; url: string }[] = await res.json()
         const overrides: Partial<PortfolioData> = {}
         for (const link of links) {
           if (link.platform === "github") overrides.github = link.url
           if (link.platform === "instagram") overrides.instagram = link.url
           if (link.platform === "whatsapp") overrides.whatsapp = link.url
+          if (link.platform === "email") overrides.email = link.label || link.url.replace("mailto:", "")
+          if (link.platform === "phone") overrides.phone = link.label || link.url.replace("tel:", "")
         }
         if (Object.keys(overrides).length > 0) {
           setPortfolioData((prev) => ({ ...prev, ...overrides }))

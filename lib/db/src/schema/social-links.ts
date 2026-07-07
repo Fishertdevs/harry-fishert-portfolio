@@ -4,8 +4,9 @@ import { z } from "zod/v4";
 
 export const socialLinksTable = pgTable("social_links", {
   id: serial("id").primaryKey(),
-  platform: text("platform").notNull(),
-  url: text("url").notNull(),
+  platform: text("platform").notNull(),       // "github" | "instagram" | "whatsapp" | "email" | "phone" | "linkedin" …
+  label: text("label").notNull().default(""), // texto para mostrar, ej: "fishertcode@gmail.com"
+  url: text("url").notNull(),                 // href completo: "https://…" | "mailto:…" | "tel:…"
   displayOrder: integer("display_order").notNull().default(0),
   active: boolean("active").notNull().default(true),
   createdAt: timestamp("created_at").notNull().defaultNow(),
