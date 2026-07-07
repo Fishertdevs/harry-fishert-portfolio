@@ -423,16 +423,14 @@ const ReviewsCarousel = () => {
                         <span>{review.likes ?? 0}</span>
                       </button>
 
-                      {/* Delete — solo admin */}
-                      {isAdmin && (
-                        <button
-                          onClick={() => handleDelete(review.id)}
-                          className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg px-2 py-1 transition-all duration-200"
-                          title={language === "es" ? "Eliminar reseña" : "Delete review"}
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      )}
+                      {/* Delete — siempre visible */}
+                      <button
+                        onClick={() => handleDelete(review.id)}
+                        className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg px-2 py-1 transition-all duration-200"
+                        title={language === "es" ? "Eliminar reseña" : "Delete review"}
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   </div>
                 ))}
