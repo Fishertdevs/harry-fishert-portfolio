@@ -1,4 +1,4 @@
 // @ts-nocheck
-import app from "../artifacts/api-server/dist/app.mjs";
+import app from "../artifacts/api-server/src/app";
 
 export default app;
