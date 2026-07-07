@@ -59,7 +59,7 @@ const Settings = () => {
   const loadReviews = async () => {
     try {
       setLoadingReviews(true)
-      const all = await reviewsStorage.getAllReviews()
+      const all = await reviewsStorage.getAllReviewsAdmin()
       setReviews(all)
     } catch (error) {
       console.error("Error loading reviews:", error)

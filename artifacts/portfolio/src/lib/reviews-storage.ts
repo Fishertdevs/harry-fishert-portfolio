@@ -18,6 +18,18 @@ const getApiBase = (): string => {
   return `${base}${base.endsWith("/") ? "" : "/"}api/`
 }
 
+const mapRow = (r: any): Review => ({
+  id: r.id,
+  name: r.name,
+  email: r.email ?? undefined,
+  company: r.company ?? undefined,
+  position: r.position ?? undefined,
+  rating: r.rating,
+  review: r.review,
+  date: r.createdAt,
+  approved: r.approved,
+})
+
 class ReviewsStorage {
   private static instance: ReviewsStorage
 
@@ -30,29 +42,33 @@ class ReviewsStorage {
     return ReviewsStorage.instance
   }
 
+  /** Reseñas aprobadas — para el carrusel público */
   public async getAllReviews(): Promise<Review[]> {
     if (!isBrowser) return []
     try {
       const res = await fetch(`${getApiBase()}reviews`)
       if (!res.ok) throw new Error(`Failed to load reviews: ${res.status}`)
-      const data = await res.json()
-      return data.map((r: any) => ({
-        id: r.id,
-        name: r.name,
-        email: r.email ?? undefined,
-        company: r.company ?? undefined,
-        position: r.position ?? undefined,
-        rating: r.rating,
-        review: r.review,
-        date: r.createdAt,
-        approved: r.approved,
-      }))
+      return (await res.json()).map(mapRow)
     } catch (error) {
       console.error("Error loading reviews:", error)
       return []
     }
   }
 
+  /** Todas las reseñas (incluidas las ocultas) — para el panel admin */
+  public async getAllReviewsAdmin(): Promise<Review[]> {
+    if (!isBrowser) return []
+    try {
+      const res = await fetch(`${getApiBase()}reviews?admin=1`)
+      if (!res.ok) throw new Error(`Failed to load admin reviews: ${res.status}`)
+      return (await res.json()).map(mapRow)
+    } catch (error) {
+      console.error("Error loading admin reviews:", error)
+      return []
+    }
+  }
+
+  /** Crear nueva reseña */
   public async addReview(
     reviewData: Omit<Review, "id" | "date" | "approved">
   ): Promise<Review> {
@@ -75,18 +91,54 @@ class ReviewsStorage {
       throw new Error(errBody?.error ? JSON.stringify(errBody.error) : "No se pudo enviar la reseña")
     }
 
-    const created = await res.json()
-    return {
-      id: created.id,
-      name: created.name,
-      email: created.email ?? undefined,
-      company: created.company ?? undefined,
-      position: created.position ?? undefined,
-      rating: created.rating,
-      review: created.review,
-      date: created.createdAt,
-      approved: created.approved,
+    return mapRow(await res.json())
+  }
+
+  /** Actualizar campos de una reseña */
+  public async updateReview(
+    id: number,
+    data: Partial<Pick<Review, "name" | "email" | "position" | "company" | "rating" | "review">>
+  ): Promise<Review> {
+    const res = await fetch(`${getApiBase()}reviews/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+
+    if (!res.ok) {
+      const errBody = await res.json().catch(() => ({}))
+      throw new Error(errBody?.error ? JSON.stringify(errBody.error) : "No se pudo actualizar la reseña")
     }
+
+    return mapRow(await res.json())
+  }
+
+  /** Eliminar una reseña */
+  public async deleteReview(id: number): Promise<void> {
+    const res = await fetch(`${getApiBase()}reviews/${id}`, {
+      method: "DELETE",
+    })
+
+    if (!res.ok && res.status !== 204) {
+      const errBody = await res.json().catch(() => ({}))
+      throw new Error(errBody?.error ? JSON.stringify(errBody.error) : "No se pudo eliminar la reseña")
+    }
+  }
+
+  /** Aprobar u ocultar una reseña */
+  public async setApproved(id: number, approved: boolean): Promise<Review> {
+    const res = await fetch(`${getApiBase()}reviews/${id}/approve`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ approved }),
+    })
+
+    if (!res.ok) {
+      const errBody = await res.json().catch(() => ({}))
+      throw new Error(errBody?.error ? JSON.stringify(errBody.error) : "No se pudo cambiar el estado")
+    }
+
+    return mapRow(await res.json())
   }
 }
 
