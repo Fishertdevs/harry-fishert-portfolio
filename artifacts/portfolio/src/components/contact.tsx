@@ -1,10 +1,13 @@
 
 
-import { Clock, ArrowRight } from "lucide-react"
+import { useState } from "react"
+import { Clock, ArrowRight, Send, CheckCircle, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { useLanguage } from "@/lib/language-context"
 import { usePortfolio } from "@/lib/portfolio-context"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import SectionBlobs from "@/components/section-blobs"
 
 // WhatsApp SVG Icon
@@ -14,9 +17,42 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
+const getApiBase = () => {
+  const base = (import.meta as any).env?.BASE_URL || "/"
+  return `${base}${base.endsWith("/") ? "" : "/"}api/`
+}
+
 const Contact = () => {
   const { t } = useLanguage()
   const { portfolioData } = usePortfolio()
+  const { language } = useLanguage()
+
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" })
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle")
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setStatus("sending")
+    try {
+      const res = await fetch(`${getApiBase()}contact-messages`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          subject: form.subject || undefined,
+          message: form.message,
+        }),
+      })
+      if (!res.ok) throw new Error("Error al enviar")
+      setStatus("success")
+      setForm({ name: "", email: "", subject: "", message: "" })
+      setTimeout(() => setStatus("idle"), 5000)
+    } catch {
+      setStatus("error")
+      setTimeout(() => setStatus("idle"), 4000)
+    }
+  }
 
   return (
     <section id="contact" className="relative flex flex-col justify-center py-8 md:py-12 bg-white dark:bg-slate-900 overflow-hidden">
@@ -123,6 +159,108 @@ const Contact = () => {
             >
               <WhatsAppIcon className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 dark:text-slate-300 transition-colors duration-300 group-hover:text-white dark:group-hover:text-white" />
             </a>
+          </div>
+        </motion.div>
+
+        {/* Contact Form */}
+        <motion.div
+          className="max-w-2xl mx-auto mb-6 md:mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.35 }}
+        >
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md border border-gray-100 dark:border-slate-700/60 p-5 sm:p-6 md:p-8">
+            <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-4 text-center">
+              {language === "es" ? "Envíame un mensaje" : "Send me a message"}
+            </h3>
+            <AnimatePresence mode="wait">
+              {status === "success" ? (
+                <motion.div
+                  key="success"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="flex flex-col items-center gap-3 py-6 text-center"
+                >
+                  <CheckCircle className="w-12 h-12 text-green-500" />
+                  <p className="font-semibold text-gray-900 dark:text-white">
+                    {language === "es" ? "¡Mensaje enviado!" : "Message sent!"}
+                  </p>
+                  <p className="text-sm text-gray-500 dark:text-slate-400">
+                    {language === "es" ? "Me pondré en contacto contigo pronto." : "I'll get back to you soon."}
+                  </p>
+                </motion.div>
+              ) : status === "error" ? (
+                <motion.div
+                  key="error"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="flex flex-col items-center gap-3 py-6 text-center"
+                >
+                  <AlertCircle className="w-10 h-10 text-red-500" />
+                  <p className="text-sm text-red-500">
+                    {language === "es" ? "No se pudo enviar. Intentá de nuevo." : "Couldn't send. Please try again."}
+                  </p>
+                </motion.div>
+              ) : (
+                <motion.form
+                  key="form"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onSubmit={handleSubmit}
+                  className="space-y-3"
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <Input
+                      placeholder={language === "es" ? "Tu nombre *" : "Your name *"}
+                      value={form.name}
+                      onChange={(e) => setForm(p => ({ ...p, name: e.target.value }))}
+                      required
+                      className="border-gray-200 dark:border-slate-700 focus:border-primary"
+                    />
+                    <Input
+                      type="email"
+                      placeholder={language === "es" ? "Tu correo *" : "Your email *"}
+                      value={form.email}
+                      onChange={(e) => setForm(p => ({ ...p, email: e.target.value }))}
+                      required
+                      className="border-gray-200 dark:border-slate-700 focus:border-primary"
+                    />
+                  </div>
+                  <Input
+                    placeholder={language === "es" ? "Asunto (opcional)" : "Subject (optional)"}
+                    value={form.subject}
+                    onChange={(e) => setForm(p => ({ ...p, subject: e.target.value }))}
+                    className="border-gray-200 dark:border-slate-700 focus:border-primary"
+                  />
+                  <Textarea
+                    placeholder={language === "es" ? "Tu mensaje *" : "Your message *"}
+                    value={form.message}
+                    onChange={(e) => setForm(p => ({ ...p, message: e.target.value }))}
+                    required
+                    rows={4}
+                    className="border-gray-200 dark:border-slate-700 focus:border-primary resize-none"
+                  />
+                  <Button
+                    type="submit"
+                    disabled={status === "sending"}
+                    className="w-full bg-primary hover:bg-primary/90 text-white gap-2"
+                  >
+                    {status === "sending" ? (
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+                    ) : (
+                      <>
+                        <Send className="h-4 w-4" />
+                        {language === "es" ? "Enviar mensaje" : "Send message"}
+                      </>
+                    )}
+                  </Button>
+                </motion.form>
+              )}
+            </AnimatePresence>
           </div>
         </motion.div>
 

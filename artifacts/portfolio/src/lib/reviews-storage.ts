@@ -9,6 +9,7 @@ export interface Review {
   review: string
   date?: string
   approved?: boolean
+  likes?: number
 }
 
 const isBrowser = typeof window !== "undefined"
@@ -28,6 +29,7 @@ const mapRow = (r: any): Review => ({
   review: r.review,
   date: r.createdAt,
   approved: r.approved,
+  likes: r.likes ?? 0,
 })
 
 class ReviewsStorage {
@@ -123,6 +125,21 @@ class ReviewsStorage {
       const errBody = await res.json().catch(() => ({}))
       throw new Error(errBody?.error ? JSON.stringify(errBody.error) : "No se pudo eliminar la reseña")
     }
+  }
+
+  /** Incrementar likes de una reseña */
+  public async likeReview(id: number): Promise<Review> {
+    const res = await fetch(`${getApiBase()}reviews/${id}/like`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+    })
+
+    if (!res.ok) {
+      const errBody = await res.json().catch(() => ({}))
+      throw new Error(errBody?.error ? JSON.stringify(errBody.error) : "No se pudo registrar el like")
+    }
+
+    return mapRow(await res.json())
   }
 
   /** Aprobar u ocultar una reseña */

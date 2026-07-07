@@ -11,6 +11,7 @@ export const reviewsTable = pgTable("reviews", {
   rating: integer("rating").notNull().default(5),
   review: text("review").notNull(),
   approved: boolean("approved").notNull().default(true),
+  likes: integer("likes").notNull().default(0),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 

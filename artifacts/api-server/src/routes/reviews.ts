@@ -122,4 +122,27 @@ router.patch("/reviews/:id/approve", async (req, res) => {
   }
 });
 
+// PATCH /api/reviews/:id/like — incrementar likes
+router.patch("/reviews/:id/like", async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    if (isNaN(id)) { res.status(400).json({ error: "ID inválido" }); return; }
+
+    // Incrementar el contador atómicamente
+    const [current] = await db.select({ likes: reviewsTable.likes }).from(reviewsTable).where(eq(reviewsTable.id, id));
+    if (!current) { res.status(404).json({ error: "Reseña no encontrada" }); return; }
+
+    const [updated] = await db
+      .update(reviewsTable)
+      .set({ likes: (current.likes ?? 0) + 1 })
+      .where(eq(reviewsTable.id, id))
+      .returning();
+
+    res.json(updated);
+  } catch (err) {
+    console.error("PATCH /reviews/:id/like error:", err);
+    res.status(500).json({ error: "Error al registrar like" });
+  }
+});
+
 export default router;
