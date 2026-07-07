@@ -149,6 +149,7 @@ const ReviewsCarousel = () => {
       review: ""
     })
     setSubmitSuccess(false)
+    setSubmitError(null)
   }
 
   if (isLoading) {
