@@ -1,32 +1,25 @@
 ---
 name: Portfolio migration quirks
-description: Missing project preview images, icon library gotchas, and testing-timing pitfalls found in the Harry Fishert portfolio (artifacts/portfolio)
+description: Quirks and pre-existing issues discovered during the Harry Fishert portfolio Vercel→Replit migration.
 ---
 
-When a project's `image` field in `experience.tsx` points to `/projects/*.png` but the file doesn't exist under `public/projects/`, the preview renders as a broken image with no console error in the app itself — always check `ls public/projects/` against the referenced filenames before assuming a CSS/render bug.
+# Portfolio Migration Quirks
 
-**Why:** Two client projects (Dr. Mario Sánchez, My Memorial Forever) had code referencing screenshot files that were never actually created during a prior migration, so nothing was broken in the render logic — the assets were just absent.
+**Why:** Documents what was pre-existing vs. introduced, so future agents don't try to "fix" things that were always broken, or re-migrate what's already done.
 
-**How to apply:** For deployed demo sites with missing preview screenshots, use the `screenshot` tool (`type: external_url`) against the live `demo` URL to generate a fresh preview image instead of trying to reconstruct one from scratch.
+**How to apply:** Before touching admin, reviews, or social-link data flow, read this file.
 
-`react-icons/si` (Simple Icons set) does not export `SiOpenai` — there is no generic "AI" simple-icon. Use a `lucide-react` icon (e.g. `Sparkles`) as a fallback for generic/AI-labeled tech tags instead.
+## Pre-existing issues (do NOT treat as regressions)
 
-The `.migration-backup/artifacts/*` workflows are a stale pre-existing backup directory with missing `node_modules` — they always fail on `vite`/`esbuild` not found and are unrelated to the live app. Ignore them; only `artifacts/*` workflows matter.
+- **Admin auth is client-side only** — `sessionStorage.setItem("adminAuth", "true")` with an email check. Any user can bypass via devtools. This was the original Vercel design. A real server-side session (using `SESSION_SECRET`) would be the proper fix.
+- **Missing review management endpoints** — `GET /api/reviews` and `POST /api/reviews` exist; update/delete/approve do not. The `Settings` component in `artifacts/portfolio/src/components/settings.tsx` calls `reviewsStorage.updateReview`, `.deleteReview`, `.setApproved` which are not implemented in `lib/reviews-storage.ts`. Pre-existing breakage from the original app.
+- **Social link data source conflict** — `PortfolioContext` loads social links from `/api/social-links` on mount, but admin edits in `Settings` write only to `localStorage`. Changes are not persisted to the backend. Pre-existing.
+- **Duplicate keys in translations.ts** — `experience`, `all`, `currentSemester`, `projects` keys appear twice in both ES and EN objects. Vite warns but doesn't fail.
 
-Direct `fetch()` to seeklogo.com image URLs returns 503 (hotlink protection), even with browser-like `User-Agent`/`Referer` headers. For official/brand logos, prefer scraping the organization's own homepage HTML for a `logo*.png`/`.svg` asset path and fetching that directly, over using image-search result URLs from seeklogo/kindpng-style mirrors.
+## Migration-specific notes
 
-## Testing-agent carousel timing artifact
-Both the Experience and Education sections use auto-advancing carousels (Framer Motion `AnimatePresence mode="wait"`, `setInterval` every 5-7s) with pagination dots that call `setCurrentSlide(index)` directly.
-
-The Playwright `runTest()` subagent repeatedly and consistently reports "clicked dot N but content shows a different slide" on BOTH of these independent carousels, even with explicit fast waits and single-click test plans. Manual verification via the `screenshot` tool (fresh page load) shows the correct slide/content every time.
-
-**Why:** This is very likely a `runTest` subagent timing/snapshot artifact when interacting with fast auto-advancing `AnimatePresence` carousels, not a real app bug — the same "mismatch" pattern reproduced identically across two unrelated components, ruling out a shared code bug.
-
-**How to apply:** When testing these carousels, prefer a fresh `screenshot` (app_preview, no clicks) to confirm the *initial* slide renders correctly, since pagination-click verification via `runTest` is unreliable here. Don't sink more time chasing "slide mismatch" bug reports from `runTest` on these carousels without also cross-checking via a plain screenshot.
-
-## External Neon DB (not the Replit-managed DB)
-This portfolio's reviews/social-links/contact-messages tables live in a user-provided external Neon Postgres, wired via a `NEON_DATABASE_URL` secret (raw `DATABASE_URL` is Replit-reserved and can't be requested as a secret) — `lib/db` falls back to `DATABASE_URL` if `NEON_DATABASE_URL` is absent.
-
-**Why:** The user pasted an external Neon connection string directly in chat instead of using Replit's built-in Postgres; the `executeSql` tool only targets Replit's own managed DB, so it can't run/seed queries against this Neon instance.
-
-**How to apply:** For one-off scripts against this Neon DB (seeding, ad-hoc queries), write a `.mjs`/`.ts` file *inside* a workspace package directory (e.g. `lib/db/`) and run it with `node`/`pnpm exec` from there — running from `/tmp` fails with `ERR_MODULE_NOT_FOUND` because it's outside pnpm's node_modules resolution. Delete the script after use.
+- `settings.tsx` was only in `.migration-backup/artifacts/portfolio/src/components/` — NOT in the pre-deletion `artifacts/portfolio/src/components/`. Must be copied manually from the backup.
+- The migration backup registers duplicate artifacts (`.migration-backup/artifacts/api-server` etc.) when `createArtifact` is called — rename backup `package.json` name fields to avoid pnpm workspace conflicts.
+- `"use client"` directives were stripped from all component files (Next.js-only, harmless in Vite).
+- `@vercel/node` and `@neondatabase/serverless` were runtime dependencies in the original portfolio `package.json` — removed since the portfolio is a pure Vite frontend.
+- The built-in Replit `DATABASE_URL` works without `NEON_DATABASE_URL` — `lib/db/src/index.ts` already falls back correctly.

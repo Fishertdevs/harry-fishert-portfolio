@@ -1,4 +1,4 @@
-"use client"
+
 
 import { useState, useEffect } from "react"
 import { Github, Star, Lock, MapPin, Sparkles } from "lucide-react"

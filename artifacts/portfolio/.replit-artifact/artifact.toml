@@ -5,10 +5,6 @@ version = "1.0.0"
 id = "artifacts/portfolio"
 router = "path"
 
-[[integratedSkills]]
-name = "react-vite"
-version = "1.0.0"
-
 [[services]]
 name = "web"
 paths = [ "/" ]
@@ -19,8 +15,8 @@ run = "pnpm --filter @workspace/portfolio run dev"
 
 [services.production]
 build = [ "pnpm", "--filter", "@workspace/portfolio", "run", "build" ]
-publicDir = "artifacts/portfolio/dist/public"
 serve = "static"
+publicDir = "artifacts/portfolio/dist/public"
 
 [[services.production.rewrites]]
 from = "/*"
