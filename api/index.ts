@@ -13,8 +13,9 @@ function escapeHtml(text: string): string {
 function formatReviewMessage(review: any, statusLine?: string): string {
   const stars = "⭐".repeat(Math.max(1, Math.min(5, Number(review.rating) || 5)));
   const roleParts = [review.position, review.company].filter(Boolean).join(" en ");
+  const heading = statusLine ? "📝 <b>Reseña</b>" : "📝 <b>Nueva reseña pendiente</b>";
   const lines = [
-    "📝 <b>Nueva reseña pendiente</b>",
+    heading,
     "",
     `👤 <b>${escapeHtml(review.name)}</b>${roleParts ? ` — ${escapeHtml(roleParts)}` : ""}`,
     stars,
@@ -26,63 +27,187 @@ function formatReviewMessage(review: any, statusLine?: string): string {
   return lines.join("\n");
 }
 
-async function notifyNewReview(review: any): Promise<void> {
+type ReviewKeyboardState = "pending" | "approved" | "deleted";
+
+function buildReviewKeyboard(review: any, state: ReviewKeyboardState) {
+  if (state === "deleted") return { inline_keyboard: [] };
+  const row: { text: string; callback_data: string }[] = [];
+  if (state === "pending") row.push({ text: "✅ Aprobar", callback_data: `appr:${review.id}` });
+  row.push({ text: "✏️ Editar", callback_data: `edit:${review.id}` });
+  row.push({ text: "🗑️ Eliminar", callback_data: `del:${review.id}` });
+  return { inline_keyboard: [row] };
+}
+
+function statusLineFor(state: ReviewKeyboardState): string {
+  if (state === "approved") return "✅ <b>Aprobada</b> — visible en el sitio.";
+  if (state === "deleted") return "🗑️ <b>Eliminada</b> — no se publicará.";
+  return "⏳ <b>Pendiente</b> de aprobación.";
+}
+
+async function callTelegram(method: string, body: unknown): Promise<any> {
   const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
-  if (!token || !chatId) return;
+  if (!token) return null;
   try {
-    await fetch(`${TELEGRAM_API}/bot${token}/sendMessage`, {
+    const res = await fetch(`${TELEGRAM_API}/bot${token}/${method}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: formatReviewMessage(review),
-        parse_mode: "HTML",
-        reply_markup: {
-          inline_keyboard: [[
-            { text: "✅ Aprobar", callback_data: `appr:${review.id}` },
-            { text: "🗑️ Eliminar", callback_data: `del:${review.id}` },
-          ]],
-        },
-      }),
+      body: JSON.stringify(body),
     });
+    const json = await res.json().catch(() => null);
+    if (!res.ok) console.error(`Error llamando a Telegram (${method}):`, json);
+    return json;
   } catch (err) {
-    console.error("Error enviando notificación de Telegram:", err);
+    console.error(`Error de red llamando a Telegram (${method}):`, err);
+    return null;
   }
+}
+
+async function notifyNewReview(review: any): Promise<void> {
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+  if (!chatId) return;
+  await callTelegram("sendMessage", {
+    chat_id: chatId,
+    text: formatReviewMessage(review),
+    parse_mode: "HTML",
+    reply_markup: buildReviewKeyboard(review, "pending"),
+  });
 }
 
 // IMPORTANTE: Telegram no conserva el teclado inline al editar el texto si no
 // se lo volvés a mandar explícitamente — hay que decidir en cada caso qué
 // botones quedan (o ninguno).
-async function editReviewMessage(chatId: number | string, messageId: number, review: any, statusLine: string, keepDeleteButton = false): Promise<void> {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  if (!token) return;
-  const reply_markup = keepDeleteButton
-    ? { inline_keyboard: [[{ text: "🗑️ Eliminar", callback_data: `del:${review.id}` }]] }
-    : { inline_keyboard: [] };
-  try {
-    await fetch(`${TELEGRAM_API}/bot${token}/editMessageText`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: chatId, message_id: messageId, text: formatReviewMessage(review, statusLine), parse_mode: "HTML", reply_markup }),
-    });
-  } catch (err) {
-    console.error("Error editando mensaje de Telegram:", err);
-  }
+async function editReviewMessage(chatId: number | string, messageId: number, review: any, state: ReviewKeyboardState): Promise<void> {
+  await callTelegram("editMessageText", {
+    chat_id: chatId,
+    message_id: messageId,
+    text: formatReviewMessage(review, statusLineFor(state)),
+    parse_mode: "HTML",
+    reply_markup: buildReviewKeyboard(review, state),
+  });
+}
+
+// Tarjeta de una reseña existente (usada por /resenas), con el teclado según
+// si ya está aprobada o sigue pendiente. Devuelve el message_id enviado.
+async function sendReviewCard(review: any): Promise<number | null> {
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+  if (!chatId) return null;
+  const state: ReviewKeyboardState = review.approved ? "approved" : "pending";
+  const result = await callTelegram("sendMessage", {
+    chat_id: chatId,
+    text: formatReviewMessage(review, statusLineFor(state)),
+    parse_mode: "HTML",
+    reply_markup: buildReviewKeyboard(review, state),
+  });
+  return result?.result?.message_id ?? null;
+}
+
+async function sendPlainMessage(chatId: number | string, text: string): Promise<number | null> {
+  const result = await callTelegram("sendMessage", { chat_id: chatId, text, parse_mode: "HTML" });
+  return result?.result?.message_id ?? null;
 }
 
 async function answerCallbackQuery(callbackQueryId: string, text: string): Promise<void> {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  if (!token) return;
-  try {
-    await fetch(`${TELEGRAM_API}/bot${token}/answerCallbackQuery`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ callback_query_id: callbackQueryId, text }),
-    });
-  } catch (err) {
-    console.error("Error respondiendo callback de Telegram:", err);
+  await callTelegram("answerCallbackQuery", { callback_query_id: callbackQueryId, text });
+}
+
+const EDIT_TIMEOUT_MS = 10 * 60 * 1000; // una edición pendiente vence a los 10 min
+
+async function handleTelegramCallback(callback: any): Promise<void> {
+  const data: string = callback.data || "";
+  const [action, idStr] = data.split(":");
+  const id = Number(idStr);
+  const chatId = callback.message?.chat?.id;
+  const messageId = callback.message?.message_id;
+
+  if (!id || isNaN(id) || !chatId || !messageId) {
+    await answerCallbackQuery(callback.id, "Acción inválida");
+    return;
   }
+
+  if (action === "appr") {
+    answerCallbackQuery(callback.id, "Aprobando…").catch(() => {});
+    const [updated] = await sql`UPDATE reviews SET approved = true WHERE id = ${id} RETURNING *`;
+    if (!updated) return;
+    await editReviewMessage(chatId, messageId, updated, "approved");
+    return;
+  }
+
+  if (action === "del") {
+    answerCallbackQuery(callback.id, "Eliminando…").catch(() => {});
+    const [deleted] = await sql`DELETE FROM reviews WHERE id = ${id} RETURNING *`;
+    if (!deleted) return;
+    await sql`DELETE FROM telegram_pending_edits WHERE chat_id = ${String(chatId)}`;
+    await editReviewMessage(chatId, messageId, deleted, "deleted");
+    return;
+  }
+
+  if (action === "edit") {
+    const [review] = await sql`SELECT * FROM reviews WHERE id = ${id}`;
+    if (!review) {
+      await answerCallbackQuery(callback.id, "Esa reseña ya no existe");
+      return;
+    }
+    answerCallbackQuery(callback.id, "Enviá el nuevo texto").catch(() => {});
+    await sql`
+      INSERT INTO telegram_pending_edits (chat_id, review_id, created_at)
+      VALUES (${String(chatId)}, ${id}, now())
+      ON CONFLICT (chat_id) DO UPDATE SET review_id = ${id}, created_at = now()
+    `;
+    await sendPlainMessage(
+      chatId,
+      `✏️ Escribí y enviá el <b>nuevo texto</b> para la reseña de <b>${escapeHtml(review.name)}</b>.\n\nEnviá /cancelar para no cambiar nada.`,
+    );
+    return;
+  }
+
+  await answerCallbackQuery(callback.id, "Acción desconocida");
+}
+
+async function handleTelegramMessage(message: any): Promise<void> {
+  const chatId = message.chat?.id;
+  const text: string = (message.text || "").trim();
+  if (!chatId || !text) return;
+
+  if (text === "/resenas" || text === "/reviews") {
+    const all = await sql`SELECT * FROM reviews ORDER BY created_at DESC`;
+    if (all.length === 0) {
+      await sendPlainMessage(chatId, "No hay reseñas todavía.");
+      return;
+    }
+    const pending = all.filter((r: any) => !r.approved).length;
+    await sendPlainMessage(
+      chatId,
+      `📋 <b>${all.length}</b> reseña(s) en total — <b>${pending}</b> pendiente(s) de aprobación.`,
+    );
+    for (const review of all) {
+      await sendReviewCard(review);
+    }
+    return;
+  }
+
+  if (text === "/cancelar") {
+    const deleted = await sql`DELETE FROM telegram_pending_edits WHERE chat_id = ${String(chatId)} RETURNING *`;
+    if (deleted.length > 0) await sendPlainMessage(chatId, "Edición cancelada, no se cambió nada.");
+    return;
+  }
+
+  const [pendingEdit] = await sql`SELECT * FROM telegram_pending_edits WHERE chat_id = ${String(chatId)}`;
+  if (!pendingEdit) return; // texto suelto que no corresponde a ningún flujo
+
+  const isExpired = Date.now() - new Date(pendingEdit.created_at).getTime() > EDIT_TIMEOUT_MS;
+  await sql`DELETE FROM telegram_pending_edits WHERE chat_id = ${String(chatId)}`;
+  if (isExpired) {
+    await sendPlainMessage(chatId, "La edición venció por tiempo, tocá ✏️ Editar de nuevo si querés cambiar el texto.");
+    return;
+  }
+
+  const [updated] = await sql`UPDATE reviews SET review = ${text} WHERE id = ${pendingEdit.review_id} RETURNING *`;
+  if (!updated) {
+    await sendPlainMessage(chatId, "Esa reseña ya no existe, no se pudo editar.");
+    return;
+  }
+  await sendPlainMessage(chatId, "✅ Texto actualizado.");
+  await sendReviewCard(updated);
 }
 
 export default async function handler(req: IncomingMessage & { body?: any; query?: Record<string, string> }, res: ServerResponse & { json?: Function }) {
@@ -136,38 +261,20 @@ export default async function handler(req: IncomingMessage & { body?: any; query
       return;
     }
 
-    // POST /telegram-webhook — botones Aprobar/Eliminar de la notificación
+    // POST /telegram-webhook — botones Aprobar/Editar/Eliminar y comandos de
+    // texto (/resenas, /cancelar, y el texto nuevo tras tocar Editar).
     if (req.method === "POST" && url.includes("/telegram-webhook")) {
       send(200, { ok: true });
       const update = req.body || {};
-      const callback = update.callback_query;
-      if (!callback) return;
-      const [action, idStr] = String(callback.data || "").split(":");
-      const id = Number(idStr);
-      const chatId = callback.message?.chat?.id;
-      const messageId = callback.message?.message_id;
-      if (!id || isNaN(id) || !chatId || !messageId) {
-        await answerCallbackQuery(callback.id, "Acción inválida");
+
+      if (update.callback_query) {
+        await handleTelegramCallback(update.callback_query);
         return;
       }
-      if (action === "appr") {
-        // Responder al toque del botón de inmediato (no esperar la DB) para que
-        // el spinner del botón desaparezca al instante; el mensaje se edita después.
-        answerCallbackQuery(callback.id, "Aprobando…").catch(() => {});
-        const [updated] = await sql`UPDATE reviews SET approved = true WHERE id = ${id} RETURNING *`;
-        if (!updated) return;
-        // Se deja el botón "Eliminar" disponible por si luego querés retirarla.
-        await editReviewMessage(chatId, messageId, updated, "✅ <b>Aprobada</b> — ya es visible en el sitio.", true);
+      if (update.message) {
+        await handleTelegramMessage(update.message);
         return;
       }
-      if (action === "del") {
-        answerCallbackQuery(callback.id, "Eliminando…").catch(() => {});
-        const [deleted] = await sql`DELETE FROM reviews WHERE id = ${id} RETURNING *`;
-        if (!deleted) return;
-        await editReviewMessage(chatId, messageId, deleted, "🗑️ <b>Eliminada</b> — no se publicará.");
-        return;
-      }
-      await answerCallbackQuery(callback.id, "Acción desconocida");
       return;
     }
 
