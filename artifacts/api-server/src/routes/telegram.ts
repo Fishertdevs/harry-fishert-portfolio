@@ -14,25 +14,23 @@ const EDIT_TIMEOUT_MS = 10 * 60 * 1000; // una edición pendiente vence a los 10
 
 // POST /api/telegram/webhook — recibe botones (Aprobar/Editar/Eliminar) y
 // comandos/mensajes de texto (/resenas, y el texto nuevo tras tocar Editar).
+// Procesamos todo antes de responder 200 (mismo criterio que la función
+// serverless de producción, para que el comportamiento sea idéntico en
+// ambos entornos y no dependa de si el proceso sigue vivo tras la respuesta).
 router.post("/telegram/webhook", async (req, res) => {
-  // Confirmamos siempre 200 rápido para que Telegram no reintente.
-  res.status(200).json({ ok: true });
-
   try {
     const update = req.body as any;
 
     if (update?.callback_query) {
       await handleCallback(update.callback_query);
-      return;
-    }
-
-    if (update?.message) {
+    } else if (update?.message) {
       await handleMessage(update.message);
-      return;
     }
   } catch (err) {
     console.error("POST /telegram/webhook error:", err);
   }
+
+  res.status(200).json({ ok: true });
 });
 
 async function handleCallback(callback: any) {

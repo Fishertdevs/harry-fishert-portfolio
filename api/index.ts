@@ -263,18 +263,24 @@ export default async function handler(req: IncomingMessage & { body?: any; query
 
     // POST /telegram-webhook — botones Aprobar/Editar/Eliminar y comandos de
     // texto (/resenas, /cancelar, y el texto nuevo tras tocar Editar).
+    // IMPORTANTE: en funciones serverless de Vercel, el contenedor puede
+    // congelarse apenas se envía la respuesta HTTP — cualquier `await`
+    // posterior a un `res.end()` puede quedar cortado a mitad de camino.
+    // Por eso procesamos todo ANTES de responder (salvo el ack del botón,
+    // que sí se dispara sin esperar solo para que el spinner de Telegram
+    // desaparezca al instante).
     if (req.method === "POST" && url.includes("/telegram-webhook")) {
-      send(200, { ok: true });
       const update = req.body || {};
-
-      if (update.callback_query) {
-        await handleTelegramCallback(update.callback_query);
-        return;
+      try {
+        if (update.callback_query) {
+          await handleTelegramCallback(update.callback_query);
+        } else if (update.message) {
+          await handleTelegramMessage(update.message);
+        }
+      } catch (err) {
+        console.error("Error procesando update de Telegram:", err);
       }
-      if (update.message) {
-        await handleTelegramMessage(update.message);
-        return;
-      }
+      send(200, { ok: true });
       return;
     }
 
