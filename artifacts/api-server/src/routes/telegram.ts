@@ -28,30 +28,26 @@ router.post("/telegram/webhook", async (req, res) => {
     }
 
     if (action === "appr") {
+      // Responder al toque del botón de inmediato (no esperar la DB) para que
+      // el spinner del botón desaparezca al instante; el mensaje se edita después.
+      answerCallbackQuery(callback.id, "Aprobando…").catch(() => {});
       const [updated] = await db
         .update(reviewsTable)
         .set({ approved: true })
         .where(eq(reviewsTable.id, id))
         .returning();
-      if (!updated) {
-        await answerCallbackQuery(callback.id, "La reseña ya no existe");
-        return;
-      }
-      await answerCallbackQuery(callback.id, "Reseña aprobada ✅");
+      if (!updated) return;
       await updateReviewMessage(chatId, messageId, updated, "✅ <b>Aprobada</b> — ya es visible en el sitio.");
       return;
     }
 
     if (action === "del") {
+      answerCallbackQuery(callback.id, "Eliminando…").catch(() => {});
       const [deleted] = await db
         .delete(reviewsTable)
         .where(eq(reviewsTable.id, id))
         .returning();
-      if (!deleted) {
-        await answerCallbackQuery(callback.id, "La reseña ya no existe");
-        return;
-      }
-      await answerCallbackQuery(callback.id, "Reseña eliminada 🗑️");
+      if (!deleted) return;
       await updateReviewMessage(chatId, messageId, deleted, "🗑️ <b>Eliminada</b> — no se publicará.");
       return;
     }

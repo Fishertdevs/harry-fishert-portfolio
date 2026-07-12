@@ -145,16 +145,18 @@ export default async function handler(req: IncomingMessage & { body?: any; query
         return;
       }
       if (action === "appr") {
+        // Responder al toque del botón de inmediato (no esperar la DB) para que
+        // el spinner del botón desaparezca al instante; el mensaje se edita después.
+        answerCallbackQuery(callback.id, "Aprobando…").catch(() => {});
         const [updated] = await sql`UPDATE reviews SET approved = true WHERE id = ${id} RETURNING *`;
-        if (!updated) { await answerCallbackQuery(callback.id, "La reseña ya no existe"); return; }
-        await answerCallbackQuery(callback.id, "Reseña aprobada ✅");
+        if (!updated) return;
         await editReviewMessage(chatId, messageId, updated, "✅ <b>Aprobada</b> — ya es visible en el sitio.");
         return;
       }
       if (action === "del") {
+        answerCallbackQuery(callback.id, "Eliminando…").catch(() => {});
         const [deleted] = await sql`DELETE FROM reviews WHERE id = ${id} RETURNING *`;
-        if (!deleted) { await answerCallbackQuery(callback.id, "La reseña ya no existe"); return; }
-        await answerCallbackQuery(callback.id, "Reseña eliminada 🗑️");
+        if (!deleted) return;
         await editReviewMessage(chatId, messageId, deleted, "🗑️ <b>Eliminada</b> — no se publicará.");
         return;
       }

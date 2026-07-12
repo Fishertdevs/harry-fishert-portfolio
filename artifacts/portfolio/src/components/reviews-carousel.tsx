@@ -66,6 +66,13 @@ const ReviewsCarousel = () => {
 
   useEffect(() => { loadReviews() }, [])
 
+  // Refrescar en segundo plano cada 5s: si aprobás/eliminás una reseña desde
+  // Telegram, el sitio la muestra u oculta sola, sin recargar la página.
+  useEffect(() => {
+    const id = setInterval(() => { loadReviews(true) }, 5000)
+    return () => clearInterval(id)
+  }, [])
+
   // Reset slide when switching between mobile/desktop
   useEffect(() => { setCurrentSlide(0) }, [isMobile])
 
