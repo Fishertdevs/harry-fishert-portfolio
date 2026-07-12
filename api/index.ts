@@ -51,14 +51,20 @@ async function notifyNewReview(review: any): Promise<void> {
   }
 }
 
-async function editReviewMessage(chatId: number | string, messageId: number, review: any, statusLine: string): Promise<void> {
+// IMPORTANTE: Telegram no conserva el teclado inline al editar el texto si no
+// se lo volvés a mandar explícitamente — hay que decidir en cada caso qué
+// botones quedan (o ninguno).
+async function editReviewMessage(chatId: number | string, messageId: number, review: any, statusLine: string, keepDeleteButton = false): Promise<void> {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   if (!token) return;
+  const reply_markup = keepDeleteButton
+    ? { inline_keyboard: [[{ text: "🗑️ Eliminar", callback_data: `del:${review.id}` }]] }
+    : { inline_keyboard: [] };
   try {
     await fetch(`${TELEGRAM_API}/bot${token}/editMessageText`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: chatId, message_id: messageId, text: formatReviewMessage(review, statusLine), parse_mode: "HTML" }),
+      body: JSON.stringify({ chat_id: chatId, message_id: messageId, text: formatReviewMessage(review, statusLine), parse_mode: "HTML", reply_markup }),
     });
   } catch (err) {
     console.error("Error editando mensaje de Telegram:", err);
@@ -150,7 +156,8 @@ export default async function handler(req: IncomingMessage & { body?: any; query
         answerCallbackQuery(callback.id, "Aprobando…").catch(() => {});
         const [updated] = await sql`UPDATE reviews SET approved = true WHERE id = ${id} RETURNING *`;
         if (!updated) return;
-        await editReviewMessage(chatId, messageId, updated, "✅ <b>Aprobada</b> — ya es visible en el sitio.");
+        // Se deja el botón "Eliminar" disponible por si luego querés retirarla.
+        await editReviewMessage(chatId, messageId, updated, "✅ <b>Aprobada</b> — ya es visible en el sitio.", true);
         return;
       }
       if (action === "del") {

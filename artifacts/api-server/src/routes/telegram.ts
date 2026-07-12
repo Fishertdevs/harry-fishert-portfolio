@@ -37,7 +37,8 @@ router.post("/telegram/webhook", async (req, res) => {
         .where(eq(reviewsTable.id, id))
         .returning();
       if (!updated) return;
-      await updateReviewMessage(chatId, messageId, updated, "✅ <b>Aprobada</b> — ya es visible en el sitio.");
+      // Se deja el botón "Eliminar" disponible por si luego querés retirarla.
+      await updateReviewMessage(chatId, messageId, updated, "✅ <b>Aprobada</b> — ya es visible en el sitio.", true);
       return;
     }
 

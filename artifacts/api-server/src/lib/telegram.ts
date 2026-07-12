@@ -78,15 +78,22 @@ export async function notifyNewReview(review: ReviewLike): Promise<void> {
   }
 }
 
-// Edita el mensaje original para reflejar la acción tomada, quitando los botones.
+// Edita el mensaje original para reflejar la acción tomada.
+// IMPORTANTE: Telegram no conserva el teclado inline al editar el texto si no
+// se lo volvés a mandar explícitamente — hay que decidir en cada caso qué
+// botones quedan (o ninguno).
 export async function updateReviewMessage(
   chatId: number | string,
   messageId: number,
   review: ReviewLike,
   statusLine: string,
+  keepDeleteButton = false,
 ): Promise<void> {
   const config = getConfig();
   if (!config) return;
+  const reply_markup = keepDeleteButton
+    ? { inline_keyboard: [[{ text: "🗑️ Eliminar", callback_data: `del:${review.id}` }]] }
+    : { inline_keyboard: [] };
   try {
     await fetch(`${TELEGRAM_API}/bot${config.token}/editMessageText`, {
       method: "POST",
@@ -96,6 +103,7 @@ export async function updateReviewMessage(
         message_id: messageId,
         text: formatReviewMessage(review, statusLine),
         parse_mode: "HTML",
+        reply_markup,
       }),
     });
   } catch (err) {
