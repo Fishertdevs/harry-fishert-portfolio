@@ -1,2 +1,3 @@
 - [Portfolio migration quirks](portfolio-migration-quirks.md) — missing project preview images and icon library gotchas in the Harry Fishert portfolio.
 - [Vercel full-stack monorepo deploy](vercel-fullstack-monorepo-deploy.md) — vercel.json + api/index.ts pattern for Vite+Express+Neon pnpm workspace, and what only the user can fix in the Vercel dashboard.
+- [Telegram review moderation](telegram-review-moderation.md) — free WhatsApp alternative using a Telegram bot with inline approve/delete buttons; bot-token casing and chat-id gotchas.

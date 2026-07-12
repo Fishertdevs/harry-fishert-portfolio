@@ -1,6 +1,7 @@
 import { Router, type IRouter } from "express";
 import { db, reviewsTable, insertReviewSchema } from "@workspace/db";
 import { desc, eq } from "drizzle-orm";
+import { notifyNewReview } from "../lib/telegram";
 
 const router: IRouter = Router();
 
@@ -25,7 +26,7 @@ router.get("/reviews", async (req, res) => {
   }
 });
 
-// POST /api/reviews — crear nueva reseña
+// POST /api/reviews — crear nueva reseña (queda pendiente hasta aprobarse por Telegram)
 router.post("/reviews", async (req, res) => {
   try {
     const parsed = insertReviewSchema.safeParse(req.body);
@@ -33,8 +34,14 @@ router.post("/reviews", async (req, res) => {
       res.status(400).json({ error: parsed.error.flatten() });
       return;
     }
-    const [created] = await db.insert(reviewsTable).values(parsed.data).returning();
+    // Nunca confiar en el cliente para el estado de aprobación: toda reseña
+    // nueva queda pendiente hasta que se apruebe desde Telegram.
+    const [created] = await db
+      .insert(reviewsTable)
+      .values({ ...parsed.data, approved: false })
+      .returning();
     res.status(201).json(created);
+    notifyNewReview(created).catch(() => {});
   } catch (err) {
     console.error("POST /reviews error:", err);
     res.status(500).json({ error: "Error al crear reseña" });

@@ -4,7 +4,7 @@ import { useLanguage } from "@/lib/language-context"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   Star, Plus, Check, Send, User, Briefcase, Building,
-  BadgeCheck, Heart, Trash2, AlertTriangle, ChevronLeft, ChevronRight
+  BadgeCheck, Heart, ChevronLeft, ChevronRight
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,56 +13,6 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger
 } from "@/components/ui/dialog"
 import { reviewsStorage, type Review } from "@/lib/reviews-storage"
-
-// ── Custom confirm dialog ────────────────────────────────────────────────────
-interface ConfirmDialogProps {
-  open: boolean
-  message: string
-  onConfirm: () => void
-  onCancel: () => void
-}
-const ConfirmDialog = ({ open, message, onConfirm, onCancel }: ConfirmDialogProps) => (
-  <AnimatePresence>
-    {open && (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
-        onClick={onCancel}
-      >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9, y: 8 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 4 }}
-          transition={{ type: "spring", duration: 0.3 }}
-          className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-gray-100 dark:border-slate-700 p-6 max-w-xs w-full text-center"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-            <AlertTriangle className="w-6 h-6 text-red-500" />
-          </div>
-          <p className="text-sm font-medium text-gray-800 dark:text-white mb-6">{message}</p>
-          <div className="flex gap-3">
-            <Button
-              variant="outline"
-              className="flex-1 border-gray-200 dark:border-slate-700"
-              onClick={onCancel}
-            >
-              Cancelar
-            </Button>
-            <Button
-              className="flex-1 bg-red-500 hover:bg-red-600 text-white border-none"
-              onClick={onConfirm}
-            >
-              Eliminar
-            </Button>
-          </div>
-        </motion.div>
-      </motion.div>
-    )}
-  </AnimatePresence>
-)
 
 // ── Hook: detect mobile ──────────────────────────────────────────────────────
 function useIsMobile() {
@@ -98,11 +48,6 @@ const ReviewsCarousel = () => {
       const saved = localStorage.getItem("review-likes")
       return new Set(saved ? JSON.parse(saved) : [])
     } catch { return new Set() }
-  })
-
-  // Custom confirm dialog
-  const [confirmState, setConfirmState] = useState<{ open: boolean; id: number | null }>({
-    open: false, id: null
   })
 
   // Review form
@@ -178,25 +123,6 @@ const ReviewsCarousel = () => {
       localStorage.setItem("review-likes", JSON.stringify([...next]))
     } catch (err) {
       console.error("Error liking review:", err)
-    }
-  }
-
-  // ── Delete (custom dialog) ─────────────────────────────────────────────────
-  const askDelete = (id: number) => setConfirmState({ open: true, id })
-  const confirmDelete = async () => {
-    const id = confirmState.id!
-    setConfirmState({ open: false, id: null })
-    try {
-      await reviewsStorage.deleteReview(id)
-      setReviews((prev) => {
-        const next = prev.filter((r) => r.id !== id)
-        setCurrentSlide((s) =>
-          Math.min(s, Math.max(0, Math.ceil(next.length / perPage) - 1))
-        )
-        return next
-      })
-    } catch (err) {
-      console.error("Error deleting review:", err)
     }
   }
 
@@ -365,15 +291,6 @@ const ReviewsCarousel = () => {
           <Heart className={`w-4 h-4 transition-all ${likedIds.has(review.id) ? "fill-rose-500 text-rose-500" : ""}`} />
           <span>{review.likes ?? 0}</span>
         </button>
-        {/* Delete */}
-        <button
-          type="button"
-          onPointerUp={(e) => { e.preventDefault(); e.stopPropagation(); askDelete(review.id) }}
-          className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg px-3 py-2 transition-all duration-200 active:scale-95"
-          title={language === "es" ? "Eliminar reseña" : "Delete review"}
-        >
-          <Trash2 className="w-4 h-4" />
-        </button>
       </div>
     </div>
   )
@@ -381,14 +298,6 @@ const ReviewsCarousel = () => {
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <>
-      {/* Custom confirm modal */}
-      <ConfirmDialog
-        open={confirmState.open}
-        message={language === "es" ? "¿Eliminar esta reseña? Esta acción no se puede deshacer." : "Delete this review? This action cannot be undone."}
-        onConfirm={confirmDelete}
-        onCancel={() => setConfirmState({ open: false, id: null })}
-      />
-
       <section className="py-12 md:py-16 bg-gray-50 dark:bg-slate-900">
         <div className="container mx-auto px-4">
           {/* Header */}
@@ -508,7 +417,7 @@ const ReviewsCarousel = () => {
                       <Check className="w-8 h-8 text-green-600" />
                     </div>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{language === "es" ? "¡Gracias por tu reseña!" : "Thanks for your review!"}</h3>
-                    <p className="text-sm text-gray-500 dark:text-slate-400">{language === "es" ? "Tu opinión ya está publicada." : "Your review has been published."}</p>
+                    <p className="text-sm text-gray-500 dark:text-slate-400">{language === "es" ? "Será revisada antes de publicarse." : "It will be reviewed before being published."}</p>
                   </motion.div>
                 ) : (
                   <form onSubmit={handleSubmitReview} className="space-y-4">
